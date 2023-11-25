@@ -1,0 +1,119 @@
+@startuml
+
+interface Understandable{
+    + void understand(String who)
+}
+interface Breakable{
+    + void breakSelf()
+}
+interface Resembleable{
+    + void resemble(String what)
+}
+interface Excavatable{
+    + void getExcavated()
+}
+
+abstract class Human{
+     # String name
+     + read(String what)
+     + talk(String what)
+     + write(String what)
+     + String getName()
+     + Human(String name)
+}
+abstract class GeologicalFormation{
+    # String  durability
+    + String getDurability()
+    + GeologicalFormation(String durability)
+}
+abstract class Animal{
+    # bool isAlive
+    + bool getIsAlive()
+    + Animal(bool isAlive)
+}
+
+enum ResearcherType{
+    EXPEDITIONIST
+    FOLK_RESEARCHER
+}
+ResearcherType -- Researcher
+class Researcher extends Human{
+    # ResearcherType type
+    + read()
+    + write()
+    + talk()
+    + ResearcherType getType()
+    + Researcher(String name,ResearcherType type)
+}
+class Creature extends Animal implements Resembleable{
+    # isAlive = False
+    + void resemble(String what)
+    + Creature()
+}
+class Dog extends Animal{
+    # isAlive = True
+    + bark()
+    + Dog()
+}
+class GeologicalLayer extends GeologicalFormation implements Excavatable{
+    # String agePeriod
+    #durability = "Durable"
+    + void getExcavated()
+    + String getAgePeriod()
+    + GeologicalLayer()
+}
+class Stalagmite extends GeologicalFormation implements Breakable{
+    # durability = "Very durable"
+    + hang()
+    + void breakSelf()
+    + Stalagmite()
+}
+class LimeStone extends GeologicalFormation{
+    # durability = "Durable"
+    + keepIntact()
+    + LimeStone()
+}
+class Pibody extends Researcher implements Understandable{
+    # name = "Pibody"
+    # ResearcherType EXPEDITIONIST
+    + read()
+    + write()
+    + talk()
+    + void understand(String who)
+    + Pibody()
+}
+class Dayer extends Researcher implements Understandable{
+    # name = "Dayer"
+    # ResearcherType EXPEDITIONIST
+    + read()
+    + write()
+    + talk()
+    + void understand(String who)
+    + Dayer()
+}
+class Wilmart extends Researcher{
+    # name = "Wilmart"
+    # ResearcherType FOLK_RESEARCHER
+    + read()
+    + write()
+    + talk()
+    + Wilmart()
+}
+class Ashton extends Researcher{
+    # name = "Ashton"
+    # ResearcherType FOLK_RESEARCHER
+    + read()
+    + write()
+    + talk()
+    + draw(String what)
+    + Ashton()
+}
+class Author extends Researcher{
+    # name = "Author"
+    # ResearcherType EXPEDITIONIST
+    + read()
+    + write()
+    + talk()
+    + Author()
+}
+@enduml
