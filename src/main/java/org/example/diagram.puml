@@ -1,8 +1,5 @@
 @startuml
 
-interface Understandable{
-    + void understand(String who)
-}
 interface Breakable{
     + void breakSelf()
 }
@@ -32,6 +29,20 @@ abstract class Animal{
     + Animal(bool isAlive)
 }
 
+enum Stat{
+    HP
+    INTELLIGENCE
+    LUCK
+    DAMAGE
+    SANITY
+}
+enum Period{
+    CRETATIOUS ("Меловой")
+    EOCENOS ("Эоцен")
+    JURASSIC ("Юрский")
+    MIOCENOS ("Миоцен")
+    UNSPECIFIED ("Неизвестный")
+}
 enum ResearcherType{
     EXPEDITIONIST
     FOLK_RESEARCHER
@@ -72,48 +83,5 @@ class LimeStone extends GeologicalFormation{
     # durability = "Durable"
     + keepIntact()
     + LimeStone()
-}
-class Pibody extends Researcher implements Understandable{
-    # name = "Pibody"
-    # ResearcherType EXPEDITIONIST
-    + read()
-    + write()
-    + talk()
-    + void understand(String who)
-    + Pibody()
-}
-class Dayer extends Researcher implements Understandable{
-    # name = "Dayer"
-    # ResearcherType EXPEDITIONIST
-    + read()
-    + write()
-    + talk()
-    + void understand(String who)
-    + Dayer()
-}
-class Wilmart extends Researcher{
-    # name = "Wilmart"
-    # ResearcherType FOLK_RESEARCHER
-    + read()
-    + write()
-    + talk()
-    + Wilmart()
-}
-class Ashton extends Researcher{
-    # name = "Ashton"
-    # ResearcherType FOLK_RESEARCHER
-    + read()
-    + write()
-    + talk()
-    + draw(String what)
-    + Ashton()
-}
-class Author extends Researcher{
-    # name = "Author"
-    # ResearcherType EXPEDITIONIST
-    + read()
-    + write()
-    + talk()
-    + Author()
 }
 @enduml
