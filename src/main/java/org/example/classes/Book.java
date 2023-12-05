@@ -1,7 +1,12 @@
 package org.example.classes;
 
 public class Book extends Item{
-    public Book(String name){
+    private double intelligenceEffect;
+    public Book(String name, double intelligenceEffect){
         super(name);
+        this.intelligenceEffect = intelligenceEffect;
+    }
+    public double getIntelligenceEffect() {
+        return intelligenceEffect;
     }
 }

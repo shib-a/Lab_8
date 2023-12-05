@@ -1,13 +1,15 @@
 package org.example.classes;
 
+import java.util.Random;
+import java.util.Scanner;
+
 public class Human {
     private final String name;
     private boolean isAlive = true;
     private final ResearcherType type;
     public Item[] inventory = new Item[4];
     private double[] mas = new double[5];
-    public void read(String what){
-    }
+    private int dugCounter = 0;
     public void talk(String aboutWhat){
     }
     public void write(String aboutWhat){
@@ -27,6 +29,13 @@ public class Human {
         this.mas[Stat.DAMAGE.ordinal()] = dmg;
         this.mas[Stat.SANITY.ordinal()] = san;
     }
+
+    public int getDugCounter(){
+        return dugCounter;
+    }
+    public void setDugCounter(int amount){
+        this.dugCounter = amount;
+    }
     public Item[] getInventory(){
         return inventory;
     }
@@ -40,6 +49,8 @@ public class Human {
     public void changeStat(Stat stat, double value){
         mas[stat.ordinal()] = mas[stat.ordinal()]+value;
     }
+
+
     public void attack(Human this, Human defender){
         System.out.println("- "+ this.name + ": Get a taste of that!");
         defender.recieveDamage(this.mas[Stat.DAMAGE.ordinal()]);
@@ -50,6 +61,9 @@ public class Human {
             System.gc();
         }
     }
+
+
+
     public void recieveDamage(double damage){
         changeStat(Stat.HP,-damage);
         if (mas[Stat.HP.ordinal()]<=0){
@@ -57,6 +71,52 @@ public class Human {
         }
         else{
             System.out.println("- "+ name + ": That shit hurt! HP left: " + mas[Stat.HP.ordinal()]);
+        }
+    }
+
+
+
+    public void read(Book book){
+        changeStat(Stat.INTELLIGENCE,book.getIntelligenceEffect());
+        if (book.getIntelligenceEffect()>0){
+            System.out.println(this.name + ": " + "I can feel the knowledge coming inside of me!" + "\tRead: " + book.itemName + "\t Current intelligence: " + this.getStat(Stat.INTELLIGENCE));
+        } else if (book.getIntelligenceEffect()<0){
+            System.out.println(this.name + ": " + "I can feel my braincells dying. It was entertaining tho." + "\tRead: " + book.itemName + " \tCurrent intelligence: " + this.getStat(Stat.INTELLIGENCE));
+        }
+    }
+
+
+
+    public void dig(GeologicalLayer layer){
+        if (layer.getDigsLeft()>0) {
+            Fossil recievedLoot = new Fossil(null, null);
+            if (this.getDugCounter() < 10) {
+                double roll = Math.random() * 100;
+                if (((int) roll) % 6 == 0) {
+                    for (Fossil loot : layer.getLootPool()) {
+                        if (loot.getRarity() == 6) {
+                            recievedLoot = loot;
+                            this.setDugCounter(0);
+                            break;
+                        }
+                    }
+                } else {
+                    recievedLoot = layer.getLootPool()[2];
+                    this.setDugCounter(this.getDugCounter() + 1);
+                }
+            } else {
+                recievedLoot = layer.getLootPool()[0];
+                this.setDugCounter(0);
+            }
+            System.out.println(recievedLoot.itemName + " found. pick up?\t" + getDugCounter());
+            Scanner scan = new Scanner(System.in);
+            String cons = scan.next();
+            if (cons.equals("yes")) {
+                recievedLoot.addToInventory(this);
+            }
+            layer.setLessDigs(1);
+        } else {
+            System.out.println("Can't dig anymore: the layer has completely been dug out");
         }
     }
 }

@@ -59,6 +59,14 @@ enum ResearcherType{
     FOLK_RESEARCHER
 }
 
+class Item{
+}
+class Book extends Item{
+}
+class NecronExtract extends Book{
+}
+class Fossil extends Item{
+}
 class Creature extends Animal implements Resembleable{
     # isAlive = False
     + void resemble(String what)
