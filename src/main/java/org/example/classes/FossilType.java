@@ -7,6 +7,5 @@ public enum FossilType {
     TENTACLE,
     PIPES,
     STONES,
-    SCRAP,
     TRASH
 }

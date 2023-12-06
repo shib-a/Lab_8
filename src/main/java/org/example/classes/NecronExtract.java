@@ -6,4 +6,8 @@ public class NecronExtract extends Book{
         super(name,intEff);
         this.sanityEffect = sanityEffect;
     }
+
+    public double getSanityEffect() {
+        return sanityEffect;
+    }
 }

@@ -2,13 +2,8 @@ package org.example.classes;
 
 public class Item {
     public String itemName;
-    private boolean isPickable;
-    public boolean getState(){
-        return isPickable;
-    }
-    public void setState(boolean n){
-        isPickable = n;
-    }
+    private boolean isPickable = true;
+
     public void addToInventory(Item this, Human human){
         int count = 0;
         for(int i = 0; i < 4; i++){
@@ -17,7 +12,6 @@ public class Item {
                 break;
             }else{
                 count++;
-                continue;
             }
         }
         if (count==4){
@@ -26,5 +20,17 @@ public class Item {
     }
     public Item(String itemName){
         this.itemName = itemName;
+    }
+
+                        //setters
+
+    public void setState(boolean n){
+        isPickable = n;
+    }
+
+                        //getters
+
+    public boolean getState(){
+        return isPickable;
     }
 }
