@@ -22,13 +22,13 @@ public class Item {
         this.itemName = itemName;
     }
 
-                        //setters
+    //setters
 
     public void setState(boolean n){
         isPickable = n;
     }
 
-                        //getters
+    //getters
 
     public boolean getState(){
         return isPickable;

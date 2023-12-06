@@ -2,7 +2,7 @@ package org.example.classes;
 
 public class Tool extends Item{
     ToolKinds kind;
-    StoneDurability canBreak;
+    public StoneDurability canBreak;
     public Tool(String name, ToolKinds kind){
         super(name);
         this.kind = kind;

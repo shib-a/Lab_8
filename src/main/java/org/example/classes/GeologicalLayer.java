@@ -1,5 +1,5 @@
 package org.example.classes;
-
+import org.example.ReadMarkedField;
 import org.example.interfaces.*;
 
 public class GeologicalLayer extends GeologicalFormation implements Excavatable{
@@ -38,7 +38,7 @@ public class GeologicalLayer extends GeologicalFormation implements Excavatable{
         }
     }
 
-                        //setters
+    //setters
 
     public void setPeriodAge(PeriodAge period){
         this.age = period;
@@ -58,7 +58,7 @@ public class GeologicalLayer extends GeologicalFormation implements Excavatable{
         this.digsLeft = digsLeft;
     }
 
-                //getters
+    //getters
 
     public int getDigsLeft() {
         return digsLeft;
