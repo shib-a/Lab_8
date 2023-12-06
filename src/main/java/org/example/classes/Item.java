@@ -15,7 +15,7 @@ public class Item {
             }
         }
         if (count==4){
-            System.out.println("Unable to take this. Inventory is full");
+            System.out.println("Unable to take this: Inventory is full!");
         }
     }
     public Item(String itemName){

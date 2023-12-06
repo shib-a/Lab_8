@@ -3,7 +3,7 @@ package org.example.classes;
 import org.example.interfaces.*;
 
 public class Stalagmite extends  GeologicalFormation implements Breakable {
-    public Stalagmite(String type, String durability){
+    public Stalagmite(String type, StoneDurability durability){
         super(type,durability);
     }
     @Override

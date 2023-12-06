@@ -1,13 +1,16 @@
 package org.example.classes;
-
+import org.example.ReadMarkedField;
 import org.example.interfaces.*;
 
 public class GeologicalLayer extends GeologicalFormation implements Excavatable{
+    @ReadMarkedField
     private int digsLeft;
+    private boolean isDigable;
     private boolean isDugOut = false;
+    @ReadMarkedField
     private PeriodAge age;
     private Fossil[] lootPool;
-    public GeologicalLayer(String name, String durability, PeriodAge age){
+    public GeologicalLayer(String name, StoneDurability durability, PeriodAge age){
         super(name,durability);
         this.age = age;
         Fossil intFos = new Fossil("intact fossil",FossilType.INTACT_FOSSIL);
@@ -19,17 +22,19 @@ public class GeologicalLayer extends GeologicalFormation implements Excavatable{
         Fossil trash = new Fossil("trash",FossilType.TRASH);
         if (age == PeriodAge.EOCENOS){
             this.lootPool = new Fossil[]{intFos, head, wing,stones};
-            setDigsLeft(3);
+            setDigsLeft(2);
         } else if (age == PeriodAge.CRETATIOUS){
             this.lootPool = new Fossil[]{intFos, head, wing, tentacle, stones};
-            setDigsLeft(4);
+            setDigsLeft(3);
         } else if (age == PeriodAge.MIOCENOS){
             this.lootPool = new Fossil[]{tentacle,pipes,stones};
             setDigsLeft(4);
         } else if (age == PeriodAge.JURASSIC){
             this.lootPool = new Fossil[]{pipes,stones,trash};
+            setDigsLeft(3);
         } else if (age == PeriodAge.UNSPECIFIED){
             this.lootPool = new Fossil[]{intFos,stones,trash};
+            setDigsLeft(3);
         }
     }
 
@@ -53,7 +58,7 @@ public class GeologicalLayer extends GeologicalFormation implements Excavatable{
         this.digsLeft = digsLeft;
     }
 
-                        //getters
+                //getters
 
     public int getDigsLeft() {
         return digsLeft;
@@ -71,8 +76,42 @@ public class GeologicalLayer extends GeologicalFormation implements Excavatable{
     public PeriodAge getAgePeriod(){
         return age;
     }
+    public boolean getIsDigable(){
+        return isDigable;
+    }
     @Override
     public void getExcavated(){
         System.out.println(type + " частично выкопали");
     }
+
+    // local class
+
+    public class Fossil extends Item{
+        private FossilType type;
+        private String rarity;
+        public Fossil(String name, FossilType type){
+            super(name);
+            this.type = type;
+            if(type == FossilType.INTACT_FOSSIL){
+                this.rarity = "Legendary";
+            } else if (type == FossilType.HEAD){
+                this.rarity = "Mythic";
+            } else if (type == FossilType.WING){
+                this.rarity = "Epic";
+            } else if (type == FossilType.TENTACLE | type == FossilType.PIPES){
+                this.rarity = "Ultra Rare";
+            } else if (type == FossilType.STONES) {
+                this.rarity = "Rare";
+            } else  {
+                this.rarity = "Common";
+            }
+        }
+        public String getRarity() {
+            return rarity;
+        }
+        public FossilType getType(){
+            return type;
+        }
+    }
+
 }

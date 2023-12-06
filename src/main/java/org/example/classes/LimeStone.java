@@ -1,7 +1,7 @@
 package org.example.classes;
 
 public class LimeStone extends  GeologicalFormation{
-    public LimeStone(String type,String durability){
+    public LimeStone(String type,StoneDurability durability){
         super(type,durability);
     }
     public void keepIntact(String what){
