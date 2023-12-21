@@ -127,7 +127,7 @@ public class Human {
 
     public void dig(GeologicalLayer layer){
         if (layer.getDigsLeft()>0) {
-            Fossil recievedLoot = new Fossil(null, null);
+            GeologicalLayer.Fossil recievedLoot = layer.new Fossil(null, null);
             double roll = Math.floor(Math.random() * 100) - Math.floor(getStat(Stat.LUCK)/10);
             System.out.println(roll);
 
@@ -138,28 +138,28 @@ public class Human {
                     if (roll > 59) {
                         recievedLoot = null;
                     } else if (roll>39){
-                        for (Fossil loot : layer.getLootPool()) {
+                        for (GeologicalLayer.Fossil loot : layer.getLootPool()) {
                             if (loot.getRarity().equals("Rare")) {
                                 recievedLoot = loot;
                                 break;
                             }
                         }
                     } else if (roll >19){
-                        for (Fossil loot : layer.getLootPool()) {
+                        for (GeologicalLayer.Fossil loot : layer.getLootPool()) {
                             if (loot.getRarity().equals("Epic")) {
                                 recievedLoot = loot;
                                 break;
                             }
                         }
                     } else if (roll > 9) {
-                        for (Fossil loot : layer.getLootPool()) {
+                        for (GeologicalLayer.Fossil loot : layer.getLootPool()) {
                             if (loot.getRarity().equals("Mythic")) {
                                 recievedLoot = loot;
                                 break;
                             }
                         }
                     } else {
-                        for (Fossil loot : layer.getLootPool()) {
+                        for (GeologicalLayer.Fossil loot : layer.getLootPool()) {
                             if (loot.getRarity().equals("Legendary")) {
                                 recievedLoot = loot;
                                 this.setDugCounter(0);
@@ -168,7 +168,7 @@ public class Human {
                         }
                     }
                 } else {
-                    for (Fossil loot : layer.getLootPool()) {
+                    for (GeologicalLayer.Fossil loot : layer.getLootPool()) {
                         if (loot.getRarity().equals("Legendary")) {
                             recievedLoot = loot;
                             this.setDugCounter(0);
@@ -177,43 +177,40 @@ public class Human {
                     }
                 }
 
-
-
-
             } else if (layer.getAgePeriod() == PeriodAge.CRETATIOUS){
                 if (this.getDugCounter() < 10) {
                     if (roll > 69) {
                         recievedLoot = null;
                     } else if (roll>39){
-                        for (Fossil loot : layer.getLootPool()) {
+                        for (GeologicalLayer.Fossil loot : layer.getLootPool()) {
                             if (loot.getRarity().equals("Rare")) {
                                 recievedLoot = loot;
                                 break;
                             }
                         }
                     } else if (roll >29) {
-                        for (Fossil loot : layer.getLootPool()) {
+                        for (GeologicalLayer.Fossil loot : layer.getLootPool()) {
                             if (loot.getRarity().equals("Ultra Rare")) {
                                 recievedLoot = loot;
                                 break;
                             }
                         }
                     } else if (roll > 19) {
-                        for (Fossil loot : layer.getLootPool()) {
+                        for (GeologicalLayer.Fossil loot : layer.getLootPool()) {
                             if (loot.getRarity().equals("Epic")) {
                                 recievedLoot = loot;
                                 break;
                             }
                         }
                     } else if (roll > 9) {
-                        for (Fossil loot : layer.getLootPool()) {
+                        for (GeologicalLayer.Fossil loot : layer.getLootPool()) {
                             if (loot.getRarity().equals("Mythic")) {
                                 recievedLoot = loot;
                                 break;
                             }
                         }
                     } else {
-                        for (Fossil loot : layer.getLootPool()) {
+                        for (GeologicalLayer.Fossil loot : layer.getLootPool()) {
                             if (loot.getRarity().equals("Legendary")) {
                                 recievedLoot = loot;
                                 this.setDugCounter(0);
@@ -222,7 +219,7 @@ public class Human {
                         }
                     }
                 } else {
-                    for (Fossil loot : layer.getLootPool()) {
+                    for (GeologicalLayer.Fossil loot : layer.getLootPool()) {
                         if (loot.getRarity().equals("Legendary")) {
                             recievedLoot = loot;
                             this.setDugCounter(0);
@@ -235,14 +232,14 @@ public class Human {
                     if (roll > 59) {
                         recievedLoot = null;
                     } else if (roll>39){
-                        for (Fossil loot : layer.getLootPool()) {
+                        for (GeologicalLayer.Fossil loot : layer.getLootPool()) {
                             if (loot.getRarity().equals("Rare")) {
                                 recievedLoot = loot;
                                 break;
                             }
                         }
                     } else {
-                        for (Fossil loot : layer.getLootPool()) {
+                        for (GeologicalLayer.Fossil loot : layer.getLootPool()) {
                             if (loot.getRarity().equals("Ultra Rare")) {
                                 recievedLoot = loot;
                                 this.setDugCounter(0);
@@ -251,7 +248,7 @@ public class Human {
                         }
                     }
                 } else {
-                    for (Fossil loot : layer.getLootPool()) {
+                    for (GeologicalLayer.Fossil loot : layer.getLootPool()) {
                         if (loot.getRarity().equals("Ultra Rare")) {
                             recievedLoot = loot;
                             this.setDugCounter(0);
@@ -264,21 +261,21 @@ public class Human {
                     if (roll > 59) {
                         recievedLoot = null;
                     } else if (roll>39){
-                        for (Fossil loot : layer.getLootPool()) {
+                        for (GeologicalLayer.Fossil loot : layer.getLootPool()) {
                             if (loot.getRarity().equals("Сommon")) {
                                 recievedLoot = loot;
                                 break;
                             }
                         }
                     } else if (roll >29) {
-                        for (Fossil loot : layer.getLootPool()) {
+                        for (GeologicalLayer.Fossil loot : layer.getLootPool()) {
                             if (loot.getRarity().equals("Rare")) {
                                 recievedLoot = loot;
                                 break;
                             }
                         }
                     } else {
-                        for (Fossil loot : layer.getLootPool()) {
+                        for (GeologicalLayer.Fossil loot : layer.getLootPool()) {
                             if (loot.getRarity().equals("Ultra Rare")) {
                                 recievedLoot = loot;
                                 break;
@@ -286,7 +283,7 @@ public class Human {
                         }
                     }
                 } else {
-                    for (Fossil loot : layer.getLootPool()) {
+                    for (GeologicalLayer.Fossil loot : layer.getLootPool()) {
                         if (loot.getRarity().equals("Ultra Rare")) {
                             recievedLoot = loot;
                             this.setDugCounter(0);
@@ -299,21 +296,21 @@ public class Human {
                     if (roll > 39) {
                         recievedLoot = null;
                     } else if (roll>19){
-                        for (Fossil loot : layer.getLootPool()) {
+                        for (GeologicalLayer.Fossil loot : layer.getLootPool()) {
                             if (loot.getRarity().equals("Сommon")) {
                                 recievedLoot = loot;
                                 break;
                             }
                         }
                     } else if (roll >9) {
-                        for (Fossil loot : layer.getLootPool()) {
+                        for (GeologicalLayer.Fossil loot : layer.getLootPool()) {
                             if (loot.getRarity().equals("Rare")) {
                                 recievedLoot = loot;
                                 break;
                             }
                         }
                     } else {
-                        for (Fossil loot : layer.getLootPool()) {
+                        for (GeologicalLayer.Fossil loot : layer.getLootPool()) {
                             if (loot.getRarity().equals("Legendary")) {
                                 recievedLoot = loot;
                                 break;
@@ -321,7 +318,7 @@ public class Human {
                         }
                     }
                 } else {
-                    for (Fossil loot : layer.getLootPool()) {
+                    for (GeologicalLayer.Fossil loot : layer.getLootPool()) {
                         if (loot.getRarity().equals("Legendary")) {
                             recievedLoot = loot;
                             this.setDugCounter(0);
@@ -330,10 +327,6 @@ public class Human {
                     }
                 }
             }
-
-
-
-
             if (recievedLoot!=null) {
                 System.out.println(recievedLoot.itemName + " found. pick up?\t" + getDugCounter());
                 Scanner scan = new Scanner(System.in);
@@ -353,4 +346,5 @@ public class Human {
         }
         setDugCounter(getDugCounter()+1);
     }
+
 }

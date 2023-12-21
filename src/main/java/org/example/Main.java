@@ -15,7 +15,7 @@ public class Main {
         Item shovel = new Item("Shovel");
         shovel.addToInventory(h1);
         GeologicalLayer gl = new GeologicalLayer("layer", "", PeriodAge.EOCENOS);
-        NecronExtract ext1 = new NecronExtract("e1", 15, 15);
+        NecronExtract ext1 = new NecronExtract("extract 1", 15, 15);
         NecronExtract ext2 = new NecronExtract("e2", 15, 15);
 
         // program
@@ -52,7 +52,7 @@ public class Main {
                 } else if (what.equals(ext2.itemName)) {
                     h1.readext(ext2);
                 }
-                System.out.println("\tfinished");
+//                System.out.println("\tfinished");
             }
         }
     }

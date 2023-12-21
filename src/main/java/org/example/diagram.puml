@@ -47,13 +47,23 @@ enum Stat{
     DAMAGE
     SANITY
 }
-enum Period{
-    CRETATIOUS ("Меловой")
-    EOCENOS ("Эоцен")
-    JURASSIC ("Юрский")
-    MIOCENOS ("Миоцен")
-    UNSPECIFIED ("Неизвестный")
+enum PeriodAge{
+    CRETATIOUS
+    EOCENOS
+    JURASSIC
+    MIOCENOS
+    UNSPECIFIED
 }
+enum FossilType{
+    INTACT_FOSSIL
+    HEAD
+    WING
+    TENTACLE
+    PIPES
+    STONES
+    TRASH
+}
+FossilType--Fossil
 enum ResearcherType{
     EXPEDITIONIST
     FOLK_RESEARCHER
