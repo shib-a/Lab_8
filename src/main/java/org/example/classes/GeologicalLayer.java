@@ -1,5 +1,5 @@
 package org.example.classes;
-import org.example.ReadMarkedField;
+
 import org.example.interfaces.*;
 
 public class GeologicalLayer extends GeologicalFormation implements Excavatable{

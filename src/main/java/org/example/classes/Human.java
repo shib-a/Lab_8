@@ -145,268 +145,231 @@ public class Human {
                         //dig function
 
     public void dig(GeologicalLayer layer){
-        boolean candig = false;
-        for (int i = 0; i<4; i++){
-            if (inventory[i]!=null) {
-                if (inventory[i].getClass() == Tool.class) {
-                    Tool tl = (Tool) inventory[i];
-                    if (tl.canBreak == StoneDurability.HARD) {
-                        candig = true;
-                        break;
-                    } else if (tl.canBreak == StoneDurability.TOUGH && (layer.durability == StoneDurability.TOUGH || layer.durability==StoneDurability.SOLID || layer.durability==StoneDurability.SOFT) && !candig){
-                        candig = true;
-                    } else if (tl.canBreak == StoneDurability.SOLID && (layer.durability == StoneDurability.SOLID || layer.durability==StoneDurability.SOFT) && !candig) {
-                        candig = true;
-                    } else if (layer.durability == StoneDurability.SOFT){
-                        candig = true;
-                        break;
+        if (layer.getDigsLeft()>0) {
+            Fossil recievedLoot = new Fossil(null, null);
+            double roll = Math.floor(Math.random() * 100) - Math.floor(getStat(Stat.LUCK)/10);
+            System.out.println(roll);
+
+            //different rarities for different types of layers
+
+            if (layer.getAgePeriod() == PeriodAge.EOCENOS) {
+                if (this.getDugCounter() < 10) {
+                    if (roll > 59) {
+                        recievedLoot = null;
+                    } else if (roll>39){
+                        for (Fossil loot : layer.getLootPool()) {
+                            if (loot.getRarity().equals("Rare")) {
+                                recievedLoot = loot;
+                                break;
+                            }
+                        }
+                    } else if (roll >19){
+                        for (Fossil loot : layer.getLootPool()) {
+                            if (loot.getRarity().equals("Epic")) {
+                                recievedLoot = loot;
+                                break;
+                            }
+                        }
+                    } else if (roll > 9) {
+                        for (Fossil loot : layer.getLootPool()) {
+                            if (loot.getRarity().equals("Mythic")) {
+                                recievedLoot = loot;
+                                break;
+                            }
+                        }
+                    } else {
+                        for (Fossil loot : layer.getLootPool()) {
+                            if (loot.getRarity().equals("Legendary")) {
+                                recievedLoot = loot;
+                                this.setDugCounter(0);
+                                break;
+                            }
+                        }
                     }
                 } else {
-                    if (layer.durability == StoneDurability.SOFT) {
-                        candig = true;
+                    for (Fossil loot : layer.getLootPool()) {
+                        if (loot.getRarity().equals("Legendary")) {
+                            recievedLoot = loot;
+                            this.setDugCounter(0);
+                            break;
+                        }
+                    }
+                }
+
+
+
+
+            } else if (layer.getAgePeriod() == PeriodAge.CRETATIOUS){
+                if (this.getDugCounter() < 10) {
+                    if (roll > 69) {
+                        recievedLoot = null;
+                    } else if (roll>39){
+                        for (Fossil loot : layer.getLootPool()) {
+                            if (loot.getRarity().equals("Rare")) {
+                                recievedLoot = loot;
+                                break;
+                            }
+                        }
+                    } else if (roll >29) {
+                        for (Fossil loot : layer.getLootPool()) {
+                            if (loot.getRarity().equals("Ultra Rare")) {
+                                recievedLoot = loot;
+                                break;
+                            }
+                        }
+                    } else if (roll > 19) {
+                        for (Fossil loot : layer.getLootPool()) {
+                            if (loot.getRarity().equals("Epic")) {
+                                recievedLoot = loot;
+                                break;
+                            }
+                        }
+                    } else if (roll > 9) {
+                        for (Fossil loot : layer.getLootPool()) {
+                            if (loot.getRarity().equals("Mythic")) {
+                                recievedLoot = loot;
+                                break;
+                            }
+                        }
+                    } else {
+                        for (Fossil loot : layer.getLootPool()) {
+                            if (loot.getRarity().equals("Legendary")) {
+                                recievedLoot = loot;
+                                this.setDugCounter(0);
+                                break;
+                            }
+                        }
+                    }
+                } else {
+                    for (Fossil loot : layer.getLootPool()) {
+                        if (loot.getRarity().equals("Legendary")) {
+                            recievedLoot = loot;
+                            this.setDugCounter(0);
+                            break;
+                        }
+                    }
+                }
+            } else if (layer.getAgePeriod() == PeriodAge.MIOCENOS){
+                if (this.getDugCounter() < 10) {
+                    if (roll > 59) {
+                        recievedLoot = null;
+                    } else if (roll>39){
+                        for (Fossil loot : layer.getLootPool()) {
+                            if (loot.getRarity().equals("Rare")) {
+                                recievedLoot = loot;
+                                break;
+                            }
+                        }
+                    } else {
+                        for (Fossil loot : layer.getLootPool()) {
+                            if (loot.getRarity().equals("Ultra Rare")) {
+                                recievedLoot = loot;
+                                this.setDugCounter(0);
+                                break;
+                            }
+                        }
+                    }
+                } else {
+                    for (Fossil loot : layer.getLootPool()) {
+                        if (loot.getRarity().equals("Ultra Rare")) {
+                            recievedLoot = loot;
+                            this.setDugCounter(0);
+                            break;
+                        }
+                    }
+                }
+            } else if (layer.getAgePeriod()==PeriodAge.JURASSIC){
+                if (this.getDugCounter() < 10) {
+                    if (roll > 59) {
+                        recievedLoot = null;
+                    } else if (roll>39){
+                        for (Fossil loot : layer.getLootPool()) {
+                            if (loot.getRarity().equals("Сommon")) {
+                                recievedLoot = loot;
+                                break;
+                            }
+                        }
+                    } else if (roll >29) {
+                        for (Fossil loot : layer.getLootPool()) {
+                            if (loot.getRarity().equals("Rare")) {
+                                recievedLoot = loot;
+                                break;
+                            }
+                        }
+                    } else {
+                        for (Fossil loot : layer.getLootPool()) {
+                            if (loot.getRarity().equals("Ultra Rare")) {
+                                recievedLoot = loot;
+                                break;
+                            }
+                        }
+                    }
+                } else {
+                    for (Fossil loot : layer.getLootPool()) {
+                        if (loot.getRarity().equals("Ultra Rare")) {
+                            recievedLoot = loot;
+                            this.setDugCounter(0);
+                            break;
+                        }
                     }
                 }
             } else {
-                if (layer.durability == StoneDurability.SOFT) {
-                    candig = true;
+                if (this.getDugCounter() < 10) {
+                    if (roll > 39) {
+                        recievedLoot = null;
+                    } else if (roll>19){
+                        for (Fossil loot : layer.getLootPool()) {
+                            if (loot.getRarity().equals("Сommon")) {
+                                recievedLoot = loot;
+                                break;
+                            }
+                        }
+                    } else if (roll >9) {
+                        for (Fossil loot : layer.getLootPool()) {
+                            if (loot.getRarity().equals("Rare")) {
+                                recievedLoot = loot;
+                                break;
+                            }
+                        }
+                    } else {
+                        for (Fossil loot : layer.getLootPool()) {
+                            if (loot.getRarity().equals("Legendary")) {
+                                recievedLoot = loot;
+                                break;
+                            }
+                        }
+                    }
+                } else {
+                    for (Fossil loot : layer.getLootPool()) {
+                        if (loot.getRarity().equals("Legendary")) {
+                            recievedLoot = loot;
+                            this.setDugCounter(0);
+                            break;
+                        }
+                    }
                 }
             }
-        }
-        if (candig==true){
-            if (layer.getDigsLeft()>0) {
-                GeologicalLayer.Fossil recievedLoot = layer.new Fossil(null, null);
-                double roll = Math.floor(Math.random() * 100) - Math.floor(getStat(Stat.LUCK)/10);
-                System.out.println(roll);
-                //different rarities for different types of layers
-                if (layer.getAgePeriod() == PeriodAge.EOCENOS) {
-                    if (this.getDugCounter() < 10) {
-                        if (roll > 59) {
-                            recievedLoot = null;
-                        } else if (roll>39){
-                            for (GeologicalLayer.Fossil loot : layer.getLootPool()) {
-                                if (loot.getRarity().equals("Rare")) {
-                                    recievedLoot = loot;
-                                    break;
-                                }
-                            }
-                        } else if (roll >19){
-                            for (GeologicalLayer.Fossil loot : layer.getLootPool()) {
-                                if (loot.getRarity().equals("Epic")) {
-                                    recievedLoot = loot;
-                                    break;
-                                }
-                            }
-                        } else if (roll > 9) {
-                            for (GeologicalLayer.Fossil loot : layer.getLootPool()) {
-                                if (loot.getRarity().equals("Mythic")) {
-                                    recievedLoot = loot;
-                                    break;
-                                }
-                            }
-                        } else {
-                            for (GeologicalLayer.Fossil loot : layer.getLootPool()) {
-                                if (loot.getRarity().equals("Legendary")) {
-                                    recievedLoot = loot;
-                                    this.setDugCounter(0);
-                                    break;
-                                }
-                            }
-                        }
-                    } else {
-                        for (GeologicalLayer.Fossil loot : layer.getLootPool()) {
-                            if (loot.getRarity().equals("Legendary")) {
-                                recievedLoot = loot;
-                                this.setDugCounter(0);
-                                break;
-                            }
-                        }
-                    }
-                } else if (layer.getAgePeriod() == PeriodAge.CRETATIOUS){
-                    if (this.getDugCounter() < 10) {
-                        if (roll > 69) {
-                            recievedLoot = null;
-                        } else if (roll>39){
-                            for (GeologicalLayer.Fossil loot : layer.getLootPool()) {
-                                if (loot.getRarity().equals("Rare")) {
-                                    recievedLoot = loot;
-                                    break;
-                                }
-                            }
-                        } else if (roll >29) {
-                            for (GeologicalLayer.Fossil loot : layer.getLootPool()) {
-                                if (loot.getRarity().equals("Ultra Rare")) {
-                                    recievedLoot = loot;
-                                    break;
-                                }
-                            }
-                        } else if (roll > 19) {
-                            for (GeologicalLayer.Fossil loot : layer.getLootPool()) {
-                                if (loot.getRarity().equals("Epic")) {
-                                    recievedLoot = loot;
-                                    break;
-                                }
-                            }
-                        } else if (roll > 9) {
-                            for (GeologicalLayer.Fossil loot : layer.getLootPool()) {
-                                if (loot.getRarity().equals("Mythic")) {
-                                    recievedLoot = loot;
-                                    break;
-                                }
-                            }
-                        } else {
-                            for (GeologicalLayer.Fossil loot : layer.getLootPool()) {
-                                if (loot.getRarity().equals("Legendary")) {
-                                    recievedLoot = loot;
-                                    this.setDugCounter(0);
-                                    break;
-                                }
-                            }
-                        }
-                    } else {
-                        for (GeologicalLayer.Fossil loot : layer.getLootPool()) {
-                            if (loot.getRarity().equals("Legendary")) {
-                                recievedLoot = loot;
-                                this.setDugCounter(0);
-                                break;
-                            }
-                        }
-                    }
-                } else if (layer.getAgePeriod() == PeriodAge.MIOCENOS){
-                    if (this.getDugCounter() < 10) {
-                        if (roll > 59) {
-                            recievedLoot = null;
-                        } else if (roll>39){
-                            for (GeologicalLayer.Fossil loot : layer.getLootPool()) {
-                                if (loot.getRarity().equals("Rare")) {
-                                    recievedLoot = loot;
-                                    break;
-                                }
-                            }
-                        } else {
-                            for (GeologicalLayer.Fossil loot : layer.getLootPool()) {
-                                if (loot.getRarity().equals("Ultra Rare")) {
-                                    recievedLoot = loot;
-                                    this.setDugCounter(0);
-                                    break;
-                                }
-                            }
-                        }
-                    } else {
-                        for (GeologicalLayer.Fossil loot : layer.getLootPool()) {
-                            if (loot.getRarity().equals("Ultra Rare")) {
-                                recievedLoot = loot;
-                                this.setDugCounter(0);
-                                break;
-                            }
-                        }
-                    }
-                } else if (layer.getAgePeriod()==PeriodAge.JURASSIC){
-                    if (this.getDugCounter() < 10) {
-                        if (roll > 59) {
-                            recievedLoot = null;
-                        } else if (roll>39){
-                            for (GeologicalLayer.Fossil loot : layer.getLootPool()) {
-                                if (loot.getRarity().equals("Сommon")) {
-                                    recievedLoot = loot;
-                                    break;
-                                }
-                            }
-                        } else if (roll >29) {
-                            for (GeologicalLayer.Fossil loot : layer.getLootPool()) {
-                                if (loot.getRarity().equals("Rare")) {
-                                    recievedLoot = loot;
-                                    break;
-                                }
-                            }
-                        } else {
-                            for (GeologicalLayer.Fossil loot : layer.getLootPool()) {
-                                if (loot.getRarity().equals("Ultra Rare")) {
-                                    recievedLoot = loot;
-                                    break;
-                                }
-                            }
-                        }
-                    } else {
-                        for (GeologicalLayer.Fossil loot : layer.getLootPool()) {
-                            if (loot.getRarity().equals("Ultra Rare")) {
-                                recievedLoot = loot;
-                                this.setDugCounter(0);
-                                break;
-                            }
-                        }
-                    }
-                } else {
-                    if (this.getDugCounter() < 10) {
-                        if (roll > 39) {
-                            recievedLoot = null;
-                        } else if (roll>19){
-                            for (GeologicalLayer.Fossil loot : layer.getLootPool()) {
-                                if (loot.getRarity().equals("Сommon")) {
-                                    recievedLoot = loot;
-                                    break;
-                                }
-                            }
-                        } else if (roll >9) {
-                            for (GeologicalLayer.Fossil loot : layer.getLootPool()) {
-                                if (loot.getRarity().equals("Rare")) {
-                                    recievedLoot = loot;
-                                    break;
-                                }
-                            }
-                        } else {
-                            for (GeologicalLayer.Fossil loot : layer.getLootPool()) {
-                                if (loot.getRarity().equals("Legendary")) {
-                                    recievedLoot = loot;
-                                    break;
-                                }
-                            }
-                        }
-                    } else {
-                        for (GeologicalLayer.Fossil loot : layer.getLootPool()) {
-                            if (loot.getRarity().equals("Legendary")) {
-                                recievedLoot = loot;
-                                this.setDugCounter(0);
-                                break;
-                            }
-                        }
-                    }
-                }
-                if (recievedLoot!=null) {
-                    System.out.println(recievedLoot.itemName + " found. pick up?\t" + getDugCounter());
-                    Scanner scan = new Scanner(System.in);
-                    String cons = scan.next();
-                    if (cons.equals("yes")) {
-                            recievedLoot.addToInventory(this);
-                    }
-                } else {
-                    System.out.println("Nothing found.\t"+ getDugCounter());
-                }
-                layer.setLessDigs(1);
-                if (layer.getDigsLeft()==0){
-                    System.out.println("Can't dig anymore: the layer has completely been dug out");
+
+
+
+
+            if (recievedLoot!=null) {
+                System.out.println(recievedLoot.itemName + " found. pick up?\t" + getDugCounter());
+                Scanner scan = new Scanner(System.in);
+                String cons = scan.next();
+                if (cons.equals("yes")) {
+                    recievedLoot.addToInventory(this);
                 }
             } else {
+                System.out.println("Nothing found.\t"+ getDugCounter());
+            }
+            layer.setLessDigs(1);
+            if (layer.getDigsLeft()==0){
                 System.out.println("Can't dig anymore: the layer has completely been dug out");
             }
-            setDugCounter(getDugCounter()+1);
         } else {
-            System.out.println("Can't dig this: don't have the correct instrument.");
+            System.out.println("Can't dig anymore: the layer has completely been dug out");
         }
-    }
-
-    public void drop(Item item){
-        int count=0;
-        for (int i=0; i< inventory.length;i++){
-            if (item==inventory[i]){
-                inventory[i] = null;
-                System.out.println("Dropped " + item.itemName);
-            } else {
-                count++;
-
-            }
-        }
-        if (count==inventory.length-1){
-            System.out.println("No such item in inventory: " + item.itemName);
-        }
+        setDugCounter(getDugCounter()+1);
     }
 }
