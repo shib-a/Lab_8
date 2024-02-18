@@ -112,6 +112,6 @@ public class GeologicalLayer extends GeologicalFormation implements Excavatable{
         public FossilType getType(){
             return type;
         }
-    }
 
+    }
 }

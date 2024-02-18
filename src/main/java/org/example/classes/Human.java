@@ -1,17 +1,18 @@
 package org.example.classes;
 
 import org.example.ReadMarkedField;
-import org.example.classes.*;
+import org.example.exceptions.InvalidArgumentException;
 
-import java.util.Random;
+import java.util.Arrays;
 import java.util.Scanner;
 
-public class Human {
+public class Human implements Comparable<Human> {
     @ReadMarkedField
     private final String name;
-    private boolean isAlive = true;
+    private final ToolKinds preferredTool;
     @ReadMarkedField
     private final ResearcherType type;
+    private boolean isAlive = true;
     @ReadMarkedField
     public Item[] inventory = new Item[4];
     private double[] mas = new double[5];
@@ -22,8 +23,12 @@ public class Human {
     public void write(String aboutWhat){
     }
 
-    public Human(String name, ResearcherType type){
-        this.name = name;
+    public Human(String name, ToolKinds preferredTool, ResearcherType type, boolean isAlive) throws InvalidArgumentException{
+        if (name==""){throw new InvalidArgumentException();
+        } else {this.name = name;}
+        if (preferredTool==null){throw new InvalidArgumentException();
+        } else {this.preferredTool = preferredTool;}
+
         this.type = type;
     }
 
@@ -75,7 +80,6 @@ public class Human {
     public String getName(){
         return name;
     }
-
     public ResearcherType getType() {
         return type;
     }
@@ -92,8 +96,6 @@ public class Human {
         }
     }
 
-
-
     public void recieveDamage(double damage){
         changeStat(Stat.HP,-damage);
         if (mas[Stat.HP.ordinal()]<=0){
@@ -103,8 +105,6 @@ public class Human {
             System.out.println("- "+ name + ": That shit hurt! HP left: " + mas[Stat.HP.ordinal()]);
         }
     }
-
-
 
     public void read(Book book){
         changeStat(Stat.INTELLIGENCE,book.getIntelligenceEffect());
@@ -126,7 +126,6 @@ public class Human {
         System.out.print(getStat(Stat.SANITY) + " ");
         System.out.println(getStat(Stat.LUCK));
     }
-
 
     public GeologicalLayer searchLayer(){
         GeologicalLayer newLayer = new GeologicalLayer("geological layer",null,null);
@@ -405,11 +404,35 @@ public class Human {
                 System.out.println("Dropped " + item.itemName);
             } else {
                 count++;
-
             }
         }
         if (count==inventory.length-1){
             System.out.println("No such item in inventory: " + item.itemName);
         }
+    }
+
+    @Override
+    public int compareTo(Human o) {
+        if (this.getStat(Stat.DAMAGE)>o.getStat(Stat.DAMAGE)){
+            return 1;
+        } else if (this.getStat(Stat.DAMAGE)<o.getStat(Stat.DAMAGE)){
+            return -1;
+        } else if (this.getStat(Stat.DAMAGE)==o.getStat(Stat.DAMAGE)){
+            return this.name.compareTo(o.name);
+        }
+        return 0;
+    }
+
+    @Override
+    public String toString() {
+        return "Human{" +
+                "name='" + name + '\'' +
+                ", isAlive=" + isAlive +
+                ", preferredTool=" + preferredTool +
+                ", type=" + type +
+                ", inventory=" + Arrays.toString(inventory) +
+                ", mas=" + Arrays.toString(mas) +
+                ", dugCounter=" + dugCounter +
+                '}';
     }
 }

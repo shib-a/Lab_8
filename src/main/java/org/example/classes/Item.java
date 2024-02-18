@@ -33,4 +33,9 @@ public class Item {
     public boolean getState(){
         return isPickable;
     }
+
+    @Override
+    public String toString() {
+        return itemName;
+    }
 }

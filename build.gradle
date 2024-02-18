@@ -1,11 +1,13 @@
 plugins {
     id 'java'
 }
-
 repositories {
     mavenCentral()
 }
 compileJava.options.encoding= 'UTF-8'
+dependencies {
+    implementation 'org.apache.commons:commons-csv:1.10.0'
+}
 jar{
     manifest {
         attributes "Main-Class": "org.example.Main"

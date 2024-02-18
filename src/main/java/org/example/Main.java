@@ -1,12 +1,15 @@
 package org.example;
 import org.example.classes.*;
+import org.example.collection.FileLoaderSaver;
+import org.example.collection.HumanCollection;
+import org.example.exceptions.InvalidArgumentException;
+
 import java.io.*;
 import java.lang.reflect.*;
 import java.util.ArrayList;
 import java.lang.annotation.*;
 public class Main {
     static class MarkedExporter{           // статический класс
-        boolean isMarked = false;
         public MarkedExporter(){
         }
         public void getIsMarked(Object[] arr) throws IOException, IllegalAccessException {        // метод-сериализатор
@@ -66,12 +69,12 @@ public class Main {
         }
     }
 
-    public static void main(String[] args) throws IOException, IllegalAccessException {
+    public static void main(String[] args) throws IOException, IllegalAccessException, InvalidArgumentException {
 
         //creating instances and setting stats
 
-        Human h1 = new Human("Pebody", ResearcherType.EXPEDITIONIST);
-        Human h2 = new Human("Wilmart", ResearcherType.FOLK_RESEARCHER);
+        Human h1 = new Human("Pebody", ToolKinds.GUN, ResearcherType.EXPEDITIONIST,true);
+        Human h2 = new Human("Wilmart", ToolKinds.SHOVEL, ResearcherType.FOLK_RESEARCHER,true);
         h1.setStat(100, 60, 50, 15, 90);
         h2.setStat(100, 60, 50, 15, 90);
         Tool shovel = new Tool("Shovel",ToolKinds.SHOVEL);
@@ -81,16 +84,19 @@ public class Main {
 //        drill.addToInventory(h1);
 //        jackhammer.addToInventory(h1);
         GeologicalLayer gl = new GeologicalLayer("layer", StoneDurability.SOFT, PeriodAge.JURASSIC);
-        NecronExtract ext1 = new NecronExtract("extract 1", 15, 15);
-        NecronExtract ext2 = new NecronExtract("e2", 15, 15);
-        MarkedExporter me = new MarkedExporter();
-        shovel.addToInventory(h1);
-        jackhammer.addToInventory(h2);
-        drill.addToInventory(h2);
-        h1.dig(gl);
-        h1.dig(gl);
-        me.getIsMarked(new GeologicalLayer[]{gl});      // собственно используем наш метод
-        me.getIsMarked(new Human[]{h1,h2});
+//        NecronExtract ext1 = new NecronExtract("extract 1", 15, 15);
+//        NecronExtract ext2 = new NecronExtract("e2", 15, 15);
+//        MarkedExporter me = new MarkedExporter();
+//        shovel.addToInventory(h1);
+//        jackhammer.addToInventory(h2);
+//        drill.addToInventory(h2);
+//        h1.dig(gl);
+        HumanCollection col = new HumanCollection(new Human[]{});
+        FileLoaderSaver fls = new FileLoaderSaver();
+        fls.readFromInto("E:\\IdeaProjects\\lab_3\\test.txt",col);
+        System.out.println(col.humanArrayList.toString());
+//        me.getIsMarked(new GeologicalLayer[]{gl});      // собственно используем наш метод
+//        me.getIsMarked(new Human[]{h1,h2});
 
 
 

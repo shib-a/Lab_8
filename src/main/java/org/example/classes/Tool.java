@@ -12,4 +12,5 @@ public class Tool extends Item{
             case DRILL -> canBreak = StoneDurability.HARD;
         }
     }
+
 }
