@@ -1,31 +1,31 @@
 package org.example.commands;
 
+import org.example.collection.CollectionLoaderSaver;
 import org.example.collection.HumanCollection;
 
-public class Help extends AbstractCommand {
-
-    public Help(){super(false,false);}
-
-    @Override
-    public void execute() {
-        System.out.println("These are the possible commands:" +
-                "Dick.suck" +
-                "balls.drop");
+public class Clear extends AbstractCommand {
+    public Clear() {
+        super(false,true);
     }
 
+    @Override
+    public void execute() {}
     @Override
     public void execWithCol(HumanCollection obj) {
-
+        obj.getHumanArrayList().clear();
+        System.out.println("Collection cleared.");
     }
+
+
 
     @Override
     public String getName() {
-        return "help";
+        return null;
     }
 
     @Override
     public String getDescription() {
-        return "lists all commands and their descriptions";
+        return null;
     }
 
     @Override

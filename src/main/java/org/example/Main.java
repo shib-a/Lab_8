@@ -1,7 +1,8 @@
 package org.example;
 import org.example.classes.*;
-import org.example.collection.FileLoaderSaver;
+import org.example.collection.CollectionLoaderSaver;
 import org.example.collection.HumanCollection;
+import org.example.commands.RuntimeEnv;
 import org.example.exceptions.InvalidArgumentException;
 
 import java.io.*;
@@ -91,18 +92,22 @@ public class Main {
 //        jackhammer.addToInventory(h2);
 //        drill.addToInventory(h2);
 //        h1.dig(gl);
-        HumanCollection col = new HumanCollection(new Human[]{});
-        FileLoaderSaver fls = new FileLoaderSaver();
-        fls.readFromInto("E:\\IdeaProjects\\lab_3\\test.txt",col);
-        System.out.println(col.humanArrayList.toString());
+        CollectionLoaderSaver fls = new CollectionLoaderSaver();
+        fls.readFrom("E:\\IdeaProjects\\lab_3\\test.txt");
 //        me.getIsMarked(new GeologicalLayer[]{gl});      // собственно используем наш метод
 //        me.getIsMarked(new Human[]{h1,h2});
+        RuntimeEnv re = new RuntimeEnv();
+        re.startRuntime();
+
+
+
+
 
 
 
         // oh shit
-        // program
-
+//         program
+//
 //        while (true) {
 //            System.out.println();
 //            Scanner scan = new Scanner(System.in);

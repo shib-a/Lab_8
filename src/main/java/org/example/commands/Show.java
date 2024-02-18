@@ -2,30 +2,32 @@ package org.example.commands;
 
 import org.example.collection.HumanCollection;
 
-public class Help extends AbstractCommand {
-
-    public Help(){super(false,false);}
-
+public class Show extends AbstractCommand{
+    public Show() {
+        super(false,true);
+    }
     @Override
     public void execute() {
-        System.out.println("These are the possible commands:" +
-                "Dick.suck" +
-                "balls.drop");
+
     }
 
     @Override
     public void execWithCol(HumanCollection obj) {
-
+        if (!obj.getHumanArrayList().isEmpty()) {
+            System.out.println(obj.getHumanArrayList().toString());
+        } else {
+            System.out.println("Collection is empty. At least, for now :)");
+        }
     }
 
     @Override
     public String getName() {
-        return "help";
+        return null;
     }
 
     @Override
     public String getDescription() {
-        return "lists all commands and their descriptions";
+        return null;
     }
 
     @Override

@@ -6,13 +6,21 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class HumanCollection{
-    public ArrayList<Human> humanArrayList = new ArrayList<>();
+    private ArrayList<Human> humanArrayList = new ArrayList<>();
     public HumanCollection (Human... insts){
-        humanArrayList.addAll(Arrays.asList(insts));
+        getHumanArrayList().addAll(Arrays.asList(insts));
     }
 
     @Override
     public String toString() {
-        return "" + humanArrayList.toString();
+        return "" + getHumanArrayList().toString();
+    }
+
+    public ArrayList<Human> getHumanArrayList() {
+        return humanArrayList;
+    }
+
+    public void setHumanArrayList(ArrayList<Human> humanArrayList) {
+        this.humanArrayList = humanArrayList;
     }
 }

@@ -1,8 +1,6 @@
 package org.example.classes;
-
 import org.example.ReadMarkedField;
 import org.example.exceptions.InvalidArgumentException;
-
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -413,14 +411,7 @@ public class Human implements Comparable<Human> {
 
     @Override
     public int compareTo(Human o) {
-        if (this.getStat(Stat.DAMAGE)>o.getStat(Stat.DAMAGE)){
-            return 1;
-        } else if (this.getStat(Stat.DAMAGE)<o.getStat(Stat.DAMAGE)){
-            return -1;
-        } else if (this.getStat(Stat.DAMAGE)==o.getStat(Stat.DAMAGE)){
-            return this.name.compareTo(o.name);
-        }
-        return 0;
+        return (int) (this.getStat(Stat.DAMAGE)-o.getStat(Stat.DAMAGE));
     }
 
     @Override

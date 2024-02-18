@@ -1,31 +1,35 @@
 package org.example.commands;
 
+import org.example.classes.HumanComparator;
 import org.example.collection.HumanCollection;
 
-public class Help extends AbstractCommand {
+import java.util.Comparator;
 
-    public Help(){super(false,false);}
+public class Sort extends AbstractCommand{
+
+    public Sort() {
+        super(false,true);
+    }
 
     @Override
     public void execute() {
-        System.out.println("These are the possible commands:" +
-                "Dick.suck" +
-                "balls.drop");
+
     }
 
     @Override
     public void execWithCol(HumanCollection obj) {
-
+        HumanComparator hcomp = new HumanComparator();
+        obj.getHumanArrayList().sort(hcomp);
     }
 
     @Override
     public String getName() {
-        return "help";
+        return null;
     }
 
     @Override
     public String getDescription() {
-        return "lists all commands and their descriptions";
+        return null;
     }
 
     @Override
