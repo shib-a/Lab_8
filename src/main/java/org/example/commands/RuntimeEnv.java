@@ -17,6 +17,7 @@ public class RuntimeEnv {
         } else if (!c.isNeedsArg() && c.isNeedsCol()){
             c.execWithCol(cls.getHc());
         } else {
+
             sc.nextLine();
         }
     }
