@@ -4,5 +4,6 @@ public enum ToolKinds {
     SHOVEL,
     JACKHAMMER,
     DRILL,
-    GUN
+    GUN,
+    NONE
 }

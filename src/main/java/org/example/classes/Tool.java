@@ -13,4 +13,17 @@ public class Tool extends Item{
         }
     }
 
+    @Override
+    public String toString() {
+        return "Tool{" + itemName+ ","+
+                "kind=" + kind +
+                ", canBreak=" + canBreak +
+                '}';
+    }
+
+    @Override
+    public boolean validate() {
+        if (this.kind==null) {return false;}
+        return super.validate();
+    }
 }

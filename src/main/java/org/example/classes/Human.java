@@ -1,16 +1,19 @@
 package org.example.classes;
+import org.example.CommandLine;
 import org.example.ReadMarkedField;
-import org.example.exceptions.InvalidArgumentException;
+
 import java.util.Arrays;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class Human implements Comparable<Human> {
+    private int id;
     @ReadMarkedField
-    private final String name;
-    private final ToolKinds preferredTool;
+    public final String name;
+    protected final ToolKinds preferredTool;
     @ReadMarkedField
-    private final ResearcherType type;
-    private boolean isAlive = true;
+    protected final ResearcherType type;
+    public boolean isAlive = true;
     @ReadMarkedField
     public Item[] inventory = new Item[4];
     private double[] mas = new double[5];
@@ -21,13 +24,24 @@ public class Human implements Comparable<Human> {
     public void write(String aboutWhat){
     }
 
-    public Human(String name, ToolKinds preferredTool, ResearcherType type, boolean isAlive) throws InvalidArgumentException{
-        if (name==""){throw new InvalidArgumentException();
-        } else {this.name = name;}
-        if (preferredTool==null){throw new InvalidArgumentException();
-        } else {this.preferredTool = preferredTool;}
-
+    public Human(String name, ToolKinds preferredTool, ResearcherType type, boolean isAlive){
+        this.name = name;
+        this.preferredTool = preferredTool;
         this.type = type;
+        this.isAlive = isAlive;
+    }
+    public Human(int id, String name, ToolKinds preferredTool, ResearcherType type, boolean isAlive,double hp, double intel, double lck, double dmg, double san, int dc){
+        this.id=id;
+        this.name = name;
+        this.preferredTool = preferredTool;
+        this.type = type;
+        this.isAlive = isAlive;
+        this.mas[Stat.HP.ordinal()] = hp;
+        this.mas[Stat.INTELLIGENCE.ordinal()] = intel;
+        this.mas[Stat.LUCK.ordinal()] = lck;
+        this.mas[Stat.DAMAGE.ordinal()] = dmg;
+        this.mas[Stat.SANITY.ordinal()] = san;
+        this.dugCounter = dc;
     }
 
     //setters
@@ -413,6 +427,17 @@ public class Human implements Comparable<Human> {
     public int compareTo(Human o) {
         return (int) (this.getStat(Stat.DAMAGE)-o.getStat(Stat.DAMAGE));
     }
+    public boolean validate(){
+        if (id<=0){return false;}
+        if (name==null || name.isEmpty() || name.isBlank()) return false;
+        if (preferredTool == null){return false;}
+        if (this.getType()==null) {return false;}
+        return true;
+    }
+
+    public int getId(){
+        return id;
+    }
 
     @Override
     public String toString() {
@@ -426,4 +451,49 @@ public class Human implements Comparable<Human> {
                 ", dugCounter=" + dugCounter +
                 '}';
     }
+    public String toCsvStr(){
+        String csvStr = getId()+","+getName().toString()+","+preferredTool.toString()+","+type.toString()+","+isAlive+","+getStat(Stat.HP)+","+getStat(Stat.INTELLIGENCE)+","+getStat(Stat.LUCK)+","+getStat(Stat.DAMAGE)+","+getStat(Stat.SANITY)+","+dugCounter+"\n";
+        return csvStr;
+    }
+    public Human fromCsvStr(String csvStr){
+        String[] splitStr = csvStr.split(",");
+        Integer id;
+        String name;
+        ToolKinds ft;
+        ResearcherType rt;
+        Boolean isal;
+        Double hp;
+        Double intel;
+        Double luck;
+        Double dmg;
+        Double san;
+        Integer dc;
+        Item[] inv = new Item[4];
+        try{
+            try{id = Integer.parseInt(splitStr[0]);} catch (NumberFormatException e){id = null;}
+            name = splitStr[1];
+            try{
+                if (splitStr[2].equals("null")){
+                    ft = null;
+                } else {ft = ToolKinds.valueOf(splitStr[2]);}
+            } catch (IllegalArgumentException e){ft = null;}
+            try{
+                if (splitStr[3].equals("null")){
+                    rt = null;
+                } else {rt = ResearcherType.valueOf(splitStr[3]);}
+            } catch (IllegalArgumentException e){rt = null;}
+            try{
+                if (!splitStr[4].equals(null)){isal = Boolean.valueOf(splitStr[4]);} else {isal = null;}
+            } catch (IllegalArgumentException e){isal = null;}
+            try{hp = Double.parseDouble(splitStr[5]);} catch (NumberFormatException | NullPointerException e){hp = null;}
+            try{intel = Double.parseDouble(splitStr[6]);} catch (NumberFormatException | NullPointerException e){ intel = null;}
+            try{luck = Double.parseDouble(splitStr[7]);} catch (NumberFormatException | NullPointerException e){luck = null;}
+            try{dmg = Double.parseDouble(splitStr[8]);} catch (NumberFormatException | NullPointerException e){dmg = null;}
+            try{san = Double.parseDouble(splitStr[9]);} catch (NumberFormatException | NullPointerException e){san = null;}
+            try{dc = Integer.parseInt(splitStr[10]);} catch (NumberFormatException | ArrayIndexOutOfBoundsException e){dc = null;}
+            return new Human(id,name,ft,rt,isal,hp,intel,luck,dmg,san,dc);
+        } catch (ArrayIndexOutOfBoundsException e){}
+        return null;
+    }
+
 }

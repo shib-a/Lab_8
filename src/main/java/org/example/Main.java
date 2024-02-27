@@ -9,6 +9,9 @@ import java.io.*;
 import java.lang.reflect.*;
 import java.util.ArrayList;
 import java.lang.annotation.*;
+import java.util.Arrays;
+import java.util.Collection;
+
 public class Main {
     static class MarkedExporter{           // статический класс
         public MarkedExporter(){
@@ -74,30 +77,40 @@ public class Main {
 
         //creating instances and setting stats
 
-        Human h1 = new Human("Pebody", ToolKinds.GUN, ResearcherType.EXPEDITIONIST,true);
-        Human h2 = new Human("Wilmart", ToolKinds.SHOVEL, ResearcherType.FOLK_RESEARCHER,true);
-        h1.setStat(100, 60, 50, 15, 90);
-        h2.setStat(100, 60, 50, 15, 90);
-        Tool shovel = new Tool("Shovel",ToolKinds.SHOVEL);
-        Tool jackhammer = new Tool("Jackhammer", ToolKinds.JACKHAMMER);
-        Tool drill = new Tool("Drill",ToolKinds.DRILL);
-//        shovel.addToInventory(h1);
-//        drill.addToInventory(h1);
-//        jackhammer.addToInventory(h1);
-        GeologicalLayer gl = new GeologicalLayer("layer", StoneDurability.SOFT, PeriodAge.JURASSIC);
-//        NecronExtract ext1 = new NecronExtract("extract 1", 15, 15);
-//        NecronExtract ext2 = new NecronExtract("e2", 15, 15);
-//        MarkedExporter me = new MarkedExporter();
-//        shovel.addToInventory(h1);
-//        jackhammer.addToInventory(h2);
-//        drill.addToInventory(h2);
-//        h1.dig(gl);
-        CollectionLoaderSaver fls = new CollectionLoaderSaver();
-        fls.readFrom("E:\\IdeaProjects\\lab_3\\test.txt");
-//        me.getIsMarked(new GeologicalLayer[]{gl});      // собственно используем наш метод
-//        me.getIsMarked(new Human[]{h1,h2});
-        RuntimeEnv re = new RuntimeEnv();
-        re.startRuntime();
+        Human h1 = new Human(0,"Pebody", ToolKinds.GUN, ResearcherType.EXPEDITIONIST,true,100.0,60.0,50.0,15.0,90.0,0);
+        Human h2 = new Human(1,"Wilmart", ToolKinds.SHOVEL, ResearcherType.FOLK_RESEARCHER,true,100.0,60.0,50.0,15.0,90.0,0);
+//        h1.setStat(100, 60, 50, 15, 90);
+//        System.out.println(h1.toCsvStr());
+        CommandLine cl = new CommandLine();
+        ArrayList<Human> cock = new ArrayList<>();
+        cock.add(h1);
+        cock.add(h2);
+        CollectionLoaderSaver cls = new CollectionLoaderSaver("E:\\IdeaProjects\\lab_3\\ans.txt",cl);
+//        System.out.println(Arrays.toString("0,Pebody,GUN,EXPEDITIONIST,true,100.0,60.0,50.0,15.0,90.0,0".split(",")));
+//        System.out.println(("0,Pebody,GUN,EXPEDITIONIST,true,100.0,60.0,50.0,15.0,90.0,0"));
+        cls.writeToFile(cock);
+        System.out.println(Arrays.toString(cls.colToCsvArr(cock)));
+//        h2.setStat(100, 60, 50, 15, 90);
+//        Tool shovel = new Tool("Shovel",ToolKinds.SHOVEL);
+//        Tool jackhammer = new Tool("Jackhammer", ToolKinds.JACKHAMMER);
+//        Tool drill = new Tool("Drill",ToolKinds.DRILL);
+////        shovel.addToInventory(h1);
+////        drill.addToInventory(h1);
+////        jackhammer.addToInventory(h1);
+//        GeologicalLayer gl = new GeologicalLayer("layer", StoneDurability.SOFT, PeriodAge.JURASSIC);
+////        NecronExtract ext1 = new NecronExtract("extract 1", 15, 15);
+////        NecronExtract ext2 = new NecronExtract("e2", 15, 15);
+////        MarkedExporter me = new MarkedExporter();
+////        shovel.addToInventory(h1);
+////        jackhammer.addToInventory(h2);
+////        drill.addToInventory(h2);
+////        h1.dig(gl);
+//        CollectionLoaderSaver fls = new CollectionLoaderSaver();
+//        fls.readFrom("E:\\IdeaProjects\\lab_3\\test.txt");
+////        me.getIsMarked(new GeologicalLayer[]{gl});      // собственно используем наш метод
+////        me.getIsMarked(new Human[]{h1,h2});
+//        RuntimeEnv re = new RuntimeEnv();
+//        re.startRuntime();
 
 
 
