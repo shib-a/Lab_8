@@ -4,17 +4,12 @@ import org.example.CommandLine;
 import org.example.classes.Ask;
 import org.example.classes.CollectionManager;
 import org.example.classes.Human;
-import org.example.classes.HumanComparator;
-import org.example.collection.HumanCollection;
 
-import java.util.Comparator;
-
-public class Sort extends AbstractCommand{
-
+public class Info extends AbstractCommand {
     private CommandLine cl;
     private CollectionManager cm;
-    public Sort(CommandLine cl, CollectionManager cm) {
-        super("sort", "Sorts collection by default (in this case by damage value)");
+    public Info(CommandLine cl, CollectionManager cm) {
+        super("info", "Shows meta information about the collection");
         this.cl = cl;
         this.cm=cm;
     }
@@ -22,9 +17,8 @@ public class Sort extends AbstractCommand{
     @Override
     public Feedbacker execute(String[] arg) {
             if(!arg[1].isEmpty()) return new Feedbacker(false,"Wrong argument usage. see 'help' for reference");
-            else {
-                cm.getCollection().sort(new HumanComparator());
-            }
-            return new Feedbacker("Sorted successfully");
+            cl.printLn("Collection size: "+cm.getCollection().size());
+            cl.printLn("Collection initialization date: "+cm.getInitDate());
+            return new Feedbacker("Shown successfully");
     }
 }

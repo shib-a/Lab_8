@@ -3,18 +3,19 @@ package org.example.commands;
 import org.example.CommandLine;
 import org.example.classes.CollectionManager;
 
-public class Exit extends AbstractCommand {
+public class GetHistory extends AbstractCommand{
     private CommandLine cl;
-    private CollectionManager cm;
-    public Exit(CommandLine cl, CollectionManager cm) {
-        super("exit", "Stops the program without saving");
+    private CommandManager com;
+    public GetHistory(CommandLine cl, CommandManager com) {
+        super("get_history", "Shows entered commands");
         this.cl = cl;
-        this.cm=cm;
+        this.com=com;
     }
 
     @Override
     public Feedbacker execute(String[] arg) {
         if(!arg[1].isEmpty()) return new Feedbacker(false,"Wrong argument usage. see 'help' for reference");
-        return new Feedbacker("exit");
+        cl.printLn(com.getCommandHistory());
+        return new Feedbacker("Showed successfully");
     }
 }

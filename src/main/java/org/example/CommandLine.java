@@ -35,13 +35,10 @@ public class CommandLine {
         return (fileReader!=null?fileReader:defReader).hasNextLine();
     }
 
-    /**
-     * Выводит 2 колонки
-     * @param elementLeft Левый элемент колонки.
-     * @param elementRight Правый элемент колонки.
-     */
-    public void printTable(Object elementLeft, Object elementRight) {
-        System.out.printf(" %-35s%-1s%n", elementLeft, elementRight);
+    public void printF(Object o,Object o2) {
+        System.out.printf(o.toString());
+        System.out.printf("\t|\t");
+        System.out.printf(o2.toString()+"\n");
     }
 
     public void printLine() {

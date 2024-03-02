@@ -13,17 +13,12 @@ public class Human implements Comparable<Human> {
     protected final ToolKinds preferredTool;
     @ReadMarkedField
     protected final ResearcherType type;
-    public boolean isAlive = true;
+    public boolean isAlive;
     @ReadMarkedField
     public Item[] inventory = new Item[4];
     private double[] mas = new double[5];
     @ReadMarkedField
     private int dugCounter = 0;
-    public void talk(String aboutWhat){
-    }
-    public void write(String aboutWhat){
-    }
-
     public Human(String name, ToolKinds preferredTool, ResearcherType type, boolean isAlive){
         this.name = name;
         this.preferredTool = preferredTool;
@@ -42,6 +37,21 @@ public class Human implements Comparable<Human> {
         this.mas[Stat.DAMAGE.ordinal()] = dmg;
         this.mas[Stat.SANITY.ordinal()] = san;
         this.dugCounter = dc;
+        if(this.getStat(Stat.HP)<=0){isAlive=false;} else{isAlive=true;}
+    }
+    public Human(int id, String name, ToolKinds preferredTool, ResearcherType type, boolean isAlive,double hp, double intel, double lck, double dmg, double san, int dc, Item[] inv){
+        this.id=id;
+        this.name = name;
+        this.preferredTool = preferredTool;
+        this.type = type;
+        this.isAlive = isAlive;
+        this.mas[Stat.HP.ordinal()] = hp;
+        this.mas[Stat.INTELLIGENCE.ordinal()] = intel;
+        this.mas[Stat.LUCK.ordinal()] = lck;
+        this.mas[Stat.DAMAGE.ordinal()] = dmg;
+        this.mas[Stat.SANITY.ordinal()] = san;
+        this.dugCounter = dc;
+        for(Item el: inv){addToInventory(el);}
     }
 
     //setters
@@ -390,7 +400,7 @@ public class Human implements Comparable<Human> {
                     Scanner scan = new Scanner(System.in);
                     String cons = scan.next();
                     if (cons.equals("yes")) {
-                        recievedLoot.addToInventory(this);
+                        addToInventory(recievedLoot);
                     }
                 } else {
                     System.out.println("Nothing found.\t"+ getDugCounter());
@@ -438,24 +448,47 @@ public class Human implements Comparable<Human> {
     public int getId(){
         return id;
     }
+    public void addToInventory(Item it){
+        int count = 0;
+        for(int i = 0; i < 4; i++){
+            if (inventory[i] == null){
+                inventory[i] = it;
+                break;
+            }else{
+                count++;
+            }
+        }
+        if (count==4){
+            System.out.println("Unable to take " + it +": Inventory is full!");
+        }
+    }
 
     @Override
     public String toString() {
-        return "Human{" +
-                "name='" + name + '\'' +
+        return "Human{" + "id=" + getId()+
+                ", name='" + name + '\'' +
                 ", isAlive=" + isAlive +
                 ", preferredTool=" + preferredTool +
                 ", type=" + type +
                 ", inventory=" + Arrays.toString(inventory) +
-                ", mas=" + Arrays.toString(mas) +
+                ", stats=" + Arrays.toString(mas) +
                 ", dugCounter=" + dugCounter +
                 '}';
     }
     public String toCsvStr(){
-        String csvStr = getId()+","+getName().toString()+","+preferredTool.toString()+","+type.toString()+","+isAlive+","+getStat(Stat.HP)+","+getStat(Stat.INTELLIGENCE)+","+getStat(Stat.LUCK)+","+getStat(Stat.DAMAGE)+","+getStat(Stat.SANITY)+","+dugCounter+"\n";
+        String csvStr = getId()+","+getName().toString()+","+preferredTool.toString()+","+type.toString()+","+isAlive+","+getStat(Stat.HP)+","+getStat(Stat.INTELLIGENCE)+","+getStat(Stat.LUCK)+","+getStat(Stat.DAMAGE)+","+getStat(Stat.SANITY)+","+dugCounter;
+        for(Item el: inventory){
+            if(el.getClass().toString().contains("Tool")){
+                csvStr+=","+el.itemName+((Tool) el).kind;
+            } else if (el.getClass().toString().contains("Book")) {
+                csvStr+=","+el.itemName+((Book) el).getIntelligenceEffect();
+            } else if (el!=null) {
+                csvStr+=","+el.itemName;
+            } else {csvStr+=","+null;}
+        }
         return csvStr;
     }
-    public Human fromCsvStr(String csvStr){
+    public static Human fromCsvStr(String csvStr){
         String[] splitStr = csvStr.split(",");
         Integer id;
         String name;
@@ -485,13 +518,52 @@ public class Human implements Comparable<Human> {
             try{
                 if (!splitStr[4].equals(null)){isal = Boolean.valueOf(splitStr[4]);} else {isal = null;}
             } catch (IllegalArgumentException e){isal = null;}
-            try{hp = Double.parseDouble(splitStr[5]);} catch (NumberFormatException | NullPointerException e){hp = null;}
+            try{hp = Double.parseDouble(splitStr[5].replace("[",""));} catch (NumberFormatException | NullPointerException e){hp = null;}
             try{intel = Double.parseDouble(splitStr[6]);} catch (NumberFormatException | NullPointerException e){ intel = null;}
             try{luck = Double.parseDouble(splitStr[7]);} catch (NumberFormatException | NullPointerException e){luck = null;}
             try{dmg = Double.parseDouble(splitStr[8]);} catch (NumberFormatException | NullPointerException e){dmg = null;}
             try{san = Double.parseDouble(splitStr[9]);} catch (NumberFormatException | NullPointerException e){san = null;}
-            try{dc = Integer.parseInt(splitStr[10]);} catch (NumberFormatException | ArrayIndexOutOfBoundsException e){dc = null;}
-            return new Human(id,name,ft,rt,isal,hp,intel,luck,dmg,san,dc);
+            try{dc = Integer.parseInt(splitStr[10].replace("]",""));} catch (NumberFormatException | ArrayIndexOutOfBoundsException e){dc = null;}
+            if (splitStr.length>11){
+                try{
+                    int i = 0;
+                    for(int k=11;k<splitStr.length-1;k++) {
+                        if (splitStr[k] != "null") {
+                            try {
+                                if (k == splitStr.length - 2) {
+                                    if (Arrays.toString(ToolKinds.values()).contains(splitStr[k + 1])) {
+                                        try {
+                                            inv[i] = new Tool(splitStr[k], ToolKinds.valueOf(splitStr[k + 1]));
+                                            k++;
+                                        } catch (IllegalArgumentException e) {
+                                            System.out.println("no such type");
+                                        }
+                                    } else {
+                                        inv[i] = new Item(splitStr[k]);
+                                        inv[i + 1] = new Item(splitStr[k + 1]);
+                                    }
+                                    i++;
+                                }
+                                if (Arrays.toString(ToolKinds.values()).contains(splitStr[k + 1])) {
+                                    try {
+                                        inv[i] = new Tool(splitStr[k], ToolKinds.valueOf(splitStr[k + 1]));
+                                        k++;
+                                    } catch (IllegalArgumentException e) {
+                                        System.out.println("no such type");
+                                    }
+                                } else {
+                                    inv[i] = new Item(splitStr[k]);
+                                }
+                            }catch (ArrayIndexOutOfBoundsException e){}
+                        } else if(k== splitStr.length-2) continue;
+                        i++;
+                    }
+                    return new Human(id,name,ft,rt,isal,hp,intel,luck,dmg,san,dc,inv);
+                }  catch (ArrayIndexOutOfBoundsException e){
+                    System.out.println("too many args"+ Arrays.toString(e.getStackTrace()));
+                }
+
+            } else{ return new Human(id,name,ft,rt,isal,hp,intel,luck,dmg,san,dc);}
         } catch (ArrayIndexOutOfBoundsException e){}
         return null;
     }

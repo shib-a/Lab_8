@@ -1,37 +1,27 @@
 package org.example.commands;
 
+import org.example.CommandLine;
+import org.example.classes.Ask;
+import org.example.classes.CollectionManager;
+import org.example.classes.Human;
 import org.example.collection.HumanCollection;
 
 public class Show extends AbstractCommand{
-    public Show() {
-        super(false,true);
+    private CommandLine cl;
+    private CollectionManager cm;
+    public Show(CommandLine cl, CollectionManager cm) {
+        super("show", "Shows the elements of collection");
+        this.cl = cl;
+        this.cm=cm;
     }
-    @Override
-    public void execute() {
-
-    }
 
     @Override
-    public void execWithCol(HumanCollection obj) {
-        if (!obj.getHumanArrayList().isEmpty()) {
-            System.out.println(obj.getHumanArrayList().toString());
-        } else {
-            System.out.println("Collection is empty. At least, for now :)");
+    public Feedbacker execute(String[] arg) {
+        if (!arg[1].isEmpty()) return new Feedbacker(false, "Wrong argument usage. see 'help' for reference");
+        if (cm.getCollection().isEmpty()) return new Feedbacker("Collection is empty");
+        else{for(Human el:cm.getCollection()){
+            cl.printLn(el.toString());
         }
-    }
-
-    @Override
-    public String getName() {
-        return null;
-    }
-
-    @Override
-    public String getDescription() {
-        return null;
-    }
-
-    @Override
-    public boolean checkIsValidArg() {
-        return false;
+        return new Feedbacker("Elements shown");}
     }
 }

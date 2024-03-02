@@ -1,8 +1,7 @@
 package org.example;
 import org.example.classes.*;
 import org.example.collection.CollectionLoaderSaver;
-import org.example.collection.HumanCollection;
-import org.example.commands.RuntimeEnv;
+import org.example.commands.*;
 import org.example.exceptions.InvalidArgumentException;
 
 import java.io.*;
@@ -76,85 +75,28 @@ public class Main {
     public static void main(String[] args) throws IOException, IllegalAccessException, InvalidArgumentException {
 
         //creating instances and setting stats
-
-        Human h1 = new Human(0,"Pebody", ToolKinds.GUN, ResearcherType.EXPEDITIONIST,true,100.0,60.0,50.0,15.0,90.0,0);
-        Human h2 = new Human(1,"Wilmart", ToolKinds.SHOVEL, ResearcherType.FOLK_RESEARCHER,true,100.0,60.0,50.0,15.0,90.0,0);
-//        h1.setStat(100, 60, 50, 15, 90);
-//        System.out.println(h1.toCsvStr());
         CommandLine cl = new CommandLine();
-        ArrayList<Human> cock = new ArrayList<>();
-        cock.add(h1);
-        cock.add(h2);
-        CollectionLoaderSaver cls = new CollectionLoaderSaver("E:\\IdeaProjects\\lab_3\\ans.txt",cl);
-//        System.out.println(Arrays.toString("0,Pebody,GUN,EXPEDITIONIST,true,100.0,60.0,50.0,15.0,90.0,0".split(",")));
-//        System.out.println(("0,Pebody,GUN,EXPEDITIONIST,true,100.0,60.0,50.0,15.0,90.0,0"));
-        cls.writeToFile(cock);
-        System.out.println(Arrays.toString(cls.colToCsvArr(cock)));
-//        h2.setStat(100, 60, 50, 15, 90);
-//        Tool shovel = new Tool("Shovel",ToolKinds.SHOVEL);
-//        Tool jackhammer = new Tool("Jackhammer", ToolKinds.JACKHAMMER);
-//        Tool drill = new Tool("Drill",ToolKinds.DRILL);
-////        shovel.addToInventory(h1);
-////        drill.addToInventory(h1);
-////        jackhammer.addToInventory(h1);
-//        GeologicalLayer gl = new GeologicalLayer("layer", StoneDurability.SOFT, PeriodAge.JURASSIC);
-////        NecronExtract ext1 = new NecronExtract("extract 1", 15, 15);
-////        NecronExtract ext2 = new NecronExtract("e2", 15, 15);
-////        MarkedExporter me = new MarkedExporter();
-////        shovel.addToInventory(h1);
-////        jackhammer.addToInventory(h2);
-////        drill.addToInventory(h2);
-////        h1.dig(gl);
-//        CollectionLoaderSaver fls = new CollectionLoaderSaver();
-//        fls.readFrom("E:\\IdeaProjects\\lab_3\\test.txt");
-////        me.getIsMarked(new GeologicalLayer[]{gl});      // собственно используем наш метод
-////        me.getIsMarked(new Human[]{h1,h2});
-//        RuntimeEnv re = new RuntimeEnv();
-//        re.startRuntime();
-
-
-
-
-
-
-
-        // oh shit
-//         program
-//
-//        while (true) {
-//            System.out.println();
-//            Scanner scan = new Scanner(System.in);
-//            System.out.println("wjat to do? (dig/search/attack/read)");
-//            String inq = scan.next();
-//            if (inq.equals("fight")) {
-//                System.out.println("who?");
-//                String who = scan.next();
-//                if (who.equals("h2")) {
-//                    h1.attack(h2);
-//                } else {
-//                    h2.attack(h1);
-//                }
-//            } else if (inq.equals("dig")) {
-//                h1.dig(gl);
-//                for (int i = 0; i < 4; i++) {
-//                    if (h1.inventory[i] != null) {
-//                        System.out.println(h1.inventory[i].itemName);
-//                    }
-//                }
-//            } else if (inq.equals("search")) {
-//                gl = h1.searchLayer();
-//                System.out.println("layer found\t" + gl.getAgePeriod());
-//            } else if (inq.equals("read")) {
-//                System.out.println("what?");
-//                scan.nextLine();
-//                String what = scan.nextLine();
-//                if (what.equals(ext1.itemName)) {
-//                    h1.readext(ext1);
-//                } else if (what.equals(ext2.itemName)) {
-//                    h1.readext(ext2);
-//                }
-////                System.out.println("\tfinished");
-//            }
-//        }
+        var cls = new CollectionLoaderSaver("E:\\IdeaProjects\\lab_3\\ans.txt",cl);
+        var cm = new CollectionManager(cls);
+        cm.initialaze();
+        var com = new CommandManager();
+        com.getCommandList().put("add", new Add(cl,cm));
+        com.getCommandList().put("clear", new Clear(cl,cm));
+        com.getCommandList().put("info", new Info(cl,cm));
+        com.getCommandList().put("show", new Show(cl,cm));
+        com.getCommandList().put("exit", new Exit(cl,cm));
+        com.getCommandList().put("sort", new Sort(cl,cm));
+        com.getCommandList().put("update", new Update(cl,cm));
+        com.getCommandList().put("remove_by_id", new Remove(cl,cm));
+        com.getCommandList().put("filter_by_is_alive", new FilterByIsAlive(cl,cm));
+        com.getCommandList().put("save", new Save(cl,cm));
+        com.getCommandList().put("filter_by_less_than_number_of_dug_counter", new FilterLessDC(cl,cm));
+        com.getCommandList().put("count_by_researcher_type", new CountByResearcherType(cl,cm));
+        com.getCommandList().put("remove_lower", new RemoveLower(cl,cm));
+        com.getCommandList().put("insert", new Insert(cl,cm));
+        com.getCommandList().put("execute_script", new ExecuteScript(cl,cm));
+        com.getCommandList().put("get_history", new GetHistory(cl,com));
+        com.getCommandList().put("help", new Help(cl,com));
+        new RuntimeEnv(cl,com).mannedMode();
     }
 }

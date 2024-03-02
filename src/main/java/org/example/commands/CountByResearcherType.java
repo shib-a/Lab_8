@@ -1,62 +1,36 @@
 package org.example.commands;
 
+import org.example.CommandLine;
+import org.example.classes.CollectionManager;
+import org.example.classes.Human;
 import org.example.exceptions.*;
 import org.example.classes.ResearcherType;
 import org.example.collection.HumanCollection;
 import org.example.exceptions.InvalidArgumentException;
 
 import java.util.Scanner;
-//
-//public class CountByResearcherType extends AbstractCommand{
-//    public CountByResearcherType() {
-//        super(false, true);
-//    }
-//
-//    @Override
-//    public  execute(){}
-//
-//    @Override
-//    public void execWithCol(HumanCollection obj) {
-//        if (obj.getHumanArrayList().isEmpty()){
-//            System.out.println("Nothing to count. Your collection is empty.");
-//        } else {
-//            Scanner sc = new Scanner(System.in);
-//            System.out.println("Enter the researcher type: FOLK_RESEARCHER or EXPEDITIONIST");
-//            String inp = sc.nextLine();
-//            int count = 0;
-//            if (inp.equals("FOLK_RESEARCHER")){
-//                for(int i = 0; i<obj.getHumanArrayList().size(); i++){
-//                    if (obj.getHumanArrayList().get(i).getType()== ResearcherType.FOLK_RESEARCHER){
-//                        count+=1;
-//                    }
-//                }
-//                System.out.println(count);
-//            } else if (inp.equals("EXPEDITIONIST")){
-//                for(int i = 0; i<obj.getHumanArrayList().size(); i++){
-//                    if (obj.getHumanArrayList().get(i).getType()== ResearcherType.FOLK_RESEARCHER){
-//                        count+=1;
-//                    }
-//                }
-//                System.out.println(count);
-//            } else {
-//                System.out.println("Incorrect argument.");
-//            }
-//
-//        }
-//    }
-//
-//    @Override
-//    public String getName() {
-//        return null;
-//    }
-//
-//    @Override
-//    public String getDescription() {
-//        return null;
-//    }
-//
-//    @Override
-//    public boolean checkIsValidArg() {
-//        return false;
-//    }
-//}
+
+public class CountByResearcherType extends AbstractCommand{
+    private CommandLine cl;
+    private CollectionManager cm;
+    public CountByResearcherType(CommandLine cl, CollectionManager cm) {
+        super("count_by_researcher_type (EXPEDITIONIST/FOLK_RESEARCHER)", "Shows amount of elements with entered RESEARCHER_TYPE value");
+        this.cl = cl;
+        this.cm=cm;
+    }
+
+    @Override
+    public Feedbacker execute(String[] arg) {
+        if(arg[1].isEmpty()) return new Feedbacker(false,"Wrong argument usage. see 'help' for reference");
+        try{
+            var val = ResearcherType.valueOf(arg[1].trim());
+            if (cm.getCollection().isEmpty()){return new Feedbacker("Empty collection");} else{
+                int count = 0;
+                for(Human el: cm.getCollection()){
+                    if (el.getType()==val) count++;
+                }
+                cl.printLn(count);
+                return new Feedbacker("Elements counted successfully");}
+        } catch(IllegalArgumentException e){ return new Feedbacker(false,"Wrong argument");}
+    }
+}

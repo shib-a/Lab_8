@@ -1,10 +1,12 @@
 package org.example.classes;
 
 import org.example.*;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.NoSuchElementException;
 
-class Ask{
+public class Ask{
     public static class AskBreaker extends Exception{}
     public static Human askHuman(CommandLine cl) throws AskBreaker{
         try{
@@ -24,6 +26,27 @@ class Ask{
             return null;
         }
     }
+    public static Human askHuman(CommandLine cl, int id) throws AskBreaker{
+        try{
+            String name;
+            while (true){
+                cl.print("enter name: ");
+                name = cl.readln().trim();
+                if(name.equals("exit")) throw new AskBreaker();
+                if(!name.isEmpty()) break;
+            }
+            ToolKinds ptt = askPreferredTool(cl);
+            ResearcherType rt = askResType(cl);
+            Double[] stats = askStats(cl);
+            boolean ia = askIsAlive(cl);
+            int dc = askDugCounter(cl);
+            return new Human(id,name, ptt, rt, ia,stats[0],stats[1],stats[2], stats[3], stats[4],dc);
+        } catch (NoSuchElementException e){
+            System.out.println("Failed to read");
+            return null;
+        }
+    }
+
     public static ToolKinds askPreferredTool(CommandLine cl) throws AskBreaker {
         try {
             ToolKinds ptt;
@@ -86,7 +109,7 @@ class Ask{
             return false;
         }
     }
-    public Double[] askStats(CommandLine cl) throws AskBreaker {
+    public static Double[] askStats(CommandLine cl) throws AskBreaker {
         try{
             Double[] mas = new Double[5];
             while (true){
@@ -102,11 +125,26 @@ class Ask{
                         } catch(IllegalArgumentException e){}
                     }
                     return mas;
-                } else return null;
+                } else return new Double[]{0.0, 0.0, 0.0, 0.0, 0.0};
             }
         } catch (IllegalArgumentException e){
             System.out.println("Failed to read");
-            return null;
+            return new Double[]{0.0, 0.0, 0.0, 0.0, 0.0};
+        }
+    }
+    public static Integer askDugCounter(CommandLine cl) throws AskBreaker {
+        while (true) {
+            cl.print("enter the dug_counter value: ");
+            String line = cl.readln().trim();
+            if (line.equals("exit")) throw new AskBreaker();
+            if (!line.isBlank() && !line.isEmpty()) {
+                try {
+                    var i = Integer.parseInt(line);
+                    return i;
+                } catch (NumberFormatException e) {
+                    System.out.println("Wrong argument");
+                }
+            } else return 0;
         }
     }
 }
