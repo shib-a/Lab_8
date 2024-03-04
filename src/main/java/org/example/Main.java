@@ -78,7 +78,7 @@ public class Main {
         }
     }
 
-    public static void main(String[] args) throws IOException, IllegalAccessException, InvalidArgumentException {
+    public static void main(String[] args) {
 
         //creating instances and setting stats
         CommandLine cl = new CommandLine();

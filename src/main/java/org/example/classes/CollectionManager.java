@@ -30,7 +30,7 @@ public class CollectionManager {
 
     /**
      * Determines whether a Human instance is in a collection
-     * @param Human
+     * @param h
      * @return boolean
      */
     public boolean isInCol(Human h){
@@ -42,7 +42,7 @@ public class CollectionManager {
 
     /**
      * Adds a Human instance to the collection
-     * @param Human
+     * @param h
      */
     public void add (Human h){
         if(!isInCol(h)){
