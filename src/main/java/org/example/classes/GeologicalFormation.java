@@ -1,5 +1,5 @@
 package org.example.classes;
-import org.example.ReadMarkedField;
+import org.example.interfaces.ReadMarkedField;
 abstract class GeologicalFormation{
     @ReadMarkedField
     String type;

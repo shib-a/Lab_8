@@ -1,11 +1,13 @@
 package org.example.classes;
-import org.example.CommandLine;
-import org.example.ReadMarkedField;
+import org.example.exceptions.EmptyInventoryException;
+import org.example.interfaces.ReadMarkedField;
 
 import java.util.Arrays;
-import java.util.NoSuchElementException;
 import java.util.Scanner;
 
+/**
+ * The core class
+ */
 public class Human implements Comparable<Human> {
     private int id;
     @ReadMarkedField
@@ -165,8 +167,6 @@ public class Human implements Comparable<Human> {
         }
         return newLayer;
     }
-
-    //dig function
 
     public void dig(GeologicalLayer layer){
         boolean candig = false;
@@ -437,6 +437,11 @@ public class Human implements Comparable<Human> {
     public int compareTo(Human o) {
         return (int) (this.getStat(Stat.DAMAGE)-o.getStat(Stat.DAMAGE));
     }
+
+    /**
+     * Determines whether a Human instance was correctly created
+     * @return boolean
+     */
     public boolean validate(){
         if (id<=0){return false;}
         if (name==null || name.isEmpty() || name.isBlank()) return false;
@@ -475,6 +480,11 @@ public class Human implements Comparable<Human> {
                 ", dugCounter=" + dugCounter +
                 '}';
     }
+
+    /**
+     * Turns all Human fields into a CSV-formatted string
+     * @return
+     */
     public String toCsvStr(){
         String csvStr = getId()+","+getName().toString()+","+preferredTool.toString()+","+type.toString()+","+isAlive+","+getStat(Stat.HP)+","+getStat(Stat.INTELLIGENCE)+","+getStat(Stat.LUCK)+","+getStat(Stat.DAMAGE)+","+getStat(Stat.SANITY)+","+dugCounter;
         for(Item el: inventory){
@@ -488,6 +498,12 @@ public class Human implements Comparable<Human> {
         }
         return csvStr;
     }
+
+    /**
+     * Turns a CSV-formatted string into a Human instance
+     * @param csvStr
+     * @return Human
+     */
     public static Human fromCsvStr(String csvStr){
         String[] splitStr = csvStr.split(",");
         Integer id;
@@ -536,7 +552,7 @@ public class Human implements Comparable<Human> {
                                             inv[i] = new Tool(splitStr[k], ToolKinds.valueOf(splitStr[k + 1]));
                                             k++;
                                         } catch (IllegalArgumentException e) {
-                                            System.out.println("no such type");
+                                            System.out.println(">No such type.");
                                         }
                                     } else {
                                         inv[i] = new Item(splitStr[k]);
@@ -549,7 +565,7 @@ public class Human implements Comparable<Human> {
                                         inv[i] = new Tool(splitStr[k], ToolKinds.valueOf(splitStr[k + 1]));
                                         k++;
                                     } catch (IllegalArgumentException e) {
-                                        System.out.println("no such type");
+                                        System.out.println(">No such type.");
                                     }
                                 } else {
                                     inv[i] = new Item(splitStr[k]);
@@ -560,7 +576,7 @@ public class Human implements Comparable<Human> {
                     }
                     return new Human(id,name,ft,rt,isal,hp,intel,luck,dmg,san,dc,inv);
                 }  catch (ArrayIndexOutOfBoundsException e){
-                    System.out.println("too many args"+ Arrays.toString(e.getStackTrace()));
+                    System.out.println(">Too many arguments! "+ Arrays.toString(e.getStackTrace()));
                 }
             } else{ return new Human(id,name,ft,rt,isal,hp,intel,luck,dmg,san,dc);}
         } catch (ArrayIndexOutOfBoundsException e){}

@@ -1,8 +1,7 @@
 package org.example.classes;
-import org.example.ReadMarkedField;
-import org.example.interfaces.*;
+import org.example.interfaces.ReadMarkedField;
 
-public class GeologicalLayer extends GeologicalFormation implements Excavatable{
+public class GeologicalLayer extends GeologicalFormation{
     @ReadMarkedField
     private int digsLeft;
     private boolean isDigable;
@@ -78,10 +77,6 @@ public class GeologicalLayer extends GeologicalFormation implements Excavatable{
     }
     public boolean getIsDigable(){
         return isDigable;
-    }
-    @Override
-    public void getExcavated(){
-        System.out.println(type + " частично выкопали");
     }
 
     // local class

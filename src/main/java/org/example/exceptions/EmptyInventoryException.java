@@ -1,4 +1,4 @@
-package org.example.classes;
+package org.example.exceptions;
 
 public class EmptyInventoryException extends Exception{
     public EmptyInventoryException(String msg){

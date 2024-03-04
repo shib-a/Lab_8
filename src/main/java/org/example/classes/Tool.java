@@ -21,6 +21,10 @@ public class Tool extends Item{
                 '}';
     }
 
+    /**
+     * Determines whether a Tool instance was correctly created
+     * @return
+     */
     @Override
     public boolean validate() {
         if (this.kind==null) {return false;}

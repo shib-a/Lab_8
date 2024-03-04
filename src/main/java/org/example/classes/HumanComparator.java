@@ -2,6 +2,9 @@ package org.example.classes;
 
 import java.util.Comparator;
 
+/**
+ * This class makes methods like sort() work with Human instances based on their DAMAGE stat value.
+ */
 public class HumanComparator implements Comparator<Human> {
     @Override
     public int compare(Human o1, Human o2) {

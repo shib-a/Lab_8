@@ -24,6 +24,11 @@ public class Item {
     public String toString() {
         return itemName;
     }
+
+    /**
+     * Determines whether an Item instance is correctly created
+     * @return boolean
+     */
     public boolean validate(){
         if (itemName==null||itemName.isEmpty()||itemName.isBlank()){return false;}
         return true;

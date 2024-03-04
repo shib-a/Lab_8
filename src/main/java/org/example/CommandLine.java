@@ -14,6 +14,9 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
+/**
+ * This class is an intermediary between the terminal and the user's input
+ */
 public class CommandLine {
     public String line = "Lab5>";
     public static Scanner fileReader = null;
@@ -25,12 +28,11 @@ public class CommandLine {
         System.out.println(o);
     }
     public void printException(Object o){
-        System.err.println("Unexpected exception" + o);
+        System.err.println(">Unexpected exception: " + o);
     }
     public String readln() throws NoSuchElementException, IllegalStateException {
         return (fileReader!=null?fileReader:defReader).nextLine();
     }
-
     public boolean canReadln() throws IllegalStateException {
         return (fileReader!=null?fileReader:defReader).hasNextLine();
     }
@@ -40,61 +42,26 @@ public class CommandLine {
         System.out.printf("\t|\t");
         System.out.printf(o2.toString()+"\n");
     }
-
     public void printLine() {
         print(line);
     }
-
     public String getLine() {
         return line;
     }
+
+    /**
+     * Selects a file scanner for use in execute_script command
+     * @param scanner
+     */
     public void selectFileScanner(Scanner scanner) {
         this.fileReader = scanner;
     }
 
+    /**
+     * Resets a file scanner for taking input from user
+     */
     public void selectConsoleScanner() {
         this.fileReader = null;
     }
 
-//    public void readFrom(String absolutePath) throws IOException, InvalidArgumentException, IllegalAccessException {
-//        try {
-//            File csvData = new File(absolutePath);
-//            CSVParser parser = CSVParser.parse(csvData, StandardCharsets.UTF_8, CSVFormat.DEFAULT);
-//            HumanCollection hc = new HumanCollection();
-//            for (CSVRecord record : parser) {
-//                List<String> vals = record.toList();
-//                try {
-//                    ToolKinds pt = switch (vals.get(1).strip()) {
-//                        case ("GUN") -> ToolKinds.GUN;
-//                        case ("DRILL") -> ToolKinds.DRILL;
-//                        case ("SHOVEL") -> ToolKinds.SHOVEL;
-//                        case ("JACKHAMMER") -> ToolKinds.JACKHAMMER;
-//                        default -> null;
-//                    };
-//                    ResearcherType rt = switch (vals.get(2)) {
-//                        case ("EXPEDITIONIST") -> ResearcherType.EXPEDITIONIST;
-//                        case ("FOLK_RESEARCHER") -> ResearcherType.FOLK_RESEARCHER;
-//                        default -> null;
-//                    };
-//                    Human newhuman = new Human(vals.get(0), pt, rt, true);
-//                    try {
-//                        double newhp = Double.parseDouble(vals.get(4));
-//                        double newint = Double.parseDouble(vals.get(5));
-//                        double newluck = Double.parseDouble(vals.get(6));
-//                        double newdmg = Double.parseDouble(vals.get(7));
-//                        double newsan = Double.parseDouble(vals.get(8));
-//                        newhuman.setStat(newhp, newint, newluck, newdmg, newsan);
-//                        hc.getHumanArrayList().add(newhuman);
-//                    } catch (NumberFormatException e) {
-//                        System.out.println(new InvalidArgumentException().getMessage());
-//                    }
-//                } catch (InvalidArgumentException e) {
-//                    System.out.println(e.getMessage());
-//                }
-//            }
-//            setHc(hc);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
 }

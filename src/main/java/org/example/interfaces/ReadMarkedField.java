@@ -1,4 +1,4 @@
-package org.example;
+package org.example.interfaces;
 import java.lang.annotation.*;
 @Target(value = ElementType.FIELD)
 @Retention(value = RetentionPolicy.RUNTIME)

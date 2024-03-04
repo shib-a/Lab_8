@@ -1,7 +1,8 @@
 package org.example.commands;
 
-import org.example.collection.HumanCollection;
-
+/**
+ * An abstract class for a command
+ */
 public abstract class AbstractCommand {
     public final String name;
     private final String desc;
@@ -16,6 +17,12 @@ public abstract class AbstractCommand {
     public String getDesc() {
         return desc;
     }
+
+    /**
+     * Executes the command
+     * @param args
+     * @return Feedbacker
+     */
     public Feedbacker execute(String[] args){return new Feedbacker("");};
     @Override
     public String toString() {

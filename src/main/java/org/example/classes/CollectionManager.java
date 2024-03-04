@@ -52,10 +52,19 @@ public class CollectionManager {
 //            System.out.println("Not added: object is already in the collection");
         }
     }
+    /**
+     * Inserts a Human instance into the entered index
+     * @param h
+     * @param index
+     */
     public void insert (int index, Human h){
             collection.add(index, h);
 //            System.out.println("Added");
     }
+    /**
+     * Updates a Human instance with the entered index
+     * @param h
+     */
     public void updateEl(Human h){
         if(isInCol(h)){
             collection.remove(getById(h.getId()));
@@ -65,6 +74,10 @@ public class CollectionManager {
 //            System.out.println("Not updated: no such object in col");
         }
     }
+    /**
+     * Removes a Human instance with the entered id
+     * @param id
+     */
     public void removeById(int id){
         if(isInCol(getById(id))){
             collection.remove(getById(id));
@@ -73,6 +86,9 @@ public class CollectionManager {
 //            System.out.println("No such element");
         }
     }
+    /**
+     * Initializes the collection - loads and sets initialization date
+     */
     public void initialaze(){
         collection.clear();
         collection = cls.readFromFile(cls.getFileName());
@@ -83,6 +99,9 @@ public class CollectionManager {
             }
         } else currId=1;
     }
+    /**
+     * Saves the collection to a file
+     */
     public void saveToFile(){
         cls.writeToFile(collection);
     }
@@ -90,7 +109,7 @@ public class CollectionManager {
     public String toString() {
         String colInfo = "";
         if(collection.isEmpty()){
-            System.out.println("Empty collection");
+            System.out.println(">Empty collection");
         } else {
             for (Human el:collection){
                 colInfo+=el+"\n";
