@@ -562,7 +562,6 @@ public class Human implements Comparable<Human> {
                 }  catch (ArrayIndexOutOfBoundsException e){
                     System.out.println("too many args"+ Arrays.toString(e.getStackTrace()));
                 }
-
             } else{ return new Human(id,name,ft,rt,isal,hp,intel,luck,dmg,san,dc);}
         } catch (ArrayIndexOutOfBoundsException e){}
         return null;

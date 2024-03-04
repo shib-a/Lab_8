@@ -1,0 +1,1 @@
+execute_script D:\labs_prog\lab_3\script1.txt

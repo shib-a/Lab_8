@@ -1,0 +1,9 @@
+clear
+add
+name
+GUN
+EXPEDITIONIST
+10.0,10.0,10.0,10.0,10.0
+true
+5
+execute_script D:\labs_prog\lab_3\script1.txt

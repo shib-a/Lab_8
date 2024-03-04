@@ -76,9 +76,11 @@ public class Main {
 
         //creating instances and setting stats
         CommandLine cl = new CommandLine();
-        var cls = new CollectionLoaderSaver("E:\\IdeaProjects\\lab_3\\ans.txt",cl);
+        var cls = new CollectionLoaderSaver("D:\\labs_prog\\lab_3\\ans.txt",cl);
         var cm = new CollectionManager(cls);
         cm.initialaze();
+        cl.printLn("\n");
+        cl.printLn("Welcome back. Enter 'help' to see information on available commands");
         var com = new CommandManager();
         com.getCommandList().put("add", new Add(cl,cm));
         com.getCommandList().put("clear", new Clear(cl,cm));

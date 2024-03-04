@@ -76,7 +76,6 @@ public class CollectionManager {
     public void saveToFile(){
         cls.writeToFile(collection);
     }
-
     @Override
     public String toString() {
         String colInfo = "";

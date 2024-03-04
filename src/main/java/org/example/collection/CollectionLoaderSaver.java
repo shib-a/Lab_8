@@ -42,7 +42,6 @@ public class CollectionLoaderSaver {
             } catch (NullPointerException | IOException e){return;}
         }catch (IOException e){}
     }
-
     public ArrayList<Human> readFromFile(String fileName){
         ArrayList<Human> col = new ArrayList<>();
         if (!(fileName == null) && !fileName.isEmpty()){
@@ -51,7 +50,6 @@ public class CollectionLoaderSaver {
                 BufferedInputStream is = new BufferedInputStream(f);
                 CSVParser csvp = CSVParser.parse(is,StandardCharsets.UTF_8,CSVFormat.DEFAULT);
                 for(CSVRecord line:csvp){
-                    System.out.println(line.toString());
                     if (!(line.values().length>=11 && line.values().length<=19)) throw new ArrayIndexOutOfBoundsException();
                     try{
                         var st = line.values();
@@ -62,8 +60,7 @@ public class CollectionLoaderSaver {
                         }
                         str = str.substring(0, str.lastIndexOf(","));
                         newHuman = fromCsvStr(str);
-                        if (newHuman.validate()){col.add(newHuman);
-                            System.out.println("added");} else {cl.printException("Invalid data in the collection file");};
+                        if (newHuman.validate()){col.add(newHuman);} else {cl.printException("Invalid data in the collection file");};
                     } catch (NullPointerException | ArrayIndexOutOfBoundsException | NoSuchElementException e){
                         System.out.println("Deserialization error :"+e.getMessage());
                     }

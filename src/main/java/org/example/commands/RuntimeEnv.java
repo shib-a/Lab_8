@@ -25,6 +25,7 @@ public class RuntimeEnv {
                 inputCommand = (cl.readln().trim()+" ").split(" ",2);
                 if(inputCommand.length>2){cl.printException("Too many arguments! Check the amount of whitespaces or arguments.");} else{
                     cm.addToHistory(inputCommand[0]);
+//                    if(inputCommand[0].equals("execute_script")){autoMode(inputCommand[1].trim());}
                     completionFeedback = executeCommand(inputCommand);
                     if(completionFeedback.getMessage().equals("exit")) break;
                     cl.printLn(completionFeedback.getMessage());
@@ -35,27 +36,43 @@ public class RuntimeEnv {
     public Feedbacker autoMode(String path){
         String[] inputCommand = new String[]{"",""};
         String result = "";
-        if (!new File(path).exists()) return new Feedbacker(false, "File does not exist");
-        if (!Files.isReadable(Paths.get(path))) return new Feedbacker(false, "Not enough rights to read the file");
+        if (!new File(path.trim()).exists()) return new Feedbacker(false, "File does not exist");
+        if (!Files.isReadable(Paths.get(path.trim()))) return new Feedbacker(false, "Not enough rights to read the file");
         scriptExecutionList.add(path);
-        try{
-            FileInputStream f = new FileInputStream(path);
-            BufferedInputStream is = new BufferedInputStream(f);
-            Scanner scanner = new Scanner(is);
-            Feedbacker status;
+        Feedbacker wtfIsGoingOn;
+        System.out.println(scriptExecutionList.get(0));
+        try(Scanner scanner = new Scanner(new BufferedInputStream(new FileInputStream(path.trim())))) {
+            do{
             if (!scanner.hasNext()) throw new NoSuchElementException();
             cl.selectFileScanner(scanner);
 
-            inputCommand = (cl.readln().trim()+" ").split(" ",2);
-            while (cl.canReadln() && inputCommand.equals("")){
-                inputCommand = (cl.readln().trim()+" ").split(" ",2);
+            inputCommand = (cl.readln().trim() + " ").split(" ", 2);
+            while (cl.canReadln() && inputCommand.equals("")) {
+                inputCommand = (cl.readln().trim() + " ").split(" ", 2);
 
             }
-            result+=inputCommand;
-
-        } catch (IOException e) {
+            result += inputCommand;
+            boolean temp = true;
+            if (inputCommand[0].equals("execute_script")) {
+                temp = recursiveChecker(inputCommand[1], scanner);
+            }
+            if (temp) {
+                wtfIsGoingOn = executeCommand(inputCommand);
+            } else {
+                wtfIsGoingOn = new Feedbacker("Max recursion depth exceeded");
+            }
+            if (inputCommand[0].equals("execute_script")) {
+                cl.selectFileScanner(scanner);
+                result += " " + wtfIsGoingOn.getMessage();
+            }
+        }while (wtfIsGoingOn.getIsSuccessful() && cl.canReadln() && !wtfIsGoingOn.getMessage().equals("exit"));
+            cl.selectConsoleScanner();
+            if(!(inputCommand[0].equals("execute_script")) && !wtfIsGoingOn.getIsSuccessful()){result+=" Something went wrong. Check script data.";}
+            return new Feedbacker(wtfIsGoingOn.getIsSuccessful(), result.toString());
+        } catch (IOException | NoSuchElementException | IllegalStateException e) {return new Feedbacker(false,"Error");}
+        finally {
+            scriptExecutionList.remove(scriptExecutionList.size()-1);
         }
-        return null;
     }
     private Feedbacker executeCommand(String[] inputCommand){
         if (inputCommand[0].equals("")) return new Feedbacker("");
@@ -64,7 +81,7 @@ public class RuntimeEnv {
         else if (inputCommand[0].equals("execute_script")){
             Feedbacker fp = cm.getCommandList().get("execute_script").execute(inputCommand);
             if(!fp.getIsSuccessful()) return fp;
-            Feedbacker fp2 = autoMode(inputCommand[1]);
+            Feedbacker fp2 = autoMode(inputCommand[1].trim());
             return new Feedbacker(fp2.getIsSuccessful(),fp2.getMessage());
         } else return command.execute(inputCommand);
     }

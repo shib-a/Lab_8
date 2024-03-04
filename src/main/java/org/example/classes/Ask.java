@@ -51,7 +51,7 @@ public class Ask{
         try {
             ToolKinds ptt;
             while (true) {
-                cl.print("enter favourite tool (" + Arrays.toString(ResearcherType.values()) + ")");
+                cl.print("enter favourite tool (" + Arrays.toString(ToolKinds.values()) + ")");
                 String line = cl.readln().trim();
                 if (line.equals("exit")) throw new AskBreaker();
                 if (!line.isEmpty()) {

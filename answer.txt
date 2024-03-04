@@ -1,8 +1,0 @@
-"Pebody", "GUN", "EXPEDITIONIST", "Shovel", "org.example.classes.GeologicalLayer$Fossil@277050dc", "2"
-"Wilmart", "FOLK_RESEARCHER", "Jackhammer", "Drill", "0"
-"Pebody", "EXPEDITIONIST", "Shovel", "2"
-"Wilmart", "FOLK_RESEARCHER", "Jackhammer", "Drill", "0"
-"Pebody", "EXPEDITIONIST", "Shovel", "pipes", "2"
-"Wilmart", "FOLK_RESEARCHER", "Jackhammer", "Drill", "0"
-"Pebody", "EXPEDITIONIST", "Shovel", "pipes", "pipes", "2"
-"Wilmart", "FOLK_RESEARCHER", "Jackhammer", "Drill", "0"
