@@ -25,42 +25,52 @@ public class CollectionManager {
                 return el;
             }
         }
-        System.out.println("No element with such id");
         return null;
     }
+
+    /**
+     * Determines whether a Human instance is in a collection
+     * @param Human
+     * @return boolean
+     */
     public boolean isInCol(Human h){
-            if(getById(h.getId())!=null){return true;} else {return false;}
+                if(getById(h.getId())!=null){return true;} else {return false;}
         }
     public int getUnusedId(){
         while(getById(++currId)!=null); return currId;
     }
+
+    /**
+     * Adds a Human instance to the collection
+     * @param Human
+     */
     public void add (Human h){
         if(!isInCol(h)){
             collection.add(h);
-            System.out.println("Added");
+//            System.out.println("Added");
         } else {
-            System.out.println("Not added: object already in col");
+//            System.out.println("Not added: object is already in the collection");
         }
     }
     public void insert (int index, Human h){
             collection.add(index, h);
-            System.out.println("Added");
+//            System.out.println("Added");
     }
     public void updateEl(Human h){
         if(isInCol(h)){
             collection.remove(getById(h.getId()));
             collection.add(h);
-            System.out.println("Updated");
+//            System.out.println("Updated");
         } else {
-            System.out.println("Not updated: no such object in col");
+//            System.out.println("Not updated: no such object in col");
         }
     }
     public void removeById(int id){
         if(isInCol(getById(id))){
             collection.remove(getById(id));
-            System.out.println("Element removed");
+//            System.out.println("Element removed");
         } else {
-            System.out.println("No such element");
+//            System.out.println("No such element");
         }
     }
     public void initialaze(){

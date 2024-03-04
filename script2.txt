@@ -1,1 +1,9 @@
-execute_script D:\labs_prog\lab_3\script1.txt
+execute_script E:\IdeaProjects\Labs\script1.txt
+clear
+add
+name
+GUN
+EXPEDITIONIST
+10.0,10.0,10.0,10.0,10.0
+true
+5

@@ -18,15 +18,15 @@ public class Add extends AbstractCommand{
     @Override
     public Feedbacker execute(String[] arg) {
         try {
-            if(!arg[1].isEmpty()) return new Feedbacker(false,"Wrong argument usage. see 'help' for reference");
-            cl.printLn("Creating new Human:");
+            if(!arg[1].isEmpty()) return new Feedbacker(false,">Wrong argument usage. see 'help' for reference");
+            cl.printLn(">Creating new Human:");
             Human h = Ask.askHuman(cl,cm.getUnusedId());
             if(h!=null && h.validate()){
                 cm.add(h);
-                return new Feedbacker("Added successfully");
-            } else return new Feedbacker(false,"Failed to add. Invalid arguments.");
+                return new Feedbacker(">Added successfully");
+            } else return new Feedbacker(false,">Failed to add. Invalid arguments.");
         } catch (Ask.AskBreaker e) {
-            return new Feedbacker(false,"Failure");
+            return new Feedbacker(false,">Exited process.");
         }
     }
 }

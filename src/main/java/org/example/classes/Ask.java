@@ -5,27 +5,15 @@ import org.example.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.NoSuchElementException;
+import org.example.classes.Human;
 
 public class Ask{
     public static class AskBreaker extends Exception{}
-    public static Human askHuman(CommandLine cl) throws AskBreaker{
-        try{
-            String name;
-            while (true){
-                cl.print("enter name: ");
-                name = cl.readln().trim();
-                if(name.equals("exit")) throw new AskBreaker();
-                if(!name.isEmpty()) break;
-            }
-            ToolKinds ptt = askPreferredTool(cl);
-            ResearcherType rt = askResType(cl);
-            boolean ia = askIsAlive(cl);
-            return new Human(name, ptt, rt, ia);
-        } catch (NoSuchElementException e){
-            System.out.println("Failed to read");
-            return null;
-        }
-    }
+    /**
+     * This method creates a Human instance using a series of user/scripted inputs using a Human constructor
+     * @return Human
+     * @throws AskBreaker
+     */
     public static Human askHuman(CommandLine cl, int id) throws AskBreaker{
         try{
             String name;
@@ -47,6 +35,11 @@ public class Ask{
         }
     }
 
+    /**
+     *Asks user/script for a preferredTool value
+     * @return preferredTool
+     * @throws AskBreaker
+     */
     public static ToolKinds askPreferredTool(CommandLine cl) throws AskBreaker {
         try {
             ToolKinds ptt;
@@ -59,6 +52,7 @@ public class Ask{
                         ptt = ToolKinds.valueOf(line);
                         break;
                     } catch (IllegalArgumentException e) {
+                        System.out.println(">Wrong tool value. Try again or enter 'exit' to stop the process.");
                     }
                 } else return null;
             }
@@ -68,6 +62,11 @@ public class Ask{
             return null;
         }
     }
+    /**
+     *Asks user/script for a researcherType value
+     * @return researcherType
+     * @throws AskBreaker
+     */
     public static ResearcherType askResType(CommandLine cl) throws AskBreaker {
         try{
             ResearcherType rt;
@@ -79,7 +78,7 @@ public class Ask{
                     try{
                         rt = ResearcherType.valueOf(line);
                         break;
-                    } catch (IllegalArgumentException e){}
+                    } catch (IllegalArgumentException e){System.out.println(">Wrong researcher type value. Try again or enter 'exit' to stop the process.");}
                 } else return null;
             }
             return rt;
@@ -88,50 +87,65 @@ public class Ask{
             return null;
         }
     }
-    public static boolean askIsAlive(CommandLine cl) throws AskBreaker {
-        try {
-            boolean isAl;
-            while (true) {
+    /**
+     *Asks user/script for a boolean isAlive value
+     * @return isAlive
+     * @throws AskBreaker
+     */
+    public static Boolean askIsAlive(CommandLine cl) throws AskBreaker {
+        while (true) {
+            try {
                 cl.print("enter whether the object is alive: true for alive or false for not alive:");
                 String line = cl.readln().trim();
                 if (line.equals("exit")) throw new AskBreaker();
                 if (!line.isEmpty() && !line.isBlank()) {
                     try {
-                        isAl = Boolean.valueOf(line);
-                        break;
-                    } catch (IllegalArgumentException e) {}
-
-                } else return false;
-            }
-            return isAl;
-        } catch (IllegalArgumentException e) {
-            System.out.println("Failed to read. Set default value, false.");
-            return false;
+                        if (line.trim().equals("true")) {return true;} else if (line.trim().equals("false"))return false; else System.out.println(">Wrong value. Try again (enter true/false) or enter 'exit' to stop the process.");
+                    } catch (IllegalArgumentException | NullPointerException e) {System.out.println(">Wrong value. Try again (enter true/false) or enter 'exit' to stop the process.");}
+                }else System.out.println(">Wrong value. Try again (enter true/false) or enter 'exit' to stop the process.");
+            }catch (IllegalArgumentException | NullPointerException e) {
+                System.out.println("Failed to read. Set default value, false.");
+        }
         }
     }
+    /**
+     *Asks user/script for stat values
+     * @return stats[]
+     * @throws AskBreaker
+     */
     public static Double[] askStats(CommandLine cl) throws AskBreaker {
-        try{
+        while (true){
             Double[] mas = new Double[5];
-            while (true){
+            try{
                 cl.print("enter the five stats in following format: x.x,y.y,etc... ");
                 String line = cl.readln().trim();
                 if(line.equals("exit")) throw new AskBreaker();
-                if(!line.isBlank() && !line.isEmpty()){
+                if(!line.isBlank() && !line.isEmpty()) {
                     int i = 0;
-                    for(String entry:line.split(",")){
-                        try{
+                    String[] ls = line.split(",");
+                    if(ls.length!=0){
+                    for (String entry : line.split(",")) {
+                        if (!entry.isEmpty() && !entry.isBlank()){
+                        try {
                             mas[i] = Double.parseDouble(entry);
                             i++;
-                        } catch(IllegalArgumentException e){}
-                    }
+                        } catch (IllegalArgumentException | ArrayIndexOutOfBoundsException | NullPointerException e) {
+                            System.out.println(">Wrong value. Try again (enter e.g 50.0,30.0,10.0,15.0,60.0) or enter 'exit' to stop the process.");
+                        }}else throw new NullPointerException();}
+                    }else throw new NullPointerException();
                     return mas;
-                } else return new Double[]{0.0, 0.0, 0.0, 0.0, 0.0};
+                } else throw new NullPointerException();
+            }catch (IllegalArgumentException | ArrayIndexOutOfBoundsException | NullPointerException e){
+                System.out.println("Failed to read");
             }
-        } catch (IllegalArgumentException e){
-            System.out.println("Failed to read");
-            return new Double[]{0.0, 0.0, 0.0, 0.0, 0.0};
+//            System.out.println(">Wrong value. Try again (enter e.g 50.0,30.0,10.0,15.0,60.0) or enter 'exit' to stop the process.");
         }
     }
+    /**
+     *Asks user/script for a dugCounter value
+     * @return dugCounter
+     * @throws AskBreaker
+     */
     public static Integer askDugCounter(CommandLine cl) throws AskBreaker {
         while (true) {
             cl.print("enter the dug_counter value: ");

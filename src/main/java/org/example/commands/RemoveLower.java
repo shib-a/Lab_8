@@ -5,6 +5,8 @@ import org.example.classes.CollectionManager;
 import org.example.classes.Human;
 import org.example.classes.Stat;
 
+import java.util.ArrayList;
+
 public class RemoveLower extends AbstractCommand{
     private CommandLine cl;
     private CollectionManager cm;
@@ -19,10 +21,12 @@ public class RemoveLower extends AbstractCommand{
         if(arg[1].isEmpty()) return new Feedbacker(false,"Wrong argument usage. see 'help' for reference");
         try{
             var val = Double.parseDouble(arg[1].trim());
+            var idArr = new ArrayList<Integer>();
             if (cm.getCollection().isEmpty()){return new Feedbacker("Empty collection");} else{
                 for(Human el: cm.getCollection()){
-                    if (el.getStat(Stat.DAMAGE)<val) cm.removeById(el.getId());
+                    if (el.getStat(Stat.DAMAGE)<val) idArr.add(el.getId());
                 }
+                for (Integer el: idArr){cm.removeById(el);}
                 return new Feedbacker("Elements removed successfully");}
         } catch(NumberFormatException e){ return new Feedbacker(false,"Wrong argument");}
     }

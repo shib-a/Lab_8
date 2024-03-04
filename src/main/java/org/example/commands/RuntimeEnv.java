@@ -7,6 +7,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
@@ -35,40 +36,34 @@ public class RuntimeEnv {
     }
     public Feedbacker autoMode(String path){
         String[] inputCommand = new String[]{"",""};
-        String result = "";
         if (!new File(path.trim()).exists()) return new Feedbacker(false, "File does not exist");
         if (!Files.isReadable(Paths.get(path.trim()))) return new Feedbacker(false, "Not enough rights to read the file");
         scriptExecutionList.add(path);
         Feedbacker wtfIsGoingOn;
-        System.out.println(scriptExecutionList.get(0));
         try(Scanner scanner = new Scanner(new BufferedInputStream(new FileInputStream(path.trim())))) {
             do{
             if (!scanner.hasNext()) throw new NoSuchElementException();
             cl.selectFileScanner(scanner);
-
             inputCommand = (cl.readln().trim() + " ").split(" ", 2);
             while (cl.canReadln() && inputCommand.equals("")) {
                 inputCommand = (cl.readln().trim() + " ").split(" ", 2);
-
             }
-            result += inputCommand;
             boolean temp = true;
-            if (inputCommand[0].equals("execute_script")) {
-                temp = recursiveChecker(inputCommand[1], scanner);
+            if (inputCommand[0].trim().equals("execute_script")) {
+                temp = recursiveChecker(inputCommand[1].trim(), scanner);
             }
             if (temp) {
                 wtfIsGoingOn = executeCommand(inputCommand);
             } else {
-                wtfIsGoingOn = new Feedbacker("Max recursion depth exceeded");
+                wtfIsGoingOn = new Feedbacker("Recursion blocked for your own safety.");
             }
             if (inputCommand[0].equals("execute_script")) {
                 cl.selectFileScanner(scanner);
-                result += " " + wtfIsGoingOn.getMessage();
             }
         }while (wtfIsGoingOn.getIsSuccessful() && cl.canReadln() && !wtfIsGoingOn.getMessage().equals("exit"));
             cl.selectConsoleScanner();
-            if(!(inputCommand[0].equals("execute_script")) && !wtfIsGoingOn.getIsSuccessful()){result+=" Something went wrong. Check script data.";}
-            return new Feedbacker(wtfIsGoingOn.getIsSuccessful(), result.toString());
+            if(!(inputCommand[0].equals("execute_script")) && !wtfIsGoingOn.getIsSuccessful()){System.out.println(" Something went wrong. Check script data.");}
+            return new Feedbacker(wtfIsGoingOn.getIsSuccessful(),wtfIsGoingOn.getMessage()+" Script completed.");
         } catch (IOException | NoSuchElementException | IllegalStateException e) {return new Feedbacker(false,"Error");}
         finally {
             scriptExecutionList.remove(scriptExecutionList.size()-1);
@@ -86,22 +81,6 @@ public class RuntimeEnv {
         } else return command.execute(inputCommand);
     }
     public boolean recursiveChecker(String path, Scanner scanner){
-        int rd = recursiveDepth;
-        int i = 0;
-        for(String line:scriptExecutionList){
-            i+=1;
-            if(path.equals(line)){
-                rd = i;
-                cl.printLn("Script has recursive instructions. Do ypu wish to proceed? (yes/no)");
-                cl.selectConsoleScanner();
-                try{String l = cl.readln();
-                if(!(l.equals("yes"))){throw new RecursiveLimitExceededException();}
-                else{
-                    cl.selectFileScanner(scanner);
-                }
-                }catch (RecursiveLimitExceededException e){}
-            } if (i>10){return false;}
-        }
-        return true;
+        if (scriptExecutionList.contains(path.trim()))return false; else return true;
     }
 }

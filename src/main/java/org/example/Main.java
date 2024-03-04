@@ -10,11 +10,17 @@ import java.util.ArrayList;
 import java.lang.annotation.*;
 import java.util.Arrays;
 import java.util.Collection;
-
 public class Main {
     static class MarkedExporter{           // статический класс
         public MarkedExporter(){
         }
+        /**
+         *Additional task from lab4. Counts the amount of specifically marked fields via reflect api
+         * @param arr
+         * @throws IOException
+         * @throws IllegalAccessException
+         * @author shibiest
+         */
         public void getIsMarked(Object[] arr) throws IOException, IllegalAccessException {        // метод-сериализатор
             try {
                 FileWriter fw = new FileWriter("answer.txt",true);      // возможность дописывания в файл
@@ -76,7 +82,7 @@ public class Main {
 
         //creating instances and setting stats
         CommandLine cl = new CommandLine();
-        var cls = new CollectionLoaderSaver("D:\\labs_prog\\lab_3\\ans.txt",cl);
+        var cls = new CollectionLoaderSaver("E:\\IdeaProjects\\Labs\\ans.txt",cl);
         var cm = new CollectionManager(cls);
         cm.initialaze();
         cl.printLn("\n");

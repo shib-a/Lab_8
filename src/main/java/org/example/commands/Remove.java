@@ -19,7 +19,7 @@ public class Remove extends AbstractCommand{
             if(arg[1].isEmpty()) return new Feedbacker(false,"Wrong argument usage. see 'help' for reference");
         try{
             var id = Integer.parseInt(arg[1].trim());
-            cm.removeById(id);
+            try{cm.removeById(id);}catch (NullPointerException e){return new Feedbacker("No element with such id.");}
             return new Feedbacker("Element removed successfully");
         } catch(NumberFormatException e){ return new Feedbacker(false,"Wrong argument");}
     }
