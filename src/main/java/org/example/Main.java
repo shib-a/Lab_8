@@ -87,6 +87,7 @@ public class Main {
         cl.printLn("\n");
         cl.printLn("Welcome back. Enter 'help' to see information on available commands");
         var com = new CommandManager();
+        var re = new RuntimeEnv(cl,com);
         com.getCommandList().put("add", new Add(cl,cm));
         com.getCommandList().put("clear", new Clear(cl,cm));
         com.getCommandList().put("info", new Info(cl,cm));
@@ -104,6 +105,7 @@ public class Main {
         com.getCommandList().put("execute_script", new ExecuteScript(cl,cm));
         com.getCommandList().put("get_history", new GetHistory(cl,com));
         com.getCommandList().put("help", new Help(cl,com));
-        new RuntimeEnv(cl,com).mannedMode();
+        com.getCommandList().put("redo",new Redo(cl,com,re));
+        re.mannedMode();
     }
 }

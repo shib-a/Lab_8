@@ -1,5 +1,6 @@
 package org.example.commands;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,5 +20,12 @@ public class CommandManager {
     }
     public void addToHistory(String name){
         commandHistory.add(name);
+//        try {
+//            var l = new BufferedOutputStream(new FileOutputStream("log.txt",true));
+//            l.write(name.getBytes());
+//            l.flush();
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
     }
 }

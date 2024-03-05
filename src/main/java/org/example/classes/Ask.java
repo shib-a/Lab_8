@@ -7,6 +7,8 @@ import java.util.Arrays;
 import java.util.NoSuchElementException;
 import org.example.classes.Human;
 
+import static org.example.commands.RuntimeEnv.addToLog;
+
 /**
  * This class Asks user/script for arguments to create a Human instance
  */
@@ -27,6 +29,7 @@ public class Ask{
                 cl.print("enter name: ");
                 name = cl.readln().trim();
                 if(name.equals("exit")) throw new AskBreaker();
+                addToLog(name);
                 if(!name.isEmpty()) break;
             }
             ToolKinds ptt = askPreferredTool(cl);
@@ -56,6 +59,7 @@ public class Ask{
                 if (!line.isEmpty()) {
                     try {
                         ptt = ToolKinds.valueOf(line);
+                        addToLog(line);
                         break;
                     } catch (IllegalArgumentException e) {
                         System.out.println(">Wrong tool value. Try again or enter 'exit' to stop the process.");
@@ -83,6 +87,7 @@ public class Ask{
                 if (!line.isEmpty() && !line.isBlank()){
                     try{
                         rt = ResearcherType.valueOf(line);
+                        addToLog(line);
                         break;
                     } catch (IllegalArgumentException e){System.out.println(">Wrong researcher type value. Try again or enter 'exit' to stop the process.");}
                 } else return null;
@@ -106,7 +111,7 @@ public class Ask{
                 if (line.equals("exit")) throw new AskBreaker();
                 if (!line.isEmpty() && !line.isBlank()) {
                     try {
-                        if (line.trim().equals("true")) {return true;} else if (line.trim().equals("false"))return false; else System.out.println(">Wrong value. Try again (enter true/false) or enter 'exit' to stop the process.");
+                        if (line.trim().equals("true")) {addToLog(line);return true;} else if (line.trim().equals("false")){addToLog(line);return false;} else System.out.println(">Wrong value. Try again (enter true/false) or enter 'exit' to stop the process.");
                     } catch (IllegalArgumentException | NullPointerException e) {System.out.println(">Wrong value. Try again (enter true/false) or enter 'exit' to stop the process.");}
                 }else System.out.println(">Wrong value. Try again (enter true/false) or enter 'exit' to stop the process.");
             }catch (IllegalArgumentException | NullPointerException e) {
@@ -139,6 +144,7 @@ public class Ask{
                             System.out.println(">Wrong value. Try again (enter e.g 50.0,30.0,10.0,15.0,60.0) or enter 'exit' to stop the process.");
                         }}else throw new NullPointerException();}
                     }else throw new NullPointerException();
+                    addToLog(line);
                     return mas;
                 } else throw new NullPointerException();
             }catch (IllegalArgumentException | ArrayIndexOutOfBoundsException | NullPointerException e){
@@ -160,6 +166,7 @@ public class Ask{
             if (!line.isBlank() && !line.isEmpty()) {
                 try {
                     var i = Integer.parseInt(line);
+                    addToLog(line);
                     return i;
                 } catch (NumberFormatException e) {
                     System.out.println(">Wrong argument");

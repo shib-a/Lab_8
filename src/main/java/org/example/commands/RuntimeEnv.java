@@ -16,10 +16,11 @@ import java.util.Scanner;
  */
 public class RuntimeEnv {
     private CommandLine cl;
-    private CommandManager cm;
+    private static CommandManager cm;
     private ArrayList<String> scriptExecutionList = new ArrayList<>();
+    private static BufferedWriter bw;
     private int recursiveDepth= -1;
-    public RuntimeEnv(CommandLine cl, CommandManager cm){this.cl=cl;this.cm=cm;}
+    public RuntimeEnv(CommandLine cl, CommandManager cm){this.cl=cl;this.cm=cm;try{bw = new BufferedWriter(new FileWriter("log.txt"));} catch (IOException e){bw = null;}}
 
     /**
      * Takes user inputs and executes entered commands
@@ -32,8 +33,10 @@ public class RuntimeEnv {
                 cl.printLine();
                 inputCommand = (cl.readln().trim()+" ").split(" ",2);
                 if(inputCommand.length>2){cl.printException(">Too many arguments! Check the amount of whitespaces or arguments.");} else{
-                    cm.addToHistory(inputCommand[0]);
+                    addToLog(inputCommand[0]+" "+inputCommand[1]);
                     completionFeedback = executeCommand(inputCommand);
+//                    cm.addToHistory(inputCommand[0]+" "+inputCommand[1]);
+
                     if(completionFeedback.getMessage().equals("exit")) break;
                     cl.printLn(completionFeedback.getMessage());
                 }
@@ -75,7 +78,7 @@ public class RuntimeEnv {
         }while (wtfIsGoingOn.getIsSuccessful() && cl.canReadln() && !wtfIsGoingOn.getMessage().equals("exit"));
             cl.selectConsoleScanner();
             if(!(inputCommand[0].equals("execute_script")) && !wtfIsGoingOn.getIsSuccessful()){System.out.println(">Something went wrong. Check script data.");}
-            return new Feedbacker(wtfIsGoingOn.getIsSuccessful(),wtfIsGoingOn.getMessage()+" Script completed.");
+            return new Feedbacker(wtfIsGoingOn.getIsSuccessful(),wtfIsGoingOn.getMessage()+"\n"+">Script completed.");
         } catch (IOException | NoSuchElementException | IllegalStateException e) {return new Feedbacker(false,">Error.");}
         finally {
             scriptExecutionList.remove(scriptExecutionList.size()-1);
@@ -87,7 +90,7 @@ public class RuntimeEnv {
      * @param inputCommand
      * @return Feedbacker
      */
-    private Feedbacker executeCommand(String[] inputCommand){
+    public Feedbacker executeCommand(String[] inputCommand){
         if (inputCommand[0].equals("")) return new Feedbacker("");
         var command = cm.getCommandList().get(inputCommand[0]);
         if (command==null) return new Feedbacker(false,">Command "+inputCommand[0]+" not found. See 'help' for reference.");
@@ -107,5 +110,15 @@ public class RuntimeEnv {
      */
     public boolean recursiveChecker(String path, Scanner scanner){
         if (scriptExecutionList.contains(path.trim()))return false; else return true;
+    }
+    public BufferedWriter getBw(){
+        return bw;
+    }
+    public static void addToLog(String com){
+        try {
+            cm.addToHistory(com);
+            bw.append(com+"\n");
+            bw.flush();
+        } catch (IOException e){}
     }
 }
