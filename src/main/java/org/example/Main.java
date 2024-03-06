@@ -2,6 +2,7 @@ package org.example;
 import org.example.classes.*;
 import org.example.collection.CollectionLoaderSaver;
 import org.example.commands.*;
+import org.example.commands.redo.RedoFile;
 import org.example.interfaces.ReadMarkedField;
 
 import java.io.*;
@@ -106,6 +107,7 @@ public class Main {
         com.getCommandList().put("get_history", new GetHistory(cl,com));
         com.getCommandList().put("help", new Help(cl,com));
         com.getCommandList().put("redo",new Redo(cl,com,re));
+        com.getCommandList().put("redo_f",new RedoFile(cl,com,re));
         re.mannedMode();
     }
 }
