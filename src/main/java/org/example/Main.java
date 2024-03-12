@@ -82,7 +82,7 @@ public class Main {
 
         //creating instances and setting stats
         CommandLine cl = new CommandLine();
-        var cls = new CollectionLoaderSaver("E:\\IdeaProjects\\Labs\\ans.txt",cl);
+        var cls = new CollectionLoaderSaver("ans.txt",cl);
         var cm = new CollectionManager(cls);
         cm.initialaze();
         cl.printLn("\n");

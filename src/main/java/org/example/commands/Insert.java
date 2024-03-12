@@ -26,7 +26,7 @@ public class Insert extends AbstractCommand{
         try {
             if (arg[1].isEmpty()) return new Feedbacker(false, ">Wrong argument usage. See 'help' for reference.");
             var val = Integer.parseInt(arg[1].trim());
-            if(val<=cm.getCollection().size()){
+            if(val<=cm.getCollection().size() && !(val<0)){
                 cl.printLn(">Creating new Human for insertion:");
                 Human h = Ask.askHuman(cl, cm.getUnusedId());
                 if (h != null && h.validate()) {
