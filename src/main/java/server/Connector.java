@@ -9,7 +9,7 @@ public class Connector {
     public Connector(Server s){
         this.s=s;
     }
-    public Socket getClientSocket() throws IOException {
-        return s.getServerSocket().accept();
-    }
+//    public Socket getClientSocket() throws IOException {
+//        return s.getServerSocket().accept();
+//    }
 }

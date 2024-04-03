@@ -1,14 +1,12 @@
-package org.example.commands;
+package server.cls.commands;
 
 import org.example.CommandLine;
 import org.example.classes.CollectionManager;
-import org.example.classes.Human;
 
-import java.io.FileNotFoundException;
 /**
  * Class for the "save" command
  */
-public class Save extends AbstractCommand{
+public class Save extends AbstractCommand {
     private CommandLine cl;
     private CollectionManager cm;
     public Save(CommandLine cl, CollectionManager cm) {

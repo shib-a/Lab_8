@@ -1,4 +1,4 @@
-package org.example.classes;
+package org.example.classes.unused;
 
 public class NecronExtract extends Book{
     double sanityEffect;

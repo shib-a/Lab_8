@@ -1,13 +1,14 @@
-package org.example.commands;
+package server.cls.commands;
 
 import org.example.CommandLine;
 import org.example.classes.Ask;
 import org.example.classes.CollectionManager;
 import org.example.classes.Human;
+
 /**
  * Class for the "update" command
  */
-public class Update extends AbstractCommand{
+public class Update extends AbstractCommand {
     private transient CommandLine cl;
     private transient CollectionManager cm;
     public Update(CommandLine cl, CollectionManager cm) {

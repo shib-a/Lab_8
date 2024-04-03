@@ -2,10 +2,12 @@ package org.example.classes;
 
 import org.example.collection.CollectionLoaderSaver;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-public class CollectionManager {
+public class CollectionManager implements Serializable {
+    private static final long serialVersionUID = 1L;
     public int currId = 1;
     public ArrayList<Human> collection = new ArrayList<>();
     public LocalDateTime initDate;

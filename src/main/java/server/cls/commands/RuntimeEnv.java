@@ -1,15 +1,12 @@
-package org.example.commands;
+package server.cls.commands;
 
 import org.example.CommandLine;
-import org.example.exceptions.RecursiveLimitExceededException;
 
 import java.io.*;
-import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
@@ -103,16 +100,12 @@ public class RuntimeEnv {
             Feedbacker fp2 = autoMode(inputCommand[1].trim());
             return new Feedbacker(fp2.getIsSuccessful(),fp2.getMessage());
         } else {
-            CommandObject co = new CommandObject(command,inputCommand);
+            CommandObject co = new CommandObject(command,inputCommand[1]);
             try{
                 ObjectOutputStream ois = new ObjectOutputStream(ss.getOutputStream());
                 ois.writeObject(co);
-                ObjectInputStream is = new ObjectInputStream(ss.getInputStream());
-                Feedbacker fb = (Feedbacker) is.readObject();
-                return fb;
-            }catch (IOException | ClassNotFoundException e){System.out.println("no");}
-//            return command.execute(inputCommand);
-            return null;
+            }catch (IOException e){System.out.println("no");}
+            return command.execute(inputCommand);
         }
     }
 

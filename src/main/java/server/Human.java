@@ -1,4 +1,5 @@
-package org.example.classes;
+package server;
+import org.example.classes.*;
 import org.example.classes.unused.Book;
 import org.example.classes.unused.NecronExtract;
 import org.example.exceptions.EmptyInventoryException;
@@ -29,7 +30,7 @@ public class Human implements Comparable<Human> {
         this.type = type;
         this.isAlive = isAlive;
     }
-    public Human(int id, String name, ToolKinds preferredTool, ResearcherType type, boolean isAlive,double hp, double intel, double lck, double dmg, double san, int dc){
+    public Human(int id, String name, ToolKinds preferredTool, ResearcherType type, boolean isAlive, double hp, double intel, double lck, double dmg, double san, int dc){
         this.id=id;
         this.name = name;
         this.preferredTool = preferredTool;
@@ -43,7 +44,7 @@ public class Human implements Comparable<Human> {
         this.dugCounter = dc;
         if(this.getStat(Stat.HP)<=0){isAlive=false;} else{isAlive=true;}
     }
-    public Human(int id, String name, ToolKinds preferredTool, ResearcherType type, boolean isAlive,double hp, double intel, double lck, double dmg, double san, int dc, Item[] inv){
+    public Human(int id, String name, ToolKinds preferredTool, ResearcherType type, boolean isAlive, double hp, double intel, double lck, double dmg, double san, int dc, Item[] inv){
         this.id=id;
         this.name = name;
         this.preferredTool = preferredTool;

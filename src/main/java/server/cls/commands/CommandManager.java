@@ -1,6 +1,6 @@
-package org.example.commands;
+package server.cls.commands;
 
-import java.io.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -10,7 +10,7 @@ import java.util.Map;
  */
 public class CommandManager implements Serializable {
     private static final long serialVersionUID = 1L;
-    private Map<String,AbstractCommand> commandList;
+    private Map<String, AbstractCommand> commandList;
     public ArrayList<String> commandHistory;
     public CommandManager(){this.commandList = new HashMap<>();this.commandHistory= new ArrayList<String>();}
     public Map<String, AbstractCommand> getCommandList() {

@@ -1,6 +1,7 @@
-package org.example.classes;
+package org.example.classes.unused;
+import org.example.classes.StoneDurability;
 import org.example.interfaces.ReadMarkedField;
-abstract class GeologicalFormation{
+public abstract class GeologicalFormation{
     @ReadMarkedField
     String type;
     @ReadMarkedField

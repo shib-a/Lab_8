@@ -1,8 +1,4 @@
-package org.example.commands;
-
-import org.example.CommandLine;
-import org.example.classes.CollectionManager;
-import org.example.classes.Human;
+package server.cls.commands;
 
 import java.io.Serializable;
 

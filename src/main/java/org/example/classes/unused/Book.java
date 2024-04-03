@@ -1,6 +1,8 @@
-package org.example.classes;
+package org.example.classes.unused;
 
-public class Book extends Item{
+import org.example.classes.Item;
+
+public class Book extends Item {
     private double intelligenceEffect;
     public Book(String name, double intelligenceEffect){
         super(name);

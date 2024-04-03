@@ -13,7 +13,8 @@ import static org.example.classes.Human.fromCsvStr;
 /**
  * This class manages loading and saving the collection from and into a file
  */
-public class CollectionLoaderSaver {
+public class CollectionLoaderSaver implements Serializable {
+    private static final long serialVersionUID = 1L;
     private String fileName;
     private CommandLine cl;
     public CollectionLoaderSaver(String fileName, CommandLine cl){this.fileName = fileName;this.cl = cl;}

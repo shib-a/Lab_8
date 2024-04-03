@@ -9,6 +9,7 @@ import org.example.exceptions.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -17,7 +18,8 @@ import java.util.Scanner;
 /**
  * This class is an intermediary between the terminal and the user's input
  */
-public class CommandLine {
+public class CommandLine implements Serializable {
+    private static final long serialVersionUID = 1L;
     public String line = "Lab5>";
     public static Scanner fileReader = null;
     public static Scanner defReader = new Scanner(System.in);

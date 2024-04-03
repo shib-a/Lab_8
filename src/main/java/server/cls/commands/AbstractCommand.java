@@ -1,4 +1,4 @@
-package org.example.commands;
+package server.cls.commands;
 
 import java.io.Serializable;
 

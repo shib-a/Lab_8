@@ -1,7 +1,8 @@
 package org.example.classes;
+import org.example.classes.unused.GeologicalFormation;
 import org.example.interfaces.ReadMarkedField;
 
-public class GeologicalLayer extends GeologicalFormation{
+public class GeologicalLayer extends GeologicalFormation {
     @ReadMarkedField
     private int digsLeft;
     private boolean isDigable;

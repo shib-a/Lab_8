@@ -1,4 +1,4 @@
-package org.example.commands;
+package server.cls.commands;
 
 import org.example.CommandLine;
 import org.example.classes.Ask;
@@ -8,9 +8,9 @@ import org.example.classes.Human;
 /**
  * Class for "add" command
  */
-public class Add extends AbstractCommand{
-    private transient CommandLine cl;
-    private transient CollectionManager cm;
+public class Add extends AbstractCommand {
+    private CommandLine cl;
+    private CollectionManager cm;
     public Add(CommandLine cl, CollectionManager cm) {
         super("add", "Add a new element to collection.");
         this.cl = cl;

@@ -1,6 +1,4 @@
-package org.example.classes;
-
-import org.example.interfaces.*;
+package org.example.classes.unused;
 
 public class Creature extends Animal{
     public Creature(String name){
