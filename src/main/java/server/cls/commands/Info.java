@@ -1,7 +1,9 @@
 package server.cls.commands;
 
-import org.example.CommandLine;
-import org.example.classes.CollectionManager;
+import common.AbstractCommand;
+import common.Feedbacker;
+import server.CommandLine;
+import server.CollectionManager;
 
 /**
  * Class for the "info" command
@@ -20,10 +22,8 @@ public class Info extends AbstractCommand {
      * @return Feedbacker
      */
     @Override
-    public Feedbacker execute(String[] arg) {
-            if(!arg[1].isEmpty()) return new Feedbacker(false,">Wrong argument usage. See 'help' for reference.");
-            cl.printLn("Collection size: "+cm.getCollection().size());
-            cl.printLn("Collection initialization date: "+cm.getInitDate());
-            return new Feedbacker(">Shown successfully");
+    public Feedbacker execute(String arg) {
+            if(!arg.isEmpty()) return new Feedbacker(false,">Wrong argument usage. See 'help' for reference.");
+            return new Feedbacker(new StringBuilder().append("Collection size: ").append(cm.getCollection().size()).append("Collection initialization date: ").append(cm.getInitDate()).append(">Shown successfully").toString());
     }
 }

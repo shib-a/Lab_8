@@ -1,9 +1,8 @@
 package server.cls.commands;
 
-import org.example.CommandLine;
-import org.example.classes.Ask;
-import org.example.classes.CollectionManager;
-import org.example.classes.Human;
+import common.AbstractCommand;
+import common.Feedbacker;
+import server.*;
 
 /**
  * Class for the "update" command
@@ -11,10 +10,12 @@ import org.example.classes.Human;
 public class Update extends AbstractCommand {
     private transient CommandLine cl;
     private transient CollectionManager cm;
-    public Update(CommandLine cl, CollectionManager cm) {
-        super("update (id)", "Updates the element at entered id.");
+    private RuntimeEnv re;
+    public Update(CommandLine cl, CollectionManager cm, RuntimeEnv re) {
+        super("update (id)", "Updates the element at entered id.",true);
         this.cl = cl;
         this.cm=cm;
+        this.re=re;
     }
     /**
      * Executes the "update" command
@@ -22,12 +23,12 @@ public class Update extends AbstractCommand {
      * @return Feedbacker
      */
     @Override
-    public Feedbacker execute(String[] arg) {
-        if(arg[1].isEmpty()) return new Feedbacker(false,">Wrong argument usage. See 'help' for reference");
+    public Feedbacker execute(String arg) {
+        if(arg.isEmpty()) return new Feedbacker(false,">Wrong argument usage. See 'help' for reference");
         cl.printLn(">Updating a Human. Input new values:");
-        System.out.println(Integer.parseInt(arg[1].trim()));
+        System.out.println(Integer.parseInt(arg.trim()));
         try {
-            Human h=Ask.askHuman(cl,Integer.parseInt(arg[1].trim()));
+            Human h=Ask.askHuman(re.getCurrHumanData(),Integer.parseInt(arg.trim()));
             if (h != null && h.validate()) {
                 cm.updateEl(h);
                 return new Feedbacker(">Updated successfully.");

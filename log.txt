@@ -1,1 +1,12 @@
-remove_lower 3 
+AbstractCommand{name='insert (positive_integer_valshow 
+update 2 
+balls
+GUN
+EXPEDITIONIST
+0,0,0,0,0
+true
+0
+show 
+bstractCommand{name='show', desc='Shows the elements of collection.'} 
+AbstractCommand{name='update (id)', desc='Updates the element at entered id.'} 2 
+AbstractCommand{name='show', desc='Shows the elements of collection.'} 

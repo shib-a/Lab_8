@@ -1,9 +1,16 @@
 package server;
-import org.example.classes.*;
-import org.example.classes.unused.Book;
-import org.example.classes.unused.NecronExtract;
-import org.example.exceptions.EmptyInventoryException;
-import org.example.interfaces.ReadMarkedField;
+import common.ResearcherType;
+import common.Stat;
+import common.Tool;
+import common.ToolKinds;
+import common.GeologicalLayer;
+import common.Item;
+import common.PeriodAge;
+import common.StoneDurability;
+import client.classes.unused.Book;
+import client.classes.unused.NecronExtract;
+import client.exceptions.EmptyInventoryException;
+import client.interfaces.ReadMarkedField;
 
 import java.util.Arrays;
 import java.util.Scanner;
@@ -158,7 +165,7 @@ public class Human implements Comparable<Human> {
         GeologicalLayer newLayer = new GeologicalLayer("geological layer",null,null);
         double roll = Math.random()*100;
         if (roll>=0 && roll<20){
-            newLayer = new GeologicalLayer("geological layer",StoneDurability.SOLID,PeriodAge.JURASSIC);
+            newLayer = new GeologicalLayer("geological layer", StoneDurability.SOLID, PeriodAge.JURASSIC);
         } else if (roll>=20 && roll<40){
             newLayer = new GeologicalLayer("geological layer",StoneDurability.TOUGH,PeriodAge.MIOCENOS);
         } else if (roll>=40 && roll<60){

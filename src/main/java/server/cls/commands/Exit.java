@@ -1,7 +1,8 @@
 package server.cls.commands;
 
-import org.example.CommandLine;
-import org.example.classes.CollectionManager;
+import common.AbstractCommand;
+import common.Feedbacker;
+import server.*;
 
 /**
  * Class for the "exit" command
@@ -20,8 +21,8 @@ public class Exit extends AbstractCommand {
      * @return Feedbacker
      */
     @Override
-    public Feedbacker execute(String[] arg) {
-        if(!arg[1].isEmpty()) return new Feedbacker(false,">Wrong argument usage. See 'help' for reference.");
+    public Feedbacker execute(String arg) {
+        if(!arg.isEmpty()) return new Feedbacker(false,">Wrong argument usage. See 'help' for reference.");
         return new Feedbacker("exit");
     }
 }

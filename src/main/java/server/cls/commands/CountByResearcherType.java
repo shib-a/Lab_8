@@ -1,9 +1,9 @@
 package server.cls.commands;
 
-import org.example.CommandLine;
-import org.example.classes.CollectionManager;
-import org.example.classes.Human;
-import org.example.classes.ResearcherType;
+import common.AbstractCommand;
+import common.Feedbacker;
+import common.ResearcherType;
+import server.*;
 
 public class CountByResearcherType extends AbstractCommand {
     private CommandLine cl;
@@ -15,17 +15,16 @@ public class CountByResearcherType extends AbstractCommand {
     }
 
     @Override
-    public Feedbacker execute(String[] arg) {
-        if(arg[1].isEmpty()) return new Feedbacker(false,">Wrong argument usage. see 'help' for reference.");
+    public Feedbacker execute(String arg) {
+        if(arg.isEmpty()) return new Feedbacker(false,">Wrong argument usage. see 'help' for reference.");
         try{
-            var val = ResearcherType.valueOf(arg[1].trim());
+            var val = ResearcherType.valueOf(arg.trim());
             if (cm.getCollection().isEmpty()){return new Feedbacker(">Empty collection.");} else{
                 int count = 0;
                 for(Human el: cm.getCollection()){
                     if (el.getType()==val) count++;
                 }
-                cl.printLn(count);
-                return new Feedbacker(">Elements counted successfully.");}
+                return new Feedbacker(new StringBuilder().append(count).append("\n").append(">Elements counted successfully.").toString());}
         } catch(IllegalArgumentException e){ return new Feedbacker(false,">Wrong argument.");}
     }
 }

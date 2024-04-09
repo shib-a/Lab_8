@@ -1,11 +1,12 @@
 package server.cls.commands;
 
-import org.example.CommandLine;
+import common.CommandObject;
+import common.Feedbacker;
+import common.HumanData;
+import server.CommandLine;
 
 import java.io.*;
 import java.net.Socket;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
@@ -19,6 +20,7 @@ public class RuntimeEnv {
     private ArrayList<String> scriptExecutionList = new ArrayList<>();
     private static BufferedWriter bw;
     private Socket ss;
+    private HumanData currHumanData = null;
     public RuntimeEnv(CommandLine cl, CommandManager cm, Socket ss){this.cl=cl;this.cm=cm;this.ss=ss;try{bw = new BufferedWriter(new FileWriter("log.txt"));} catch (IOException e){bw = null;}}
 
     /**
@@ -27,21 +29,23 @@ public class RuntimeEnv {
     public void mannedMode(){
         try{
             Feedbacker completionFeedback;
-            String[] inputCommand = new String[]{"",""};
+//            ObjectInputStream ois = new ObjectInputStream(ss.getInputStream());
+//            CommandObject co = (CommandObject) ois.readObject();
             while (true){
+                ObjectInputStream ois = new ObjectInputStream(ss.getInputStream());
+                CommandObject co = (CommandObject) ois.readObject();
                 cl.printLine();
-                inputCommand = (cl.readln().trim()+" ").split(" ",2);
-                if(inputCommand.length>2){cl.printException(">Too many arguments! Check the amount of whitespaces or arguments.");} else{
-                    addToLog(inputCommand[0]+" "+inputCommand[1]);
-                    completionFeedback = executeCommand(inputCommand);
-
-//                    cm.addToHistory(inputCommand[0]+" "+inputCommand[1]);
+                    addToLog(co.getCommand()+" "+co.getArgument());
+                    completionFeedback = executeCommand(co);
                     if(completionFeedback.getMessage().equals("exit")) break;
-                    cl.printLn(completionFeedback.getMessage());
-
+                    try {
+                        ObjectOutputStream oos = new ObjectOutputStream(ss.getOutputStream());
+                        oos.writeObject(completionFeedback);
+                    }catch (IOException e){}
                 }
-            }
-        } catch (NoSuchElementException | IllegalStateException e){cl.printException(">Fatal error.");}
+        } catch (NoSuchElementException | IOException | ClassNotFoundException | IllegalStateException e){
+            System.err.println(e);
+        }
     }
 
     /**
@@ -49,64 +53,65 @@ public class RuntimeEnv {
      * @param path
      * @return Feedbacker
      */
-    public Feedbacker autoMode(String path){
-        String[] inputCommand = new String[]{"",""};
-        if (!new File(path.trim()).exists()) return new Feedbacker(false, ">File does not exist.");
-        if (!Files.isReadable(Paths.get(path.trim()))) return new Feedbacker(false, ">Not enough rights to read the file.");
-        scriptExecutionList.add(path);
-        Feedbacker wtfIsGoingOn;
-        try(Scanner scanner = new Scanner(new BufferedInputStream(new FileInputStream(path.trim())))) {
-            do{
-            if (!scanner.hasNext()) throw new NoSuchElementException();
-            cl.selectFileScanner(scanner);
-            inputCommand = (cl.readln().trim() + " ").split(" ", 2);
-            while (cl.canReadln() && inputCommand.equals("")) {
-                inputCommand = (cl.readln().trim() + " ").split(" ", 2);
-            }
-            boolean temp = true;
-            if (inputCommand[0].trim().equals("execute_script")) {
-                temp = recursiveChecker(inputCommand[1].trim(), scanner);
-            }
-            if (temp) {
-                wtfIsGoingOn = executeCommand(inputCommand);
-            } else {
-                wtfIsGoingOn = new Feedbacker(">Recursion blocked for your own safety.");
-            }
-            if (inputCommand[0].equals("execute_script")) {
-                cl.selectFileScanner(scanner);
-            }
-        }while (wtfIsGoingOn.getIsSuccessful() && cl.canReadln() && !wtfIsGoingOn.getMessage().equals("exit"));
-            cl.selectConsoleScanner();
-            if(!(inputCommand[0].equals("execute_script")) && !wtfIsGoingOn.getIsSuccessful()){System.out.println(">Something went wrong. Check script data.");}
-            return new Feedbacker(wtfIsGoingOn.getIsSuccessful(),wtfIsGoingOn.getMessage()+"\n"+">Script completed.");
-        } catch (IOException | NoSuchElementException | IllegalStateException e) {return new Feedbacker(false,">Error.");}
-        finally {
-            scriptExecutionList.remove(scriptExecutionList.size()-1);
-        }
-    }
+//    public Feedbacker autoMode(String path){
+//        CommandObject co;
+//        if (!new File(path.trim()).exists()) return new Feedbacker(false, ">File does not exist.");
+//        if (!Files.isReadable(Paths.get(path.trim()))) return new Feedbacker(false, ">Not enough rights to read the file.");
+//        scriptExecutionList.add(path);
+//        Feedbacker wtfIsGoingOn;
+//        try(Scanner scanner = new Scanner(new BufferedInputStream(new FileInputStream(path.trim())))) {
+//            do{
+//            if (!scanner.hasNext()) throw new NoSuchElementException();
+//            cl.selectFileScanner(scanner);
+//            inputCommand = (cl.readln().trim() + " ").split(" ", 2);
+//            while (cl.canReadln() && inputCommand.equals("")) {
+//                inputCommand = (cl.readln().trim() + " ").split(" ", 2);
+//            }
+//            boolean temp = true;
+//            if (inputCommand[0].trim().equals("execute_script")) {
+//                temp = recursiveChecker(inputCommand[1].trim(), scanner);
+//            }
+//            if (temp) {
+//                wtfIsGoingOn = executeCommand(co);
+//            } else {
+//                wtfIsGoingOn = new Feedbacker(">Recursion blocked for your own safety.");
+//            }
+//            if (inputCommand[0].equals("execute_script")) {
+//                cl.selectFileScanner(scanner);
+//            }
+//        }while (wtfIsGoingOn.getIsSuccessful() && cl.canReadln() && !wtfIsGoingOn.getMessage().equals("exit"));
+//            cl.selectConsoleScanner();
+//            if(!(inputCommand[0].equals("execute_script")) && !wtfIsGoingOn.getIsSuccessful()){System.out.println(">Something went wrong. Check script data.");}
+//            return new Feedbacker(wtfIsGoingOn.getIsSuccessful(),wtfIsGoingOn.getMessage()+"\n"+">Script completed.");
+//        } catch (IOException | NoSuchElementException | IllegalStateException e) {return new Feedbacker(false,">Error.");}
+//        finally {
+//            scriptExecutionList.remove(scriptExecutionList.size()-1);
+//        }
+//    }
 
     /**
      *
-     * @param inputCommand
+     * @param co
      * @return Feedbacker
      */
-    public Feedbacker executeCommand(String[] inputCommand){
-        if (inputCommand[0].equals("")) return new Feedbacker("");
-        var command = cm.getCommandList().get(inputCommand[0]);
-        if (command==null) return new Feedbacker(false,">Command "+inputCommand[0]+" not found. See 'help' for reference.");
-        else if (inputCommand[0].equals("execute_script")){
-            Feedbacker fp = cm.getCommandList().get("execute_script").execute(inputCommand);
-            if(!fp.getIsSuccessful()) return fp;
-            Feedbacker fp2 = autoMode(inputCommand[1].trim());
-            return new Feedbacker(fp2.getIsSuccessful(),fp2.getMessage());
-        } else {
-            CommandObject co = new CommandObject(command,inputCommand[1]);
-            try{
-                ObjectOutputStream ois = new ObjectOutputStream(ss.getOutputStream());
-                ois.writeObject(co);
-            }catch (IOException e){System.out.println("no");}
-            return command.execute(inputCommand);
-        }
+    public Feedbacker executeCommand(CommandObject co){
+            currHumanData = co.getHd();
+            if (co.getCommand().equals("")) return new Feedbacker("");
+            var command = cm.getCommandList().get(co.getCommand().getName());
+            System.out.println(command);
+            if (command == null)
+                return new Feedbacker(false, ">Command " + co.getCommand() + " not found. See 'help' for reference.");
+//        else if (co.command.equals("execute_script")){
+//            Feedbacker fp = cm.getCommandList().get("execute_script").execute(co);
+//            if(!fp.getIsSuccessful()) return fp;
+//            Feedbacker fp2 = autoMode(co.argument.trim());
+//            return new Feedbacker(fp2.getIsSuccessful(),fp2.getMessage());
+//        } else {
+            command = cm.getCommandList().get(co.getCommand().getName());
+            Feedbacker fb = command.execute(co.getArgument());
+            return fb;
+//        }
+
     }
 
     /**
@@ -124,5 +129,9 @@ public class RuntimeEnv {
             bw.append(com+"\n");
             bw.flush();
         } catch (IOException e){}
+    }
+
+    public HumanData getCurrHumanData() {
+        return currHumanData;
     }
 }

@@ -1,7 +1,9 @@
 package server.cls.commands;
 
-import org.example.CommandLine;
-import org.example.classes.CollectionManager;
+import common.AbstractCommand;
+import common.Feedbacker;
+import server.CommandLine;
+import server.CollectionManager;
 
 /**
  * Executes the "remove_by_id" command
@@ -20,10 +22,10 @@ public class Remove extends AbstractCommand {
      * @return Feedbacker
      */
     @Override
-    public Feedbacker execute(String[] arg) {
-            if(arg[1].isEmpty()) return new Feedbacker(false,">Wrong argument usage. See 'help' for reference.");
+    public Feedbacker execute(String arg) {
+            if(arg.isEmpty()) return new Feedbacker(false,">Wrong argument usage. See 'help' for reference.");
         try{
-            var id = Integer.parseInt(arg[1].trim());
+            var id = Integer.parseInt(arg.trim());
             try{cm.removeById(id);}catch (NullPointerException e){return new Feedbacker(">No element with such id.");}
             return new Feedbacker(">Element removed successfully.");
         } catch(NumberFormatException e){ return new Feedbacker(false,">Wrong argument.");}

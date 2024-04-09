@@ -1,8 +1,8 @@
 package server.cls.commands;
 
-import org.example.CommandLine;
-import org.example.classes.CollectionManager;
-
+import common.AbstractCommand;
+import common.Feedbacker;
+import server.*;
 /**
  * Class for the "execute_script" command
  */
@@ -20,8 +20,8 @@ public class ExecuteScript extends AbstractCommand {
      * @return Feedbacker
      */
     @Override
-    public Feedbacker execute(String[] arg) {
-        if(arg[1].isEmpty()) return new Feedbacker(false,"Wrong argument usage. see 'help' for reference.");
+    public Feedbacker execute(String arg) {
+        if(arg.isEmpty()) return new Feedbacker(false,"Wrong argument usage. see 'help' for reference.");
         return new Feedbacker(">Executing script...");
     }
 }

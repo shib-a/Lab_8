@@ -1,5 +1,7 @@
 package server.cls.commands;
 
+import common.AbstractCommand;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;

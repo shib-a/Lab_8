@@ -1,5 +1,8 @@
 package server.cls.commands;
 
+import common.AbstractCommand;
+import common.Feedbacker;
+
 import java.io.Serializable;
 
 /**
@@ -19,12 +22,12 @@ public class Help extends AbstractCommand implements Serializable {
      * @return Feedbacker
      */
     @Override
-    public Feedbacker execute(String[] arg) {
-        argm = arg[1];
-        if(!arg[1].isEmpty()) return new Feedbacker(false,">Wrong argument usage. See 'help' for reference.");
+    public Feedbacker execute(String arg) {
+        if(!arg.isEmpty()) return new Feedbacker(false,">Wrong argument usage. See 'help' for reference.");
+        StringBuilder str = new StringBuilder();
         for(AbstractCommand el: com.getCommandList().values()){
-            System.out.println(el.getName() + "-" +el.getDesc());
+            str.append(el.getName()).append("\t").append(el.getDesc()).append("\n");
         }
-        return new Feedbacker(">Shown successfully.");
+        return new Feedbacker(str.append(">Shown successfully.").toString());
     }
 }

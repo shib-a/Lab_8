@@ -1,6 +1,8 @@
 package server.cls.commands;
 
-import org.example.CommandLine;
+import common.AbstractCommand;
+import common.Feedbacker;
+import client.CommandLine;
 
 /**
  * Executes the "get_history" command
@@ -19,8 +21,8 @@ public class GetHistory extends AbstractCommand {
      * @return Feedbacker
      */
     @Override
-    public Feedbacker execute(String[] arg) {
-        if(!arg[1].isEmpty()) return new Feedbacker(false,">Wrong argument usage. See 'help' for reference.");
+    public Feedbacker execute(String arg) {
+        if(!arg.isEmpty()) return new Feedbacker(false,">Wrong argument usage. See 'help' for reference.");
         cl.printLn(com.getCommandHistory());
         return new Feedbacker(">Showed successfully.");
     }

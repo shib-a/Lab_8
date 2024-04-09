@@ -1,5 +1,7 @@
 package server.cls.commands;
 
+import common.AbstractCommand;
+
 import java.io.Serializable;
 
 public class SerializedCommand implements Serializable {

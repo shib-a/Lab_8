@@ -1,9 +1,9 @@
 package server.cls.commands.redo;
 
-import org.example.CommandLine;
-import server.cls.commands.AbstractCommand;
+import client.CommandLine;
+import common.AbstractCommand;
 import server.cls.commands.CommandManager;
-import server.cls.commands.Feedbacker;
+import common.Feedbacker;
 import server.cls.commands.RuntimeEnv;
 
 import java.io.BufferedWriter;
@@ -31,13 +31,13 @@ public class RedoFile extends AbstractCommand {
      * @return Feedbacker
      */
     @Override
-    public Feedbacker execute(String[] arg) {
-        if(arg[1].isEmpty()){
-            re.executeCommand(new String[]{"execute_script", "log.txt"});
+    public Feedbacker execute(String arg) {
+        if(arg.isEmpty()){
+//            re.executeCommand(new String[]{"execute_script", "log.txt"});
             return new Feedbacker(">Redone successfully.");
         }
         try{
-            int ind = Integer.parseInt(arg[1].trim());
+            int ind = Integer.parseInt(arg.trim());
             if(ind<=0){return new Feedbacker(false,">Wrong argument usage. Value should be higher than 0.");}
             else if(ind>=com.getCommandHistory().size()){return new Feedbacker(false,">Wrong argument usage. Value should not exceed the history length.");}
             var lore = com.getCommandHistory();
@@ -52,7 +52,7 @@ public class RedoFile extends AbstractCommand {
             }while(i<lore.size());
             bw.flush();
             bw.close();
-            re.executeCommand(new String[]{"execute_script","temp.txt"});
+//            re.executeCommand(new String[]{"execute_script","temp.txt"});
             f.delete();
             return new Feedbacker(">Redone Successfully.");
         } catch (NullPointerException | NumberFormatException | IOException e){return new Feedbacker(false,">Wrong argument usage. See 'help' for reference.");}

@@ -1,15 +1,15 @@
 package server;
 
-import org.example.CommandLine;
-import org.example.classes.Human;
-import org.example.classes.ResearcherType;
-import org.example.classes.ToolKinds;
+import common.HumanData;
+import common.ResearcherType;
+import common.ToolKinds;
 
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.NoSuchElementException;
 
-import static org.example.commands.RuntimeEnv.addToLog;
-
+import static server.cls.commands.RuntimeEnv.addToLog;
 /**
  * This class Asks user/script for arguments to create a Human instance
  */
@@ -23,24 +23,21 @@ public class Ask {
      * @return Human
      * @throws AskBreaker
      */
-    public static Human askHuman(CommandLine cl, int id) throws AskBreaker{
+    public static Human askHuman(HumanData hd, int id) throws AskBreaker{
+        System.out.println("cock");
         try{
-            String name;
-            while (true){
-                cl.print("enter name: ");
-                name = cl.readln().trim();
-                if(name.equals("exit")) throw new AskBreaker();
-                addToLog(name);
-                if(!name.isEmpty()) break;
-            }
-            ToolKinds ptt = askPreferredTool(cl);
-            ResearcherType rt = askResType(cl);
-            Double[] stats = askStats(cl);
-            boolean ia = askIsAlive(cl);
-            int dc = askDugCounter(cl);
+            String name = hd.getName();
+            System.out.println(name);
+            ToolKinds ptt = hd.getPtt();
+            ResearcherType rt = hd.getRt();
+            Double[] stats = new Double[5];
+            String[] st = hd.getStats().replace("[","").replace("]","").split(",");
+            for (int i=0;i<stats.length;i++){stats[i]=Double.parseDouble(st[i]);}
+            boolean ia = hd.getAl();
+            int dc = Integer.parseInt(hd.getDc());
             return new Human(id,name, ptt, rt, ia,stats[0],stats[1],stats[2], stats[3], stats[4],dc);
-        } catch (NoSuchElementException e){
-            System.out.println(">Failed to read");
+        } catch (NoSuchElementException   e){
+            System.out.println(">Failed to read"+ e);
             return null;
         }
     }
@@ -78,27 +75,26 @@ public class Ask {
      * @return researcherType
      * @throws AskBreaker
      */
-    public static ResearcherType askResType(CommandLine cl) throws AskBreaker {
-        try{
-            ResearcherType rt;
-            while(true){
-                cl.print("Enter researcher type: (" + Arrays.toString(ResearcherType.values()).replace("[","").replace("]","") +")");
-                String line = cl.readln().trim();
-                if (line.equals("exit")) throw new AskBreaker();
-                if (!line.isEmpty() && !line.isBlank()){
-                    try{
-                        rt = ResearcherType.valueOf(line);
-                        addToLog(line);
-                        break;
-                    } catch (IllegalArgumentException e){System.out.println(">Wrong researcher type value. Try again or enter 'exit' to stop the process.");}
-                } else return null;
-            }
-            return rt;
-        } catch (NoSuchElementException e){
-            cl.printException(">Failed to read");
-            return null;
-        }
-    }
+//    public static ResearcherType askResType() throws AskBreaker {
+//        try{
+//            ResearcherType rt;
+//            while(true){
+////                System.out.println("Enter researcher type: (" + Arrays.toString(ResearcherType.values()).replace("[","").replace("]","") +")");
+//                if (line.equals("exit")) throw new AskBreaker();
+//                if (!line.isEmpty() && !line.isBlank()){
+//                    try{
+//                        rt = ResearcherType.valueOf(line);
+//                        addToLog(line);
+//                        break;
+//                    } catch (IllegalArgumentException e){System.out.println(">Wrong researcher type value. Try again or enter 'exit' to stop the process.");}
+//                } else return null;
+//            }
+//            return rt;
+//        } catch (NoSuchElementException e){
+//            cl.printException(">Failed to read");
+//            return null;
+//        }
+//    }
     /**
      *Asks user/script for a boolean isAlive value
      * @return isAlive

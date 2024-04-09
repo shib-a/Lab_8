@@ -1,9 +1,9 @@
 package server.cls.commands;
 
-import org.example.CommandLine;
-import org.example.classes.CollectionManager;
-import org.example.classes.Human;
-import org.example.classes.Stat;
+import common.AbstractCommand;
+import common.Feedbacker;
+import common.Stat;
+import server.*;
 
 import java.util.ArrayList;
 /**
@@ -23,10 +23,10 @@ public class RemoveLower extends AbstractCommand {
      * @return Feedbacker
      */
     @Override
-    public Feedbacker execute(String[] arg) {
-        if(arg[1].isEmpty()) return new Feedbacker(false,">Wrong argument usage. See 'help' for reference.");
+    public Feedbacker execute(String arg) {
+        if(arg.isEmpty()) return new Feedbacker(false,">Wrong argument usage. See 'help' for reference.");
         try{
-            var val = Double.parseDouble(arg[1].trim());
+            var val = Double.parseDouble(arg.trim());
             var idArr = new ArrayList<Integer>();
             if (cm.getCollection().isEmpty()){return new Feedbacker(">Empty collection.");} else{
                 for(Human el: cm.getCollection()){

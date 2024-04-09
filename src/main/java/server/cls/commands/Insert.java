@@ -1,9 +1,8 @@
 package server.cls.commands;
 
-import org.example.CommandLine;
-import org.example.classes.Ask;
-import org.example.classes.CollectionManager;
-import org.example.classes.Human;
+import common.AbstractCommand;
+import common.Feedbacker;
+import server.*;
 
 /**
  * Executes the "insert" command
@@ -11,10 +10,12 @@ import org.example.classes.Human;
 public class Insert extends AbstractCommand {
     private CommandLine cl;
     private CollectionManager cm;
-    public Insert(CommandLine cl, CollectionManager cm) {
-        super("insert (positive_integer_value)", "Inserts a new element into entered position.");
+    private RuntimeEnv re;
+    public Insert(CommandLine cl, CollectionManager cm, RuntimeEnv re) {
+        super("insert (positive_integer_value)", "Inserts a new element into entered position.",true);
         this.cl = cl;
         this.cm=cm;
+        this.re=re;
     }
     /**
      * Executes the "insert" command
@@ -22,13 +23,13 @@ public class Insert extends AbstractCommand {
      * @return Feedbacker
      */
     @Override
-    public Feedbacker execute(String[] arg) {
+    public Feedbacker execute(String arg) {
         try {
-            if (arg[1].isEmpty()) return new Feedbacker(false, ">Wrong argument usage. See 'help' for reference.");
-            var val = Integer.parseInt(arg[1].trim());
+            if (arg.isEmpty()) return new Feedbacker(false, ">Wrong argument usage. See 'help' for reference.");
+            var val = Integer.parseInt(arg.trim());
             if(val<=cm.getCollection().size() && !(val<0)){
                 cl.printLn(">Creating new Human for insertion:");
-                Human h = Ask.askHuman(cl, cm.getUnusedId());
+                Human h = Ask.askHuman(re.getCurrHumanData(), cm.getUnusedId());
                 if (h != null && h.validate()) {
                     cm.insert(val,h);
                     return new Feedbacker(">Inserted successfully.");

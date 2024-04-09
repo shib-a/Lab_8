@@ -1,8 +1,8 @@
 package server.cls.commands;
 
-import org.example.CommandLine;
-import org.example.classes.CollectionManager;
-import org.example.classes.Human;
+import common.AbstractCommand;
+import common.Feedbacker;
+import server.*;
 
 /**
  * Executes the "show" command
@@ -21,12 +21,13 @@ public class Show extends AbstractCommand {
      * @return Feedbacker
      */
     @Override
-    public Feedbacker execute(String[] arg) {
-        if (!arg[1].isEmpty()) return new Feedbacker(false, ">Wrong argument usage. See 'help' for reference.");
+    public Feedbacker execute(String arg) {
+        if (!arg.isEmpty()) return new Feedbacker(false, ">Wrong argument usage. See 'help' for reference.");
         if (cm.getCollection().isEmpty()) return new Feedbacker(">Collection is empty.");
-        else{for(Human el:cm.getCollection()){
-            cl.printLn(el.toString());
+        StringBuilder str = new StringBuilder();
+        for(Human el:cm.getCollection()){
+            str.append(el.toString()).append("\n");
         }
-        return new Feedbacker(">Elements shown.");}
+        return new Feedbacker(str.append(">Elements shown.").toString());
     }
 }

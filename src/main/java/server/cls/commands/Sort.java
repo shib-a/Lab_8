@@ -1,9 +1,8 @@
 package server.cls.commands;
 
-import org.example.CommandLine;
-import org.example.classes.CollectionManager;
-import org.example.classes.HumanComparator;
-
+import common.AbstractCommand;
+import common.Feedbacker;
+import server.*;
 /**
  * Class for the "sort" command
  */
@@ -21,11 +20,9 @@ public class Sort extends AbstractCommand {
      * @return Feedbacker
      */
     @Override
-    public Feedbacker execute(String[] arg) {
-            if(!arg[1].isEmpty()) return new Feedbacker(false,">Wrong argument usage. See 'help' for reference.");
-            else {
-                cm.getCollection().sort(new HumanComparator());
-            }
+    public Feedbacker execute(String arg) {
+            if(!arg.isEmpty()) return new Feedbacker(false,">Wrong argument usage. See 'help' for reference.");
+            cm.getCollection().sort(new HumanComparator());
             return new Feedbacker(">Sorted successfully.");
     }
 }

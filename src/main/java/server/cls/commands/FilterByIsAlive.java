@@ -1,8 +1,8 @@
 package server.cls.commands;
 
-import org.example.CommandLine;
-import org.example.classes.CollectionManager;
-import org.example.classes.Human;
+import common.AbstractCommand;
+import common.Feedbacker;
+import server.*;
 
 /**
  * Class for the "filter_by_is_alive" command
@@ -21,15 +21,16 @@ public class FilterByIsAlive extends AbstractCommand {
      * @return Feedbacker
      */
     @Override
-    public Feedbacker execute(String[] arg) {
-        if(arg[1].isEmpty()) return new Feedbacker(false,">Wrong argument usage. See 'help' for reference.");
+    public Feedbacker execute(String arg) {
+        if(arg.isEmpty()) return new Feedbacker(false,">Wrong argument usage. See 'help' for reference.");
         try{
-            var val = Boolean.parseBoolean(arg[1].trim());
+            StringBuilder str = new StringBuilder();
+            var val = Boolean.parseBoolean(arg.trim());
             if (cm.getCollection().isEmpty()){return new Feedbacker(">Empty collection.");} else{
             for(Human el: cm.getCollection()){
-                if (el.isAlive==val) cl.printLn(el);
+                if (el.isAlive==val) str.append(el).append("\n");
             }
-            return new Feedbacker(">Elements shown successfully.");}
+            return new Feedbacker(str.append(">Elements shown successfully.").toString());}
         } catch(IllegalArgumentException e){ return new Feedbacker(false,">Wrong argument.");}
     }
 }

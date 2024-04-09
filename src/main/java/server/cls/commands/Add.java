@@ -1,9 +1,11 @@
 package server.cls.commands;
 
-import org.example.CommandLine;
-import org.example.classes.Ask;
-import org.example.classes.CollectionManager;
-import org.example.classes.Human;
+import common.AbstractCommand;
+import common.Feedbacker;
+import server.CommandLine;
+import server.Ask;
+import server.CollectionManager;
+import server.Human;
 
 /**
  * Class for "add" command
@@ -11,10 +13,12 @@ import org.example.classes.Human;
 public class Add extends AbstractCommand {
     private CommandLine cl;
     private CollectionManager cm;
-    public Add(CommandLine cl, CollectionManager cm) {
+    private RuntimeEnv re;
+    public Add(CommandLine cl, CollectionManager cm, RuntimeEnv re) {
         super("add", "Add a new element to collection.");
         this.cl = cl;
         this.cm=cm;
+        this.re=re;
     }
 
     /**
@@ -23,11 +27,11 @@ public class Add extends AbstractCommand {
      * @return Feedbacker
      */
     @Override
-    public Feedbacker execute(String[] arg) {
+    public Feedbacker execute(String arg) {
         try {
-            if(!arg[1].isEmpty()) return new Feedbacker(false,">Wrong argument usage. see 'help' for reference.");
+            if(!arg.isEmpty()) return new Feedbacker(false,">Wrong argument usage. see 'help' for reference.");
             cl.printLn(">Creating new Human:");
-            Human h = Ask.askHuman(cl,cm.getUnusedId());
+            Human h = Ask.askHuman(re.getCurrHumanData(),cm.getUnusedId());
             if(h!=null && h.validate()){
                 cm.add(h);
                 return new Feedbacker(">Added successfully.");
