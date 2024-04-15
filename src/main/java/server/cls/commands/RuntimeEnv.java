@@ -10,11 +10,16 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * This class acts as a runtime environment and handles user inputs as well as scripted inputs.
  */
 public class RuntimeEnv {
+    Logger logger = Logger.getLogger(RuntimeEnv.class.getName());
     private CommandLine cl;
     private static CommandManager cm;
     private ArrayList<String> scriptExecutionList = new ArrayList<>();
@@ -26,26 +31,28 @@ public class RuntimeEnv {
     /**
      * Takes user inputs and executes entered commands
      */
-    public void mannedMode(){
+    public void mannedMode() throws IOException {
         try{
             Feedbacker completionFeedback;
-//            ObjectInputStream ois = new ObjectInputStream(ss.getInputStream());
-//            CommandObject co = (CommandObject) ois.readObject();
             while (true){
                 ObjectInputStream ois = new ObjectInputStream(ss.getInputStream());
+                logger.info("Receiving data from client... ");
                 CommandObject co = (CommandObject) ois.readObject();
+                logger.info("Data received");
                 cl.printLine();
                     addToLog(co.getCommand()+" "+co.getArgument());
                     completionFeedback = executeCommand(co);
-                    if(completionFeedback.getMessage().equals("exit")) break;
+//                    if(completionFeedback.getMessage().equals("exit")) break;
                     try {
                         ObjectOutputStream oos = new ObjectOutputStream(ss.getOutputStream());
+                        logger.info("Sending answer to client...");
                         oos.writeObject(completionFeedback);
+                        logger.info("Answer sent successfully");
                     }catch (IOException e){}
                 }
-        } catch (NoSuchElementException | IOException | ClassNotFoundException | IllegalStateException e){
-            System.err.println(e);
-        }
+        } catch (NoSuchElementException | ClassNotFoundException | IllegalStateException e){
+            logger.info(e.getMessage());
+        } catch (IOException e){throw e;}
     }
 
     /**
@@ -98,20 +105,13 @@ public class RuntimeEnv {
             currHumanData = co.getHd();
             if (co.getCommand().equals("")) return new Feedbacker("");
             var command = cm.getCommandList().get(co.getCommand().getName());
-            System.out.println(command);
+            logger.info("Processing received command: "+command);
             if (command == null)
                 return new Feedbacker(false, ">Command " + co.getCommand() + " not found. See 'help' for reference.");
-//        else if (co.command.equals("execute_script")){
-//            Feedbacker fp = cm.getCommandList().get("execute_script").execute(co);
-//            if(!fp.getIsSuccessful()) return fp;
-//            Feedbacker fp2 = autoMode(co.argument.trim());
-//            return new Feedbacker(fp2.getIsSuccessful(),fp2.getMessage());
-//        } else {
             command = cm.getCommandList().get(co.getCommand().getName());
             Feedbacker fb = command.execute(co.getArgument());
+            logger.info("Command processed, answer is ready");
             return fb;
-//        }
-
     }
 
     /**

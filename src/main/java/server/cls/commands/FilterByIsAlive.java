@@ -27,9 +27,7 @@ public class FilterByIsAlive extends AbstractCommand {
             StringBuilder str = new StringBuilder();
             var val = Boolean.parseBoolean(arg.trim());
             if (cm.getCollection().isEmpty()){return new Feedbacker(">Empty collection.");} else{
-            for(Human el: cm.getCollection()){
-                if (el.isAlive==val) str.append(el).append("\n");
-            }
+            str.append(cm.getCollection().stream().filter(el -> el.getIsAlive()==val).map(el -> el.toString()).reduce((a,b) -> a+"\n"+b).get());
             return new Feedbacker(str.append(">Elements shown successfully.").toString());}
         } catch(IllegalArgumentException e){ return new Feedbacker(false,">Wrong argument.");}
     }

@@ -20,11 +20,7 @@ public class CountByResearcherType extends AbstractCommand {
         try{
             var val = ResearcherType.valueOf(arg.trim());
             if (cm.getCollection().isEmpty()){return new Feedbacker(">Empty collection.");} else{
-                int count = 0;
-                for(Human el: cm.getCollection()){
-                    if (el.getType()==val) count++;
-                }
-                return new Feedbacker(new StringBuilder().append(count).append("\n").append(">Elements counted successfully.").toString());}
+                return new Feedbacker(new StringBuilder().append(cm.getCollection().stream().filter(el -> el.getType().equals(val)).count()).append("\n").append(">Elements counted successfully.").toString());}
         } catch(IllegalArgumentException e){ return new Feedbacker(false,">Wrong argument.");}
     }
 }

@@ -4,6 +4,8 @@ import common.AbstractCommand;
 import common.Feedbacker;
 import server.*;
 
+import java.util.Objects;
+
 /**
  * Executes the "show" command
  */
@@ -25,9 +27,7 @@ public class Show extends AbstractCommand {
         if (!arg.isEmpty()) return new Feedbacker(false, ">Wrong argument usage. See 'help' for reference.");
         if (cm.getCollection().isEmpty()) return new Feedbacker(">Collection is empty.");
         StringBuilder str = new StringBuilder();
-        for(Human el:cm.getCollection()){
-            str.append(el.toString()).append("\n");
-        }
+        str.append(cm.getCollection().stream().map(Objects::toString).reduce((a,b)-> a+"\n"+b).get());
         return new Feedbacker(str.append(">Elements shown.").toString());
     }
 }

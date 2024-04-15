@@ -6,6 +6,9 @@ import common.Stat;
 import server.*;
 
 import java.util.ArrayList;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
 /**
  * Class for the "remove_lower" command
  */
@@ -27,12 +30,13 @@ public class RemoveLower extends AbstractCommand {
         if(arg.isEmpty()) return new Feedbacker(false,">Wrong argument usage. See 'help' for reference.");
         try{
             var val = Double.parseDouble(arg.trim());
-            var idArr = new ArrayList<Integer>();
+//            var idArr = new ArrayList<Integer>();
             if (cm.getCollection().isEmpty()){return new Feedbacker(">Empty collection.");} else{
-                for(Human el: cm.getCollection()){
-                    if (el.getStat(Stat.DAMAGE)<val) idArr.add(el.getId());
-                }
-                for (Integer el: idArr){cm.removeById(el);}
+//                for(Human el: cm.getCollection()){
+//                    if (el.getStat(Stat.DAMAGE)<val) idArr.add(el.getId());
+//                }
+//                for (Integer el: idArr){cm.removeById(el);}
+                cm.setCollection((ArrayList<Human>) cm.getCollection().stream().filter(el -> el.getStat(Stat.DAMAGE)>=val).collect(Collectors.toList()));
                 return new Feedbacker(">Elements removed successfully.");}
         } catch(NumberFormatException e){ return new Feedbacker(false,">Wrong argument.");}
     }

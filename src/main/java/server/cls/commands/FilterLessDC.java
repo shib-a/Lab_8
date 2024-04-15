@@ -4,6 +4,9 @@ import common.AbstractCommand;
 import common.Feedbacker;
 import server.*;
 
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 /**
  * Executes the "filter_by_less_than_number_of_dug_counter" command
  */
@@ -26,13 +29,10 @@ public class FilterLessDC extends AbstractCommand {
         try{
             var val = Integer.parseInt(arg.trim());
             if (cm.getCollection().isEmpty()){return new Feedbacker(">Empty collection.");}else{
-                Integer count = 0;
                 StringBuilder str = new StringBuilder();
-                for(Human el: cm.getCollection()){
-                    if (el.getDugCounter()<val) {str.append(el).append("\n");count++;}
-                }
-                if (count==0) return new Feedbacker(">No elements with lower value.");
-                return new Feedbacker(str.append(">Elements shown successfully.").toString());
+                Stream st = cm.getCollection().stream().filter(el -> el.getDugCounter()<val);
+                if (st.count()==0) return new Feedbacker(">No elements with lower value.");
+                return new Feedbacker(str.append(st.map(el -> el.toString()).reduce((a,b)-> a+"\n"+b).get()).append(">Elements shown successfully.").toString());
             }
         } catch(IllegalArgumentException e){return new Feedbacker(false,">Wrong argument.");}
     }

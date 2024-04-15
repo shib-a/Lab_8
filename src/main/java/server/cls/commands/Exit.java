@@ -23,6 +23,7 @@ public class Exit extends AbstractCommand {
     @Override
     public Feedbacker execute(String arg) {
         if(!arg.isEmpty()) return new Feedbacker(false,">Wrong argument usage. See 'help' for reference.");
+        cm.saveToFile();
         return new Feedbacker("exit");
     }
 }

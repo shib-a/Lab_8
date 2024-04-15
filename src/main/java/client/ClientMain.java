@@ -1,13 +1,12 @@
 package client;
 import client.classes.CollectionManager;
 import client.commands.*;
-import client.commands.redo.RedoFile;
 import client.collection.CollectionLoaderSaver;
 
 import java.io.*;
 import java.net.Socket;
 
-public class Main {
+public class ClientMain {
 //    public Main() throws IOException {
 //    }
 
@@ -84,33 +83,37 @@ public class Main {
             //creating instances and setting stats
             var com = new CommandManager();
             int port = 3829;
-            Socket s = new Socket("localhost", port);
-            CommandLine cl = new CommandLine(s);
-            var cls = new CollectionLoaderSaver("ans.txt", cl);
-            var cm = new CollectionManager(cls);
-            cm.initialaze();
-            cl.printLn("\n");
-            cl.printLn("Welcome back. Enter 'help' to see information on available commands");
-            var re = new RuntimeEnv(cl, com, s);
-            com.getCommandList().put("add", new Add(cl));
-            com.getCommandList().put("clear", new Clear());
-            com.getCommandList().put("info", new Info());
-            com.getCommandList().put("show", new Show());
-            com.getCommandList().put("exit", new Exit());
-            com.getCommandList().put("sort", new Sort());
-            com.getCommandList().put("update", new Update());
-            com.getCommandList().put("remove_by_id", new Remove());
-            com.getCommandList().put("filter_by_is_alive", new FilterByIsAlive());
-            com.getCommandList().put("save", new Save());
-            com.getCommandList().put("filter_by_less_than_number_of_dug_counter", new FilterLessDC());
-            com.getCommandList().put("count_by_researcher_type", new CountByResearcherType());
-            com.getCommandList().put("remove_lower", new RemoveLower());
-            com.getCommandList().put("insert", new Insert());
-            com.getCommandList().put("execute_script", new ExecuteScript());
-            com.getCommandList().put("get_history", new GetHistory());
-            com.getCommandList().put("help", new Help());
-//            com.getCommandList().put("redo", new Redo());
-//            com.getCommandList().put("redo_f", new RedoFile());
-            re.mannedMode();
+            System.out.println(">Awaiting connection...");
+            while (true){
+            try {
+                Socket s = new Socket("localhost", port);
+                CommandLine cl = new CommandLine(s);
+                var cls = new CollectionLoaderSaver("ans.txt", cl);
+                var cm = new CollectionManager(cls);
+                cm.initialaze();
+                cl.printLn("\n");
+                cl.printLn("Welcome back. Enter 'help' to see information on available commands");
+                var re = new RuntimeEnv(cl, com, s);
+                com.getCommandList().put("add", new Add(cl));
+                com.getCommandList().put("clear", new Clear());
+                com.getCommandList().put("info", new Info());
+                com.getCommandList().put("show", new Show());
+                com.getCommandList().put("exit", new Exit());
+                com.getCommandList().put("sort", new Sort());
+                com.getCommandList().put("update", new Update());
+                com.getCommandList().put("remove_by_id", new Remove());
+                com.getCommandList().put("filter_by_is_alive", new FilterByIsAlive());
+//            com.getCommandList().put("save", new Save());
+                com.getCommandList().put("filter_by_less_than_number_of_dug_counter", new FilterLessDC());
+                com.getCommandList().put("count_by_researcher_type", new CountByResearcherType());
+                com.getCommandList().put("remove_lower", new RemoveLower());
+                com.getCommandList().put("insert", new Insert());
+                com.getCommandList().put("execute_script", new ExecuteScript());
+                com.getCommandList().put("get_history", new GetHistory());
+                com.getCommandList().put("help", new Help());
+                re.mannedMode();
+                break;
+            }catch (IOException e){}        // fix error after closing server and inputting a command on client
+        }
         }
 }

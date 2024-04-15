@@ -7,8 +7,6 @@ import common.GeologicalLayer;
 import common.Item;
 import common.PeriodAge;
 import common.StoneDurability;
-import client.classes.unused.Book;
-import client.classes.unused.NecronExtract;
 import client.exceptions.EmptyInventoryException;
 import client.interfaces.ReadMarkedField;
 
@@ -27,7 +25,7 @@ public class Human implements Comparable<Human> {
     protected final ResearcherType type;
     public boolean isAlive;
     @ReadMarkedField
-    public Item[] inventory = new Item[4];
+    public Item[] inventory = new Item[]{null, null, null, null};
     private double[] mas = new double[5];
     @ReadMarkedField
     private int dugCounter = 0;
@@ -117,6 +115,9 @@ public class Human implements Comparable<Human> {
     public ResearcherType getType() {
         return type;
     }
+    public boolean getIsAlive(){
+        return isAlive;
+    }
     //other methods
 
     public void attack(Human this, Human defender){
@@ -140,26 +141,26 @@ public class Human implements Comparable<Human> {
         }
     }
 
-    public void read(Book book){
-        changeStat(Stat.INTELLIGENCE,book.getIntelligenceEffect());
-        if (book.getIntelligenceEffect()>0){
-            System.out.println(this.name + ": " + "I can feel the knowledge coming inside of me!" + "\tRead: " + book.itemName + "\t Current intelligence: " + this.getStat(Stat.INTELLIGENCE));
-        } else if (book.getIntelligenceEffect()<0){
-            System.out.println(this.name + ": " + "I can feel my braincells dying. It was entertaining tho." + "\tRead: " + book.itemName + " \tCurrent intelligence: " + this.getStat(Stat.INTELLIGENCE));
-        }
-    }
-    public void readext(NecronExtract extract){
-        changeStat(Stat.INTELLIGENCE,extract.getIntelligenceEffect());
-        changeStat(Stat.LUCK,extract.getSanityEffect()/2);
-        if (getType()==ResearcherType.FOLK_RESEARCHER) {
-            changeStat(Stat.SANITY,-(extract.getSanityEffect()/2));
-        } else {
-            changeStat(Stat.SANITY,-(extract.getSanityEffect()));
-        }
-        System.out.print(this.name + ": " + "That was... Interesting." + "\tRead: " + extract.itemName + "\t Current intelligence/Sanity/Luck: " + this.getStat(Stat.INTELLIGENCE) + " ");
-        System.out.print(getStat(Stat.SANITY) + " ");
-        System.out.println(getStat(Stat.LUCK));
-    }
+//    public void read(Book book){
+//        changeStat(Stat.INTELLIGENCE,book.getIntelligenceEffect());
+//        if (book.getIntelligenceEffect()>0){
+//            System.out.println(this.name + ": " + "I can feel the knowledge coming inside of me!" + "\tRead: " + book.itemName + "\t Current intelligence: " + this.getStat(Stat.INTELLIGENCE));
+//        } else if (book.getIntelligenceEffect()<0){
+//            System.out.println(this.name + ": " + "I can feel my braincells dying. It was entertaining tho." + "\tRead: " + book.itemName + " \tCurrent intelligence: " + this.getStat(Stat.INTELLIGENCE));
+//        }
+//    }
+//    public void readext(NecronExtract extract){
+//        changeStat(Stat.INTELLIGENCE,extract.getIntelligenceEffect());
+//        changeStat(Stat.LUCK,extract.getSanityEffect()/2);
+//        if (getType()==ResearcherType.FOLK_RESEARCHER) {
+//            changeStat(Stat.SANITY,-(extract.getSanityEffect()/2));
+//        } else {
+//            changeStat(Stat.SANITY,-(extract.getSanityEffect()));
+//        }
+//        System.out.print(this.name + ": " + "That was... Interesting." + "\tRead: " + extract.itemName + "\t Current intelligence/Sanity/Luck: " + this.getStat(Stat.INTELLIGENCE) + " ");
+//        System.out.print(getStat(Stat.SANITY) + " ");
+//        System.out.println(getStat(Stat.LUCK));
+//    }
 
     public GeologicalLayer searchLayer(){
         GeologicalLayer newLayer = new GeologicalLayer("geological layer",null,null);
@@ -498,10 +499,11 @@ public class Human implements Comparable<Human> {
     public String toCsvStr(){
         String csvStr = getId()+","+getName().toString()+","+preferredTool.toString()+","+type.toString()+","+isAlive+","+getStat(Stat.HP)+","+getStat(Stat.INTELLIGENCE)+","+getStat(Stat.LUCK)+","+getStat(Stat.DAMAGE)+","+getStat(Stat.SANITY)+","+dugCounter;
         for(Item el: inventory){
-            if(el.getClass().toString().contains("Tool")){
+            if (el==null){csvStr+=","+null;}
+            else if(el.getClass().toString().contains("Tool")){
                 csvStr+=","+el.itemName+((Tool) el).kind;
             } else if (el.getClass().toString().contains("Book")) {
-                csvStr+=","+el.itemName+((Book) el).getIntelligenceEffect();
+//                csvStr+=","+el.itemName+((Book) el).getIntelligenceEffect();
             } else if (el!=null) {
                 csvStr+=","+el.itemName;
             } else {csvStr+=","+null;}

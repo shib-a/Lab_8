@@ -19,7 +19,7 @@ import java.util.Scanner;
  */
 public class CommandLine implements Serializable {
     private static final long serialVersionUID = 1L;
-    public String line = "Lab5>";
+    public String line = "Lab6>";
     public static Scanner fileReader = null;
     public Socket socket;
     public static Scanner defReader = new Scanner(System.in);

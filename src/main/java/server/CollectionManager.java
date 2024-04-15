@@ -76,6 +76,11 @@ public class CollectionManager implements Serializable {
 //            System.out.println("Not updated: no such object in col");
         }
     }
+
+    public void setCollection(ArrayList<Human> collection) {
+        this.collection = collection;
+    }
+
     /**
      * Removes a Human instance with the entered id
      * @param id
