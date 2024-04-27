@@ -4,7 +4,11 @@ import client.commands.*;
 import client.collection.CollectionLoaderSaver;
 
 import java.io.*;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.SocketAddress;
+import java.nio.channels.SocketChannel;
 
 public class ClientMain {
 //    public Main() throws IOException {
@@ -83,17 +87,22 @@ public class ClientMain {
             //creating instances and setting stats
             var com = new CommandManager();
             int port = 3829;
+            SocketAddress adr = new InetSocketAddress("localhost",port);
             System.out.println(">Awaiting connection...");
+            SocketChannel socketChannel;
             while (true){
             try {
-                Socket s = new Socket("localhost", port);
-                CommandLine cl = new CommandLine(s);
+                socketChannel  = SocketChannel.open();
+                socketChannel.connect(adr);
+                socketChannel.configureBlocking(false);
+//                Socket s = new Socket("localhost", port);
+                CommandLine cl = new CommandLine(socketChannel);
                 var cls = new CollectionLoaderSaver("ans.txt", cl);
                 var cm = new CollectionManager(cls);
                 cm.initialaze();
                 cl.printLn("\n");
                 cl.printLn("Welcome back. Enter 'help' to see information on available commands");
-                var re = new RuntimeEnv(cl, com, s);
+                var re = new RuntimeEnv(cl, com, socketChannel);
                 com.getCommandList().put("add", new Add(cl));
                 com.getCommandList().put("clear", new Clear());
                 com.getCommandList().put("info", new Info());

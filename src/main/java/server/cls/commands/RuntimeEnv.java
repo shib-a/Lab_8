@@ -7,6 +7,8 @@ import server.CommandLine;
 
 import java.io.*;
 import java.net.Socket;
+import java.nio.ByteBuffer;
+import java.nio.channels.SocketChannel;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
@@ -25,8 +27,10 @@ public class RuntimeEnv {
     private ArrayList<String> scriptExecutionList = new ArrayList<>();
     private static BufferedWriter bw;
     private Socket ss;
+    private SocketChannel ssc;
     private HumanData currHumanData = null;
     public RuntimeEnv(CommandLine cl, CommandManager cm, Socket ss){this.cl=cl;this.cm=cm;this.ss=ss;try{bw = new BufferedWriter(new FileWriter("log.txt"));} catch (IOException e){bw = null;}}
+    public RuntimeEnv(CommandLine cl, CommandManager cm, SocketChannel ssc){this.cl=cl;this.cm=cm;this.ssc=ssc;try{bw = new BufferedWriter(new FileWriter("log.txt"));} catch (IOException e){bw = null;}}
 
     /**
      * Takes user inputs and executes entered commands
@@ -35,18 +39,34 @@ public class RuntimeEnv {
         try{
             Feedbacker completionFeedback;
             while (true){
-                ObjectInputStream ois = new ObjectInputStream(ss.getInputStream());
+                ByteBuffer buf = ByteBuffer.allocate(1024);
+                ssc.read(buf);
+                buf.flip();
+                byte[] serializedCommand = new byte[buf.remaining()];
+                buf.get(serializedCommand);
+                ByteArrayInputStream bis = new ByteArrayInputStream(serializedCommand);
+                ObjectInputStream ois = new ObjectInputStream(bis);
+//                ObjectInputStream ois = new ObjectInputStream(ss.getInputStream());
                 logger.info("Receiving data from client... ");
                 CommandObject co = (CommandObject) ois.readObject();
                 logger.info("Data received");
+                buf.clear();
+                buf.flip();
                 cl.printLine();
                     addToLog(co.getCommand()+" "+co.getArgument());
                     completionFeedback = executeCommand(co);
 //                    if(completionFeedback.getMessage().equals("exit")) break;
                     try {
-                        ObjectOutputStream oos = new ObjectOutputStream(ss.getOutputStream());
-                        logger.info("Sending answer to client...");
+                        logger.info("Sending answer to client..." + completionFeedback.getMessage());
+                        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                        ObjectOutputStream oos = new ObjectOutputStream(bos);
                         oos.writeObject(completionFeedback);
+                        oos.flush();
+                        byte[] answer = bos.toByteArray();
+                        ByteBuffer outputBuf = ByteBuffer.wrap(answer);
+                        ssc.write(outputBuf);
+//                        ObjectOutputStream oos = new ObjectOutputStream(ss.getOutputStream());
+//                        oos.writeObject(completionFeedback);
                         logger.info("Answer sent successfully");
                     }catch (IOException e){}
                 }

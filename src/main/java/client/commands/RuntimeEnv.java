@@ -5,6 +5,8 @@ import client.classes.AskHumanData;
 import common.CommandObject;
 import java.io.*;
 import java.net.Socket;
+import java.nio.ByteBuffer;
+import java.nio.channels.SocketChannel;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -22,8 +24,10 @@ public class RuntimeEnv {
     private static CommandManager cm;
     private ArrayList<String> scriptExecutionList = new ArrayList<>();
     private static BufferedWriter bw;
+    private SocketChannel ssc;
     private Socket ss;
     public RuntimeEnv(CommandLine cl, CommandManager cm, Socket ss){this.cl=cl;this.cm=cm;this.ss=ss;try{bw = new BufferedWriter(new FileWriter("log.txt"));} catch (IOException e){bw = null;}}
+    public RuntimeEnv(CommandLine cl, CommandManager cm, SocketChannel ssc){this.cl=cl;this.cm=cm;this.ssc=ssc;try{bw = new BufferedWriter(new FileWriter("log.txt"));} catch (IOException e){bw = null;}}
 
     /**
      * Takes user inputs and executes entered commands
@@ -113,12 +117,30 @@ public class RuntimeEnv {
             try{
                 if (hd!=null){
                 co.setHd(hd);}
-                ObjectOutputStream oos = new ObjectOutputStream(ss.getOutputStream());
+                ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                ObjectOutputStream oos = new ObjectOutputStream(bos);
                 oos.writeObject(co);
                 oos.flush();
-                ObjectInputStream is = new ObjectInputStream(ss.getInputStream());
-                Feedbacker fb = (Feedbacker) is.readObject();
-                return fb;
+                byte[] serializedObj = bos.toByteArray();
+                ByteBuffer buf = ByteBuffer.wrap(serializedObj);
+                ssc.write(buf);
+//                    ByteBuffer inputBuf = ByteBuffer.allocate(1024);
+                ByteBuffer inputBuf = ByteBuffer.allocate(1024);
+                while (ssc.read(inputBuf)==0){
+                    System.out.println("Cock");
+                }
+                ssc.read(inputBuf);
+                inputBuf.flip();
+                    byte[] receivedObj = new byte[inputBuf.remaining()];
+                    inputBuf.get(receivedObj);
+                    ByteArrayInputStream bis = new ByteArrayInputStream(receivedObj);
+                    ObjectInputStream ois = new ObjectInputStream(bis);
+                    Feedbacker fb = (Feedbacker) ois.readObject();
+//                    System.out.println(fb);
+                    inputBuf.clear();
+                    inputBuf.flip();
+                    return fb;
+
             }catch (IOException | ClassNotFoundException e){System.err.println(e);}
 //            return command.execute(inputCommand);
             return null;

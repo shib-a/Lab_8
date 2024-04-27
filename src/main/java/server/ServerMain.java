@@ -3,8 +3,13 @@ package server;
 import server.cls.commands.*;
 import common.*;
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.channels.SelectionKey;
+import java.nio.channels.Selector;
+import java.nio.channels.ServerSocketChannel;
+import java.nio.channels.SocketChannel;
 import java.util.Arrays;
 import java.util.logging.Logger;
 
@@ -13,18 +18,30 @@ public class ServerMain {
     public static void main(String[] args) throws IOException {
         Logger logger = Logger.getLogger(ServerMain.class.getName());
         logger.info("Starting server");
-        ServerSocket ss = new ServerSocket(3829);
+        int port = 3829;
+        Selector selector = Selector.open();
+//        ServerSocket ss = new ServerSocket(port);
+        ServerSocketChannel ssc = ServerSocketChannel.open();
+        ssc.socket().setReuseAddress(true);
+        ssc.socket().bind(new InetSocketAddress("localhost", port));
+        ssc.configureBlocking(false);
         while(true){
             try{
-        Socket s = ss.accept();
+//                ssc = ServerSocketChannel.open();
+                SocketChannel sc = ssc.accept();
+                if (sc != null){
+//                sc.register(selector, SelectionKey.OP_ACCEPT);
+//                selector.select();
+//        Socket s = ss.accept();
         logger.info("New connection acquired");
-        CommandLine cl = new CommandLine(s);
+        CommandLine cl = new CommandLine(sc);
         var cls = new CollectionLoaderSaver("ans.txt",cl);
         var cm = new CollectionManager(cls);
         cm.initialaze();
 //        System.out.println(cm.getCollection().get(2));
         var com = new CommandManager();
-        var re = new RuntimeEnv(cl,com,s);
+//        var re = new RuntimeEnv(cl,com,s);
+                var re = new RuntimeEnv(cl,com,sc);
         com.getCommandList().put("add", new Add(cl,cm,re));
         com.getCommandList().put("clear", new Clear(cl,cm));
         com.getCommandList().put("info", new Info(cl,cm));
@@ -44,10 +61,10 @@ public class ServerMain {
         com.getCommandList().put("help", new Help(com));
         logger.info("Ready for IO");
         re.mannedMode();
-        s.close();
+        ssc.close();}
     }catch (IOException e){
 //                System.err.println(">Client-side connection closed...");
-                logger.severe("Client-side connection closed...");
+                logger.severe("Client-side connection closed..." + e.getMessage() +  Arrays.toString(e.getStackTrace()));
             }
         }
     }

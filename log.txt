@@ -1,3 +1,1 @@
-Abstrashow 
-and{name='help', desc='Shows information about available commands.'} 
-AbstractCommand{name='show', desc='Shows the elements of collection.'} 
+AbstractCommand{name='help', desc='Shows information about available commands.'} 

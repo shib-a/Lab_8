@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.Socket;
+import java.nio.channels.SocketChannel;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -21,7 +22,7 @@ public class CommandLine implements Serializable {
     private static final long serialVersionUID = 1L;
     public String line = "Lab6>";
     public static Scanner fileReader = null;
-    public Socket socket;
+    public SocketChannel socket;
     public static Scanner defReader = new Scanner(System.in);
     public void print(Object o){
         System.out.print(o);
@@ -39,7 +40,7 @@ public class CommandLine implements Serializable {
         return (fileReader!=null?fileReader:defReader).hasNextLine();
     }
     public CommandLine(){}
-    public CommandLine(Socket socket){this.socket=socket;}
+    public CommandLine(SocketChannel socket){this.socket=socket;}
     public void printF(Object o,Object o2) {
         System.out.printf(o.toString());
         System.out.printf("\t|\t");
