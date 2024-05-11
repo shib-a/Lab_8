@@ -1,6 +1,1 @@
-1,Pebody,GUN,EXPEDITIONIST,true,100.0,60.0,50.0,20.0,90.0,0,null,null,null,null
-2,Wilmart,SHOVEL,EXPEDITIONIST,true,100.0,60.0,50.0,25.0,90.0,0,null,null,null,null
-3,Pe,GUN,EXPEDITIONIST,true,100.0,60.0,50.0,15.0,90.0,0,null,null,null,null
-4,Wi,SHOVEL,EXPEDITIONIST,true,100.0,60.0,50.0,15.0,90.0,0,null,null,null,null
-5,Pebo,GUN,EXPEDITIONIST,true,100.0,60.0,50.0,15.0,90.0,0,null,null,null,null
-6,Wil,SHOVEL,EXPEDITIONIST,true,100.0,60.0,50.0,15.0,90.0,0,null,null,null,null
+10,name,GUN,EXPEDITIONIST,true,10.0,10.0,10.0,10.0,10.0,5,null,null,null,null

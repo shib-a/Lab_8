@@ -1,21 +1,29 @@
 package server.cls.commands;
 
+import client.classes.AskHumanData;
 import common.CommandObject;
 import common.Feedbacker;
 import common.HumanData;
 import server.CommandLine;
+import server.CustomException;
+import server.ServerConnector;
+import server.ServerMain;
 
 import java.io.*;
 import java.net.Socket;
 import java.nio.ByteBuffer;
+import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
+import java.util.Set;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import static java.lang.Thread.sleep;
 
 /**
  * This class acts as a runtime environment and handles user inputs as well as scripted inputs.
@@ -35,44 +43,84 @@ public class RuntimeEnv {
     /**
      * Takes user inputs and executes entered commands
      */
-    public void mannedMode() throws IOException {
+    public void mannedMode() throws CustomException {
         try{
-            Feedbacker completionFeedback;
+            Feedbacker completionFeedback = null;
+//            Scanner scanner = new Scanner(System.in);
+//            if(scanner.hasNext()){
+//                String[] inputCommand = new String[]{"",""};
+//                inputCommand = (cl.readln().trim()+" ").split(" ",2);
+//                if(inputCommand.length>2){cl.printException(">Too many arguments! Check the amount of whitespaces or arguments.");} else{
+////                        addToLog(inputCommand[0]+" "+inputCommand[1]);
+//                    completionFeedback = executeCommand(inputCommand);
+////                    cm.addToHistory(inputCommand[0]+" "+inputCommand[1]);
+//                    if(completionFeedback.getMessage().equals("exit")) return;
+//                    cl.printLn(completionFeedback.getMessage());
+//                }}
             while (true){
-                ByteBuffer buf = ByteBuffer.allocate(1024);
-                ssc.read(buf);
-                buf.flip();
-                byte[] serializedCommand = new byte[buf.remaining()];
-                buf.get(serializedCommand);
-                ByteArrayInputStream bis = new ByteArrayInputStream(serializedCommand);
-                ObjectInputStream ois = new ObjectInputStream(bis);
-//                ObjectInputStream ois = new ObjectInputStream(ss.getInputStream());
-                logger.info("Receiving data from client... ");
-                CommandObject co = (CommandObject) ois.readObject();
-                logger.info("Data received");
-                buf.clear();
-                buf.flip();
-                cl.printLine();
-                    addToLog(co.getCommand()+" "+co.getArgument());
-                    completionFeedback = executeCommand(co);
-//                    if(completionFeedback.getMessage().equals("exit")) break;
-                    try {
-                        logger.info("Sending answer to client..." + completionFeedback.getMessage());
-                        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                        ObjectOutputStream oos = new ObjectOutputStream(bos);
-                        oos.writeObject(completionFeedback);
-                        oos.flush();
-                        byte[] answer = bos.toByteArray();
-                        ByteBuffer outputBuf = ByteBuffer.wrap(answer);
-                        ssc.write(outputBuf);
-//                        ObjectOutputStream oos = new ObjectOutputStream(ss.getOutputStream());
-//                        oos.writeObject(completionFeedback);
-                        logger.info("Answer sent successfully");
-                    }catch (IOException e){}
+
+                if(ssc!=null) {
+                    try{
+                    CommandObject co = recieve();
+                    Feedbacker fb = executeCommand(co);
+                    sleep(1000);
+                    send(fb);
+                    if (fb.getMessage().equals("exit")){throw new CustomException();}
+                    } catch (IOException e){}
+                } else break;
+//                Feedbacker completionFeedback = null;
+//                while(true) {
+//                    ServerConnector.getSelector().select();
+//                    Set<SelectionKey> selectedKeys = ServerConnector.getSelector().selectedKeys();
+//                    if (ServerConnector.getSelector().select()>0){
+//                        for (SelectionKey sk : selectedKeys) {
+//                            if (sk.isReadable() && sk.isValid()) {
+////                                ByteBuffer buf = ByteBuffer.allocate(3048);
+////                                ssc.read(buf);
+////                                buf.flip();
+////                                byte[] serializedCommand = new byte[buf.remaining()];
+////                                logger.info(String.valueOf(buf.remaining()));
+////                                buf.get(serializedCommand);
+////                                ByteArrayInputStream bis = new ByteArrayInputStream(serializedCommand);
+////                                ObjectInputStream ois = new ObjectInputStream(bis);
+//////                ObjectInputStream ois = new ObjectInputStream(ss.getInputStream());
+////                                logger.info("Receiving data from client... ");
+////                                CommandObject co = (CommandObject) ois.readObject();
+////                                logger.info("Data received");
+////                                buf.clear();
+////                                buf.flip();
+////                                cl.printLine();
+////                                addToLog(co.getCommand()+" "+co.getArgument());
+////                                completionFeedback = executeCommand(co);
+//                                if(sk.isValid() && sk.isWritable()){
+//                                    try {
+//                                        logger.info("Sending answer to client..." + completionFeedback.getMessage());
+//                                        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+//                                        ObjectOutputStream oos = new ObjectOutputStream(bos);
+//                                        oos.writeObject(completionFeedback);
+//                                        oos.flush();
+//                                        byte[] answer = bos.toByteArray();
+//                                        ByteBuffer outputBuf = ByteBuffer.wrap(answer);
+////                                        outputBuf.flip();
+//                                        logger.info("before output: " + outputBuf.remaining());
+//                                        ssc.write(outputBuf);
+////                                        outputBuf.compact();
+//                                        outputBuf.flip();
+//                                        logger.info("Answer sent successfully");
+//                                    }catch (IOException e){}
+//                                }
+//                                break;
+////                    if(completionFeedback.getMessage().equals("exit")) break;
+//                            }
+//                            System.out.println("cock");
+//                        }
+//                    }
+//                }
+
                 }
-        } catch (NoSuchElementException | ClassNotFoundException | IllegalStateException e){
+        } catch (NoSuchElementException | ClassNotFoundException | IllegalStateException | InterruptedException e){
             logger.info(e.getMessage());
-        } catch (IOException e){throw e;}
+        }
     }
 
     /**
@@ -121,9 +169,11 @@ public class RuntimeEnv {
      * @param co
      * @return Feedbacker
      */
-    public Feedbacker executeCommand(CommandObject co){
+    public Feedbacker executeCommand(CommandObject co) {
             currHumanData = co.getHd();
-            if (co.getCommand().equals("")) return new Feedbacker("");
+            if (co.getCommand().getName().equals("")) return new Feedbacker("");
+            if (co.getCommand().getName().equals("exit")) {
+                return new Feedbacker("exit");}
             var command = cm.getCommandList().get(co.getCommand().getName());
             logger.info("Processing received command: "+command);
             if (command == null)
@@ -131,9 +181,35 @@ public class RuntimeEnv {
             command = cm.getCommandList().get(co.getCommand().getName());
             Feedbacker fb = command.execute(co.getArgument());
             logger.info("Command processed, answer is ready");
-            return fb;
+        return fb;
     }
 
+    public Feedbacker executeCommand(String[] inputCommand){
+        if (inputCommand[0].equals("")) return new Feedbacker("");
+        var command = cm.getCommandList().get(inputCommand[0]);
+        if (command==null) return new Feedbacker(false,">Command "+inputCommand[0]+" not found. See 'help' for reference.");
+        else if (inputCommand[0].equals("execute_script")){
+            Feedbacker fp = cm.getCommandList().get("execute_script").execute(inputCommand[1]);
+            if(!fp.getIsSuccessful()) return fp;
+//            Feedbacker fp2 = autoMode(inputCommand[1].trim());
+            Feedbacker fp2 = null;
+            return new Feedbacker(fp2.getIsSuccessful(),fp2.getMessage());
+        } else {
+            HumanData hd = null;
+            CommandObject co = new CommandObject(command,inputCommand[1],hd);
+            if (co.getCommand().getIsNeedData()){
+                try{
+                    hd = server.AskHumanData.askHuman(cl);
+                } catch (server.AskHumanData.AskBreaker a){}
+            }
+            try{
+                if (hd!=null){
+                    co.setHd(hd);}
+                return executeCommand(co);
+            } catch (NullPointerException  e){}
+        }
+        return null;
+    }
     /**
      * Checks whether a referenced file has already been executed
      * @param path
@@ -153,5 +229,29 @@ public class RuntimeEnv {
 
     public HumanData getCurrHumanData() {
         return currHumanData;
+    }
+    public void send(Feedbacker completionFeedback){
+        try {
+            logger.info("Sending answer to client..." + completionFeedback.getMessage());
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            ObjectOutputStream oos = new ObjectOutputStream(bos);
+            oos.writeObject(completionFeedback);
+            oos.flush();
+            byte[] answer = bos.toByteArray();
+            ByteBuffer outputBuf = ByteBuffer.wrap(answer);
+            ssc.write(outputBuf);
+            logger.info("Answer sent successfully");
+        }catch (IOException e){}
+    }
+    public CommandObject recieve() throws IOException, ClassNotFoundException {
+        ByteBuffer buf = ByteBuffer.allocate(1024*1024);
+        ssc.read(buf);
+        ByteArrayInputStream bis = new ByteArrayInputStream(buf.array());
+        ObjectInputStream ois = new ObjectInputStream(bis);
+        logger.info("Receiving data from client... ");
+        CommandObject co = (CommandObject) ois.readObject();
+        logger.info("Data received");
+        addToLog(co.getCommand()+" "+co.getArgument());
+        return co;
     }
 }

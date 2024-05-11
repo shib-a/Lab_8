@@ -1,20 +1,25 @@
 package client.commands;
 
 import client.CommandLine;
+import client.Connector;
 import client.classes.AskHumanData;
 import common.CommandObject;
 import java.io.*;
 import java.net.Socket;
 import java.nio.ByteBuffer;
+import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
+import java.util.*;
+
 import common.Feedbacker;
 import common.HumanData;
+import server.ServerConnector;
 
-import java.util.NoSuchElementException;
-import java.util.Scanner;
+import java.util.logging.Logger;
+
+import static java.lang.Thread.sleep;
 
 /**
  * This class acts as a runtime environment and handles user inputs as well as scripted inputs.
@@ -25,6 +30,7 @@ public class RuntimeEnv {
     private ArrayList<String> scriptExecutionList = new ArrayList<>();
     private static BufferedWriter bw;
     private SocketChannel ssc;
+    Logger logger = Logger.getLogger("RuntimeEnv");
     private Socket ss;
     public RuntimeEnv(CommandLine cl, CommandManager cm, Socket ss){this.cl=cl;this.cm=cm;this.ss=ss;try{bw = new BufferedWriter(new FileWriter("log.txt"));} catch (IOException e){bw = null;}}
     public RuntimeEnv(CommandLine cl, CommandManager cm, SocketChannel ssc){this.cl=cl;this.cm=cm;this.ssc=ssc;try{bw = new BufferedWriter(new FileWriter("log.txt"));} catch (IOException e){bw = null;}}
@@ -48,7 +54,7 @@ public class RuntimeEnv {
 
                 }
             }
-        } catch (NoSuchElementException | IllegalStateException e){cl.printException(">Fatal error.");}
+        } catch (NoSuchElementException | IllegalStateException e){cl.printException("Fatal error: " + e +  Arrays.toString(e.getStackTrace()));}
     }
 
     /**
@@ -98,6 +104,7 @@ public class RuntimeEnv {
      * @return Feedbacker
      */
     public Feedbacker executeCommand(String[] inputCommand){
+
         if (inputCommand[0].equals("")) return new Feedbacker("");
         var command = cm.getCommandList().get(inputCommand[0]);
         if (command==null) return new Feedbacker(false,">Command "+inputCommand[0]+" not found. See 'help' for reference.");
@@ -117,31 +124,50 @@ public class RuntimeEnv {
             try{
                 if (hd!=null){
                 co.setHd(hd);}
-                ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                ObjectOutputStream oos = new ObjectOutputStream(bos);
-                oos.writeObject(co);
-                oos.flush();
-                byte[] serializedObj = bos.toByteArray();
-                ByteBuffer buf = ByteBuffer.wrap(serializedObj);
-                ssc.write(buf);
-//                    ByteBuffer inputBuf = ByteBuffer.allocate(1024);
-                ByteBuffer inputBuf = ByteBuffer.allocate(1024);
-                while (ssc.read(inputBuf)==0){
-                    System.out.println("Cock");
-                }
-                ssc.read(inputBuf);
-                inputBuf.flip();
-                    byte[] receivedObj = new byte[inputBuf.remaining()];
-                    inputBuf.get(receivedObj);
-                    ByteArrayInputStream bis = new ByteArrayInputStream(receivedObj);
-                    ObjectInputStream ois = new ObjectInputStream(bis);
-                    Feedbacker fb = (Feedbacker) ois.readObject();
-//                    System.out.println(fb);
-                    inputBuf.clear();
-                    inputBuf.flip();
-                    return fb;
-
-            }catch (IOException | ClassNotFoundException e){System.err.println(e);}
+//                Set<SelectionKey> selectedKeys = Connector.getSelector().selectedKeys();
+//                for(SelectionKey sk: selectedKeys){
+//                    if (sk.isWritable()){
+//                    }
+//                }
+//                ByteArrayOutputStream bos = new ByteArrayOutputStream();
+//                ObjectOutputStream oos = new ObjectOutputStream(bos);
+//                oos.writeObject(co);
+//                oos.flush();
+//                byte[] serializedObj = bos.toByteArray();
+//                ByteBuffer buf = ByteBuffer.wrap(serializedObj);
+//                ssc.write(buf);
+////                buf.compact();
+//                logger.info("Answer sent");
+                send(co);
+                sleep(2000);
+                Feedbacker fb = recieve();
+                return fb;
+//                while(true) {
+//                    Connector.getSelector().select();
+//                    Set<SelectionKey> selectedKeys = Connector.getSelector().selectedKeys();
+//                    if (Connector.getSelector().select()>0){
+//                    for (SelectionKey sk : selectedKeys) {
+//                        if (sk.isReadable() && sk.isValid()) {
+//                            ByteBuffer recObj = ByteBuffer.allocate(1024*1024);
+//                            ssc.read(recObj);
+//                            recObj.flip();
+//                            byte[] receivedObj = new byte[recObj.remaining()];
+////                            logger.info(String.valueOf(recObj.remaining()));
+//                            recObj.get(receivedObj);
+//                            ByteArrayInputStream bis = new ByteArrayInputStream(receivedObj);
+//                            ObjectInputStream ois = new ObjectInputStream(bis);
+////                            logger.info(ois.readObject().toString());
+//                            fb = (Feedbacker) ois.readObject();
+//                            logger.info("Answer read");
+//                            Connector.getSelector().keys().remove(sk);
+//                            return fb;
+//                        }
+//                    }
+//                }}
+            }catch (IOException  | ClassNotFoundException e){System.err.println(Arrays.toString(e.getStackTrace()));} catch (
+                    InterruptedException e) {
+                throw new RuntimeException(e);
+            }
 //            return command.execute(inputCommand);
             return null;
         }
@@ -162,5 +188,31 @@ public class RuntimeEnv {
             bw.append(com+"\n");
             bw.flush();
         } catch (IOException e){}
+    }
+    public void send(Object serializedObj) throws IOException {
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(bos);
+        oos.writeObject(serializedObj);
+        oos.flush();
+        byte[] data = bos.toByteArray();
+        ByteBuffer buf = ByteBuffer.wrap(data);
+        ssc.write(buf);
+//                buf.compact();
+        logger.info("Answer sent");
+    }
+    public Feedbacker recieve() throws IOException, ClassNotFoundException {
+        Feedbacker fb = null;
+        ByteBuffer buffer = ByteBuffer.allocate(1024*1024);
+        ssc.read(buffer);
+//        recObj.flip();
+//        byte[] receivedObj = new byte[recObj.remaining()];
+//                            logger.info(String.valueOf(recObj.remaining()));
+//        recObj.get(receivedObj);
+        ByteArrayInputStream bis = new ByteArrayInputStream(buffer.array());
+        ObjectInputStream ois = new ObjectInputStream(bis);
+//                            logger.info(ois.readObject().toString());
+        fb = (Feedbacker) ois.readObject();
+        logger.info("Answer read");
+        return fb;
     }
 }

@@ -8,7 +8,12 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
+import java.nio.channels.SelectionKey;
+import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
+import java.util.Arrays;
+
+import static java.lang.Thread.sleep;
 
 public class ClientMain {
 //    public Main() throws IOException {
@@ -82,47 +87,59 @@ public class ClientMain {
 //            }
 //        }
 //    }
-        public static void main(String[] args) throws IOException {
+        public static void main(String[] args) throws IOException, InterruptedException {
 //        Logger logger = Logger.getLogger(Main.class.getName());
             //creating instances and setting stats
-            var com = new CommandManager();
-            int port = 3829;
-            SocketAddress adr = new InetSocketAddress("localhost",port);
+//            var com = new CommandManager();
+//            int port = 3829;
+//            Selector selector = Selector.open();
+//            SocketAddress adr = new InetSocketAddress("localhost",port);
+            CommandManager com = new CommandManager();
             System.out.println(">Awaiting connection...");
             SocketChannel socketChannel;
+//            Connector connector = new Connector();
             while (true){
             try {
-                socketChannel  = SocketChannel.open();
-                socketChannel.connect(adr);
-                socketChannel.configureBlocking(false);
+                socketChannel  = Connector.getSC();
+                socketChannel.connect(Connector.adr);
+                if(socketChannel!=null) {
+                    socketChannel.configureBlocking(false);
+//                    Connector.setSelector(Selector.open());
+//                    SelectionKey key = socketChannel.register(Connector.getSelector(), SelectionKey.OP_READ | SelectionKey.OP_WRITE);
 //                Socket s = new Socket("localhost", port);
-                CommandLine cl = new CommandLine(socketChannel);
-                var cls = new CollectionLoaderSaver("ans.txt", cl);
-                var cm = new CollectionManager(cls);
-                cm.initialaze();
-                cl.printLn("\n");
-                cl.printLn("Welcome back. Enter 'help' to see information on available commands");
-                var re = new RuntimeEnv(cl, com, socketChannel);
-                com.getCommandList().put("add", new Add(cl));
-                com.getCommandList().put("clear", new Clear());
-                com.getCommandList().put("info", new Info());
-                com.getCommandList().put("show", new Show());
-                com.getCommandList().put("exit", new Exit());
-                com.getCommandList().put("sort", new Sort());
-                com.getCommandList().put("update", new Update());
-                com.getCommandList().put("remove_by_id", new Remove());
-                com.getCommandList().put("filter_by_is_alive", new FilterByIsAlive());
+                    CommandLine cl = new CommandLine(socketChannel);
+                    var cls = new CollectionLoaderSaver("ans.txt", cl);
+                    var cm = new CollectionManager(cls);
+                    cm.initialaze();
+                    cl.printLn("\n");
+                    cl.printLn("Welcome back. Enter 'help' to see information on available commands");
+                    var re = new RuntimeEnv(cl, com, socketChannel);
+                    com.getCommandList().put("add", new Add(cl));
+                    com.getCommandList().put("clear", new Clear());
+                    com.getCommandList().put("info", new Info());
+                    com.getCommandList().put("show", new Show());
+                    com.getCommandList().put("exit", new Exit());
+                    com.getCommandList().put("sort", new Sort());
+                    com.getCommandList().put("update", new Update());
+                    com.getCommandList().put("remove_by_id", new Remove());
+                    com.getCommandList().put("filter_by_is_alive", new FilterByIsAlive());
 //            com.getCommandList().put("save", new Save());
-                com.getCommandList().put("filter_by_less_than_number_of_dug_counter", new FilterLessDC());
-                com.getCommandList().put("count_by_researcher_type", new CountByResearcherType());
-                com.getCommandList().put("remove_lower", new RemoveLower());
-                com.getCommandList().put("insert", new Insert());
-                com.getCommandList().put("execute_script", new ExecuteScript());
-                com.getCommandList().put("get_history", new GetHistory());
-                com.getCommandList().put("help", new Help());
-                re.mannedMode();
-                break;
-            }catch (IOException e){}        // fix error after closing server and inputting a command on client
+                    com.getCommandList().put("filter_by_less_than_number_of_dug_counter", new FilterLessDC());
+                    com.getCommandList().put("count_by_researcher_type", new CountByResearcherType());
+                    com.getCommandList().put("remove_lower", new RemoveLower());
+                    com.getCommandList().put("insert", new Insert());
+                    com.getCommandList().put("execute_script", new ExecuteScript());
+                    com.getCommandList().put("get_history", new GetHistory());
+                    com.getCommandList().put("help", new Help());
+                    re.mannedMode();
+                    break;
+                } else continue;
+            }catch (IOException  e){
+//                System.err.println("Error: "+ Arrays.toString(e.getStackTrace()));
+                sleep(2000);
+            }    catch (NullPointerException e){
+                System.out.println("Unexpected error :"+ Arrays.toString(e.getStackTrace()));
+            }    // fix error after closing server and inputting a command on client
         }
         }
 }

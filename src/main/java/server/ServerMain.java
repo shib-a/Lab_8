@@ -1,11 +1,9 @@
 package server;
 
 import server.cls.commands.*;
-import common.*;
+
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.net.ServerSocket;
-import java.net.Socket;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
@@ -19,7 +17,7 @@ public class ServerMain {
         Logger logger = Logger.getLogger(ServerMain.class.getName());
         logger.info("Starting server");
         int port = 3829;
-        Selector selector = Selector.open();
+//        Selector selector = Selector.open();
 //        ServerSocket ss = new ServerSocket(port);
         ServerSocketChannel ssc = ServerSocketChannel.open();
         ssc.socket().setReuseAddress(true);
@@ -29,11 +27,15 @@ public class ServerMain {
             try{
 //                ssc = ServerSocketChannel.open();
                 SocketChannel sc = ssc.accept();
+
                 if (sc != null){
+                    sc.configureBlocking(false);
+                    ServerConnector.setSelector(Selector.open());
+                    SelectionKey sk = sc.register(ServerConnector.getSelector(),SelectionKey.OP_READ | SelectionKey.OP_WRITE);
 //                sc.register(selector, SelectionKey.OP_ACCEPT);
 //                selector.select();
 //        Socket s = ss.accept();
-        logger.info("New connection acquired");
+        logger.info("New connection acquired" + ServerConnector.selector.keys().toString());
         CommandLine cl = new CommandLine(sc);
         var cls = new CollectionLoaderSaver("ans.txt",cl);
         var cm = new CollectionManager(cls);
@@ -65,7 +67,8 @@ public class ServerMain {
     }catch (IOException e){
 //                System.err.println(">Client-side connection closed...");
                 logger.severe("Client-side connection closed..." + e.getMessage() +  Arrays.toString(e.getStackTrace()));
-            }
+//                ServerConnector.getSelector().keys().clear();
+            } catch (CustomException e){logger.info("Client-side connection closed...");}
         }
     }
 }
