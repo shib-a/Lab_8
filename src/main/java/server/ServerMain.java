@@ -9,41 +9,59 @@ import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.util.Arrays;
+import java.util.Scanner;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 
 
 public class ServerMain {
+    private static ExecutorService executorService = Executors.newCachedThreadPool();
     public static void main(String[] args) throws IOException {
         Logger logger = Logger.getLogger(ServerMain.class.getName());
-        logger.info("Starting server");
-        int port = 3829;
-//        Selector selector = Selector.open();
-//        ServerSocket ss = new ServerSocket(port);
+//        logger.info("Starting server");
+        Scanner scan = new Scanner(System.in);
+        int port;
         ServerSocketChannel ssc = ServerSocketChannel.open();
         ssc.socket().setReuseAddress(true);
-        ssc.socket().bind(new InetSocketAddress("localhost", port));
         ssc.configureBlocking(false);
+        while (true){
+            try{
+                System.out.println("enter the port: ");
+                port = Integer.parseInt(scan.nextLine());
+                ssc.socket().bind(new InetSocketAddress("localhost", port));
+                logger.info("Server started on port "+port);
+                break;
+            } catch (NumberFormatException e){
+                System.out.println("Enter a proper integer value.");
+            } catch (IOException e){
+                System.out.println("Port unavailable. Try entering a different port.");
+            }
+        }
+        DataConnector.initialize_db();
+//        Selector selector = Selector.open();
+//        ServerSocket ss = new ServerSocket(port);
+
         while(true){
             try{
-//                ssc = ServerSocketChannel.open();
-                SocketChannel sc = ssc.accept();
-
-                if (sc != null){
-                    sc.configureBlocking(false);
-                    ServerConnector.setSelector(Selector.open());
-                    SelectionKey sk = sc.register(ServerConnector.getSelector(),SelectionKey.OP_READ | SelectionKey.OP_WRITE);
+//            while (true){
+////                ssc = ServerSocketChannel.open();
+//                SocketChannel sc = ssc.accept();
+//                if (sc != null) {
+//                    sc.configureBlocking(false);
+//                    ServerConnector.setSelector(Selector.open());
+//                    SelectionKey sk = sc.register(ServerConnector.getSelector(), SelectionKey.OP_READ | SelectionKey.OP_WRITE);
+//                }
 //                sc.register(selector, SelectionKey.OP_ACCEPT);
 //                selector.select();
 //        Socket s = ss.accept();
-        logger.info("New connection acquired" + ServerConnector.selector.keys().toString());
-        CommandLine cl = new CommandLine(sc);
+
+        CommandLine cl = new CommandLine();
         var cls = new CollectionLoaderSaver("ans.txt",cl);
         var cm = new CollectionManager(cls);
         cm.initialaze();
-//        System.out.println(cm.getCollection().get(2));
         var com = new CommandManager();
-//        var re = new RuntimeEnv(cl,com,s);
-                var re = new RuntimeEnv(cl,com,sc);
+        var re = new RuntimeEnv(cl,com);
         com.getCommandList().put("add", new Add(cl,cm,re));
         com.getCommandList().put("clear", new Clear(cl,cm));
         com.getCommandList().put("info", new Info(cl,cm));
@@ -59,16 +77,34 @@ public class ServerMain {
         com.getCommandList().put("remove_lower (double_value)", new RemoveLower(cl,cm));
         com.getCommandList().put("insert (positive_integer_value)", new Insert(cl,cm,re));
         com.getCommandList().put("execute_script (file_name)", new ExecuteScript(cl,cm));
-//        com.getCommandList().put("get_history", new GetHistory(cl,com));
         com.getCommandList().put("help", new Help(com));
         logger.info("Ready for IO");
-        re.mannedMode();
-        ssc.close();}
-    }catch (IOException e){
+
+        InteraciveServerConsole intServCons = new InteraciveServerConsole(cl,com);
+        executorService.execute(intServCons);
+
+        while (true){
+            SocketChannel clientSocket = ssc.accept();
+
+            if (clientSocket != null) {
+//                logger.info("New connection acquired" + ServerConnector.selector.keys().toString());
+                logger.info("New connection acquired");
+                clientSocket.configureBlocking(false);
+                ServerConnector.setSelector(Selector.open());
+                SelectionKey sk = clientSocket.register(ServerConnector.getSelector(), SelectionKey.OP_READ | SelectionKey.OP_WRITE);
+                ThreadClientHandler tch = new ThreadClientHandler(clientSocket,re);
+                try{
+                    executorService.execute(tch);
+                } catch (RuntimeException e){logger.info("Clent disconnected");}
+            }
+
+        }
+    } catch (IOException e){
 //                System.err.println(">Client-side connection closed...");
                 logger.severe("Client-side connection closed..." + e.getMessage() +  Arrays.toString(e.getStackTrace()));
 //                ServerConnector.getSelector().keys().clear();
-            } catch (CustomException e){logger.info("Client-side connection closed...");}
+            } catch (RuntimeException e){logger.info("Client-side connection closed..." + e.getMessage() + Arrays.toString(e.getStackTrace()));
+            }
         }
     }
 }

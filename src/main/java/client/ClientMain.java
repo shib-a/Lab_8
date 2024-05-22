@@ -12,6 +12,7 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
 import java.util.Arrays;
+import java.util.Scanner;
 
 import static java.lang.Thread.sleep;
 
@@ -97,13 +98,27 @@ public class ClientMain {
             CommandManager com = new CommandManager();
             System.out.println(">Awaiting connection...");
             SocketChannel socketChannel;
+            Scanner scan = new Scanner(System.in);
 //            Connector connector = new Connector();
             while (true){
             try {
-                socketChannel  = Connector.getSC();
-                socketChannel.connect(Connector.adr);
-                if(socketChannel!=null) {
-                    socketChannel.configureBlocking(false);
+                while (true){
+                    try{
+                        System.out.println("enter the server port: ");
+                        var str = scan.nextLine();
+                        if (str.equals("exit")){return;}
+                        Connector.port = Integer.parseInt(str);
+                        Connector.adr =  new InetSocketAddress("localhost",Connector.port);
+                        socketChannel = Connector.getSC();
+                        socketChannel.connect(Connector.adr);
+                        socketChannel.configureBlocking(false);
+                        break;
+                    } catch (NumberFormatException e){
+                        System.out.println("Enter a proper integer value.");
+                    } catch (IOException e){
+                        System.out.println("Port unavailable. Try entering a different port.");
+                    }
+                }
 //                    Connector.setSelector(Selector.open());
 //                    SelectionKey key = socketChannel.register(Connector.getSelector(), SelectionKey.OP_READ | SelectionKey.OP_WRITE);
 //                Socket s = new Socket("localhost", port);
@@ -131,12 +146,10 @@ public class ClientMain {
                     com.getCommandList().put("execute_script", new ExecuteScript());
                     com.getCommandList().put("get_history", new GetHistory());
                     com.getCommandList().put("help", new Help());
+
                     re.mannedMode();
                     break;
-                } else continue;
-            }catch (IOException  e){
-//                System.err.println("Error: "+ Arrays.toString(e.getStackTrace()));
-                sleep(2000);
+
             }    catch (NullPointerException e){
                 System.out.println("Unexpected error :"+ Arrays.toString(e.getStackTrace()));
             }    // fix error after closing server and inputting a command on client

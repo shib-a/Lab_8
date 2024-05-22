@@ -3,6 +3,7 @@ package client.commands;
 import client.CommandLine;
 import client.Connector;
 import client.classes.AskHumanData;
+import common.AbstractCommand;
 import common.CommandObject;
 import java.io.*;
 import java.net.Socket;
@@ -15,7 +16,6 @@ import java.util.*;
 
 import common.Feedbacker;
 import common.HumanData;
-import server.ServerConnector;
 
 import java.util.logging.Logger;
 
@@ -214,5 +214,24 @@ public class RuntimeEnv {
         fb = (Feedbacker) ois.readObject();
         logger.info("Answer read");
         return fb;
+    }
+    public Feedbacker askAuth(){
+        try {
+            System.out.println("Enter login and password: ");
+            String input = cl.readln();
+            if (input.isEmpty() || input.isBlank()) {
+                return new Feedbacker(false, "Вы неправы.");
+            }
+            String[] inputArr = input.trim().split(" ");
+            if (inputArr.length > 3 || inputArr.length == 1) {
+                return new Feedbacker(false, "Вы неправы.");
+            }
+            CommandObject co = new CommandObject(null, input, null);
+            send(co);
+            sleep(2000);
+            Feedbacker fb = recieve();
+            return fb;
+        }catch (IOException | InterruptedException | ClassNotFoundException e){}
+        return null;
     }
 }

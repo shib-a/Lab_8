@@ -1,1 +1,0 @@
-AbstractCommand{name='help', desc='Shows information about available commands.'} 

@@ -4,23 +4,19 @@ import client.classes.AskHumanData;
 import common.CommandObject;
 import common.Feedbacker;
 import common.HumanData;
-import server.CommandLine;
-import server.CustomException;
-import server.ServerConnector;
-import server.ServerMain;
+import server.*;
 
 import java.io.*;
 import java.net.Socket;
 import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
-import java.util.Set;
-import java.util.logging.ConsoleHandler;
-import java.util.logging.Handler;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static java.lang.Thread.sleep;
@@ -35,16 +31,17 @@ public class RuntimeEnv {
     private ArrayList<String> scriptExecutionList = new ArrayList<>();
     private static BufferedWriter bw;
     private Socket ss;
-    private SocketChannel ssc;
+    private SocketChannel sc;
     private HumanData currHumanData = null;
-    public RuntimeEnv(CommandLine cl, CommandManager cm, Socket ss){this.cl=cl;this.cm=cm;this.ss=ss;try{bw = new BufferedWriter(new FileWriter("log.txt"));} catch (IOException e){bw = null;}}
-    public RuntimeEnv(CommandLine cl, CommandManager cm, SocketChannel ssc){this.cl=cl;this.cm=cm;this.ssc=ssc;try{bw = new BufferedWriter(new FileWriter("log.txt"));} catch (IOException e){bw = null;}}
+    public RuntimeEnv(CommandLine cl, CommandManager cm){this.cl=cl;this.cm=cm;try{bw = new BufferedWriter(new FileWriter("log.txt"));} catch (IOException e){bw = null;}}
+    public RuntimeEnv(CommandLine cl, CommandManager cm, SocketChannel ssc){this.cl=cl;this.cm=cm;this.sc=ssc;try{bw = new BufferedWriter(new FileWriter("log.txt"));} catch (IOException e){bw = null;}}
 
     /**
      * Takes user inputs and executes entered commands
      */
     public void mannedMode() throws CustomException {
         try{
+            askAuth(sc);
             Feedbacker completionFeedback = null;
 //            Scanner scanner = new Scanner(System.in);
 //            if(scanner.hasNext()){
@@ -59,7 +56,7 @@ public class RuntimeEnv {
 //                }}
             while (true){
 
-                if(ssc!=null) {
+                if(sc!=null) {
                     try{
                     CommandObject co = recieve();
                     Feedbacker fb = executeCommand(co);
@@ -239,13 +236,13 @@ public class RuntimeEnv {
             oos.flush();
             byte[] answer = bos.toByteArray();
             ByteBuffer outputBuf = ByteBuffer.wrap(answer);
-            ssc.write(outputBuf);
+            sc.write(outputBuf);
             logger.info("Answer sent successfully");
         }catch (IOException e){}
     }
     public CommandObject recieve() throws IOException, ClassNotFoundException {
         ByteBuffer buf = ByteBuffer.allocate(1024*1024);
-        ssc.read(buf);
+        sc.read(buf);
         ByteArrayInputStream bis = new ByteArrayInputStream(buf.array());
         ObjectInputStream ois = new ObjectInputStream(bis);
         logger.info("Receiving data from client... ");
@@ -253,5 +250,23 @@ public class RuntimeEnv {
         logger.info("Data received");
         addToLog(co.getCommand()+" "+co.getArgument());
         return co;
+    }
+    public void setSc(SocketChannel sc){
+        this.sc=sc;
+    }
+    public void askAuth(SocketChannel sc) {
+        logger.info("Auth started");
+        try {
+            CommandObject co = recieve();
+            String arg = co.getArgument();
+
+            var cargs = arg.trim().split(" ",2);
+//            String[] cargs = co.getArgument().split(" ");
+            ArrayList<String> data = DataConnector.getUserInfo(Integer.parseInt(cargs[1]));
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest(cargs[1].getBytes("UTF-8"));
+            String encoded = Base64.getEncoder().encodeToString(hash);
+            if(encoded.equals(data.get(1))){return;}
+        } catch (IOException | ClassNotFoundException | NoSuchAlgorithmException e){} catch (CustomException e){}
     }
 }

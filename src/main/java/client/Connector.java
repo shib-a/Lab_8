@@ -10,9 +10,9 @@ import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
 
 public class Connector {
-    static int port = 3829;
+    static int port;
     static Selector selector;
-    static SocketAddress adr = new InetSocketAddress("localhost",port);
+    static SocketAddress adr;
 
     public Connector() throws IOException {
     }

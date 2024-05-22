@@ -35,4 +35,6 @@ public abstract class AbstractCommand implements Serializable {
                 ", desc='" + desc + '\'' +
                 '}';
     }
+
+    public abstract common.Feedbacker execute(String arg);
 }

@@ -14,7 +14,10 @@ public class CommandManager implements Serializable {
     private static final long serialVersionUID = 1L;
     private Map<String, AbstractCommand> commandList;
     public ArrayList<String> commandHistory;
-    public CommandManager(){this.commandList = new HashMap<>();this.commandHistory= new ArrayList<String>();}
+    public CommandManager(){
+        this.commandList = new HashMap<>();
+        this.commandHistory= new ArrayList<String>();
+    }
     public Map<String, AbstractCommand> getCommandList() {
         return commandList;
     }
