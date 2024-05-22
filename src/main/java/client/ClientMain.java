@@ -2,6 +2,7 @@ package client;
 import client.classes.CollectionManager;
 import client.commands.*;
 import client.collection.CollectionLoaderSaver;
+import common.Feedbacker;
 
 import java.io.*;
 import java.net.InetAddress;
@@ -147,6 +148,10 @@ public class ClientMain {
                     com.getCommandList().put("get_history", new GetHistory());
                     com.getCommandList().put("help", new Help());
 
+                    Feedbacker temp = null;
+                    while(temp==null) {
+                        temp = re.askAuth();
+                    }
                     re.mannedMode();
                     break;
 

@@ -13,6 +13,7 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.NoSuchElementException;
@@ -41,8 +42,13 @@ public class RuntimeEnv {
      */
     public void mannedMode() throws CustomException {
         try{
-            askAuth(sc);
             Feedbacker completionFeedback = null;
+//            while (completionFeedback==null){
+//                var temp = askAuth(sc);
+//                System.out.println(temp.getMessage());
+//                completionFeedback = temp;
+//            }
+//            logger.info("check passed");
 //            Scanner scanner = new Scanner(System.in);
 //            if(scanner.hasNext()){
 //                String[] inputCommand = new String[]{"",""};
@@ -55,7 +61,6 @@ public class RuntimeEnv {
 //                    cl.printLn(completionFeedback.getMessage());
 //                }}
             while (true){
-
                 if(sc!=null) {
                     try{
                     CommandObject co = recieve();
@@ -248,25 +253,40 @@ public class RuntimeEnv {
         logger.info("Receiving data from client... ");
         CommandObject co = (CommandObject) ois.readObject();
         logger.info("Data received");
+        System.out.println(co.getArgument());
         addToLog(co.getCommand()+" "+co.getArgument());
         return co;
     }
     public void setSc(SocketChannel sc){
         this.sc=sc;
     }
-    public void askAuth(SocketChannel sc) {
+    public Feedbacker askAuth(SocketChannel sc) {
         logger.info("Auth started");
         try {
             CommandObject co = recieve();
             String arg = co.getArgument();
-
-            var cargs = arg.trim().split(" ",2);
+            System.out.println(co);
+            logger.info(co.getArgument());
+            var cargs = arg.trim().split(" ");
+            if (cargs.length != 2){return new Feedbacker(false,"incorrect");}
 //            String[] cargs = co.getArgument().split(" ");
             ArrayList<String> data = DataConnector.getUserInfo(Integer.parseInt(cargs[1]));
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
             byte[] hash = digest.digest(cargs[1].getBytes("UTF-8"));
             String encoded = Base64.getEncoder().encodeToString(hash);
-            if(encoded.equals(data.get(1))){return;}
-        } catch (IOException | ClassNotFoundException | NoSuchAlgorithmException e){} catch (CustomException e){}
+            if(encoded.equals(data.get(1))){
+                return new Feedbacker("yes");
+            } else {
+                DataConnector.addUserInfo(cargs[0],encoded);
+            }
+            System.out.println("passed");
+        } catch (IOException | ClassNotFoundException | NoSuchAlgorithmException  e){} catch (CustomException e){
+            System.out.println(e.getMessage());
+        }
+        return new Feedbacker(false,"No pass but ok");
+    }
+
+    public SocketChannel getSc() {
+        return sc;
     }
 }

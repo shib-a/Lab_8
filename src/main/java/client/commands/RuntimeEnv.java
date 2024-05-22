@@ -226,12 +226,12 @@ public class RuntimeEnv {
             if (inputArr.length > 3 || inputArr.length == 1) {
                 return new Feedbacker(false, "Вы неправы.");
             }
-            CommandObject co = new CommandObject(null, input, null);
+            CommandObject co = new CommandObject(new Login(), input, null);
             send(co);
             sleep(2000);
             Feedbacker fb = recieve();
             return fb;
-        }catch (IOException | InterruptedException | ClassNotFoundException e){}
+        } catch (IOException | InterruptedException | ClassNotFoundException e){}
         return null;
     }
 }

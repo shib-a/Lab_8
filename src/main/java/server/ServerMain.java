@@ -78,6 +78,7 @@ public class ServerMain {
         com.getCommandList().put("insert (positive_integer_value)", new Insert(cl,cm,re));
         com.getCommandList().put("execute_script (file_name)", new ExecuteScript(cl,cm));
         com.getCommandList().put("help", new Help(com));
+        com.getCommandList().put("login", new Login(cl,cm,re));
         logger.info("Ready for IO");
 
         InteraciveServerConsole intServCons = new InteraciveServerConsole(cl,com);
