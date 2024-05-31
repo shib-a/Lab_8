@@ -1,5 +1,6 @@
 package server;
 
+import common.UserData;
 import server.Human;
 
 import java.io.Serializable;
@@ -72,11 +73,13 @@ public class CollectionManager implements Serializable {
      * Updates a Human instance with the entered index
      * @param h
      */
-    public void updateEl(Human h){
+    public void updateEl(Human h, UserData userData){
         if(isInCol(h)){
             lock.lock();
-            collection.remove(getById(h.getId()));
-            collection.add(h);
+            if(h.getOwner() == userData.getName()) {
+                collection.remove(getById(h.getId()));
+                collection.add(h);
+            }
             lock.unlock();
 //            System.out.println("Updated");
         } else {
@@ -92,10 +95,12 @@ public class CollectionManager implements Serializable {
      * Removes a Human instance with the entered id
      * @param id
      */
-    public void removeById(int id){
+    public void removeById(int id, UserData userData){
         if(isInCol(getById(id))){
             lock.lock();
-            collection.remove(getById(id));
+            if(getById(id).getOwner() == userData.getName()) {
+                collection.remove(getById(id));
+            }
             lock.unlock();
 //            System.out.println("Element removed");
         } else {

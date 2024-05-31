@@ -38,7 +38,7 @@ public class RemoveLower extends AbstractCommand {
 //                    if (el.getStat(Stat.DAMAGE)<val) idArr.add(el.getId());
 //                }
 //                for (Integer el: idArr){cm.removeById(el);}
-                cm.setCollection((ArrayList<Human>) cm.getCollection().stream().filter(el -> el.getStat(Stat.DAMAGE)>=val).collect(Collectors.toList()));
+                cm.setCollection((ArrayList<Human>) cm.getCollection().stream().filter(el -> el.getStat(Stat.DAMAGE)>=val && el.getOwner() == userData.getName()).collect(Collectors.toList()));
                 return new Feedbacker(">Elements removed successfully.");}
         } catch(NumberFormatException e){ return new Feedbacker(false,">Wrong argument.");}
     }
