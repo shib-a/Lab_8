@@ -74,11 +74,13 @@ public class CollectionManager implements Serializable {
      */
     public void updateEl(Human h){
         if(isInCol(h)){
+            lock.lock();
             collection.remove(getById(h.getId()));
             collection.add(h);
+            lock.unlock();
 //            System.out.println("Updated");
         } else {
-//            System.out.println("Not updated: no such object in col");
+            System.out.println("Not updated: no such object in col");
         }
     }
 
@@ -92,7 +94,9 @@ public class CollectionManager implements Serializable {
      */
     public void removeById(int id){
         if(isInCol(getById(id))){
+            lock.lock();
             collection.remove(getById(id));
+            lock.unlock();
 //            System.out.println("Element removed");
         } else {
 //            System.out.println("No such element");
@@ -102,23 +106,27 @@ public class CollectionManager implements Serializable {
      * Initializes the collection - loads and sets initialization date
      */
     public void initialaze(){
+        lock.lock();
         collection.clear();
         ArrayList<String> colFromDB = DataConnector.getCollectionInfo();
         var s = colFromDB.size();
         cls.writeToFile(colFromDB, s);
         collection = cls.readFromFile(cls.getFileName());
         initDate = LocalDateTime.now();
-        if (!collection.isEmpty()) {
-            for (Human el : collection) {
-                if (el.getId()>currId)currId = el.getId();
-            }
-        } else currId=1;
+//        if (!collection.isEmpty()) {
+//            for (Human el : collection) {
+//                if (el.getId()>currId)currId = el.getId();
+//            }
+//        } else currId=1;
+        lock.unlock();
     }
     /**
      * Saves the collection to a file
      */
     public void saveToFile(){
+        lock.lock();
         cls.writeToFile(collection);
+        lock.unlock();
     }
     @Override
     public String toString() {
