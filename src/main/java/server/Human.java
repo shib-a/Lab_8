@@ -27,6 +27,7 @@ public class Human implements Comparable<Human> {
     @ReadMarkedField
     public Item[] inventory = new Item[]{null, null, null, null};
     private double[] mas = new double[5];
+    private String owner;
     @ReadMarkedField
     private int dugCounter = 0;
     public Human(String name, ToolKinds preferredTool, ResearcherType type, boolean isAlive){
@@ -35,7 +36,7 @@ public class Human implements Comparable<Human> {
         this.type = type;
         this.isAlive = isAlive;
     }
-    public Human(int id, String name, ToolKinds preferredTool, ResearcherType type, boolean isAlive, double hp, double intel, double lck, double dmg, double san, int dc){
+    public Human(int id, String name, ToolKinds preferredTool, ResearcherType type, boolean isAlive, double hp, double intel, double lck, double dmg, double san, int dc, String owner){
         this.id=id;
         this.name = name;
         this.preferredTool = preferredTool;
@@ -47,9 +48,10 @@ public class Human implements Comparable<Human> {
         this.mas[Stat.DAMAGE.ordinal()] = dmg;
         this.mas[Stat.SANITY.ordinal()] = san;
         this.dugCounter = dc;
+        this.owner = owner;
         if(this.getStat(Stat.HP)<=0){isAlive=false;} else{isAlive=true;}
     }
-    public Human(int id, String name, ToolKinds preferredTool, ResearcherType type, boolean isAlive, double hp, double intel, double lck, double dmg, double san, int dc, Item[] inv){
+    public Human(int id, String name, ToolKinds preferredTool, ResearcherType type, boolean isAlive, double hp, double intel, double lck, double dmg, double san, int dc, String owner, Item[] inv){
         this.id=id;
         this.name = name;
         this.preferredTool = preferredTool;
@@ -61,6 +63,7 @@ public class Human implements Comparable<Human> {
         this.mas[Stat.DAMAGE.ordinal()] = dmg;
         this.mas[Stat.SANITY.ordinal()] = san;
         this.dugCounter = dc;
+        this.owner = owner;
         for(Item el: inv){addToInventory(el);}
     }
 
@@ -489,6 +492,7 @@ public class Human implements Comparable<Human> {
                 ", inventory=" + Arrays.toString(inventory) +
                 ", stats=" + Arrays.toString(mas) +
                 ", dugCounter=" + dugCounter +
+                ", owner=" + owner +
                 '}';
     }
 
@@ -529,6 +533,7 @@ public class Human implements Comparable<Human> {
         Double dmg;
         Double san;
         Integer dc;
+        String owner;
         Item[] inv = new Item[4];
         try{
             try{id = Integer.parseInt(splitStr[0]);} catch (NumberFormatException e){id = null;}
@@ -552,7 +557,8 @@ public class Human implements Comparable<Human> {
             try{dmg = Double.parseDouble(splitStr[8]);} catch (NumberFormatException | NullPointerException e){dmg = null;}
             try{san = Double.parseDouble(splitStr[9]);} catch (NumberFormatException | NullPointerException e){san = null;}
             try{dc = Integer.parseInt(splitStr[10].replace("]",""));} catch (NumberFormatException | ArrayIndexOutOfBoundsException e){dc = null;}
-            if (splitStr.length>11){
+            try{owner = splitStr[11];}catch (ArrayIndexOutOfBoundsException e){owner = null;}
+            if (splitStr.length>12){
                 try{
                     int i = 0;
                     for(int k=11;k<splitStr.length-1;k++) {
@@ -586,13 +592,20 @@ public class Human implements Comparable<Human> {
                         } else if(k== splitStr.length-2) continue;
                         i++;
                     }
-                    return new Human(id,name,ft,rt,isal,hp,intel,luck,dmg,san,dc,inv);
+                    return new Human(id,name,ft,rt,isal,hp,intel,luck,dmg,san,dc,owner ,inv);
                 }  catch (ArrayIndexOutOfBoundsException e){
                     System.out.println(">Too many arguments! "+ Arrays.toString(e.getStackTrace()));
                 }
-            } else{ return new Human(id,name,ft,rt,isal,hp,intel,luck,dmg,san,dc);}
+            } else{ return new Human(id,name,ft,rt,isal,hp,intel,luck,dmg,san,dc,owner);}
         } catch (ArrayIndexOutOfBoundsException e){}
         return null;
     }
 
+    public void setOwner(String owner) {
+        this.owner = owner;
+    }
+
+    public String getOwner() {
+        return owner;
+    }
 }

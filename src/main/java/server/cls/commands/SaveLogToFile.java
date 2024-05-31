@@ -4,6 +4,7 @@ import common.AbstractCommand;
 import common.Feedbacker;
 import client.CommandLine;
 import client.classes.CollectionManager;
+import common.UserData;
 
 /**
  * Executes the "clear" command
@@ -18,11 +19,13 @@ public class SaveLogToFile extends AbstractCommand {
     }
     /**
      * Executes the "clear" command
+     *
      * @param arg
+     * @param userData
      * @return Feedbacker
      */
     @Override
-    public Feedbacker execute(String arg) {
+    public Feedbacker execute(String arg, UserData userData) {
         if (!arg.isEmpty()) return new Feedbacker(false, "Wrong argument usage. see 'help' for reference");
         cm.saveToFile();
         return new Feedbacker("Collection saved");

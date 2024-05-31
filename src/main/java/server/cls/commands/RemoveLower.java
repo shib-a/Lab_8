@@ -3,10 +3,10 @@ package server.cls.commands;
 import common.AbstractCommand;
 import common.Feedbacker;
 import common.Stat;
+import common.UserData;
 import server.*;
 
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -22,11 +22,13 @@ public class RemoveLower extends AbstractCommand {
     }
     /**
      * Executes the "remove_lower" command
+     *
      * @param arg
+     * @param userData
      * @return Feedbacker
      */
     @Override
-    public Feedbacker execute(String arg) {
+    public Feedbacker execute(String arg, UserData userData) {
         if(arg.isEmpty()) return new Feedbacker(false,">Wrong argument usage. See 'help' for reference.");
         try{
             var val = Double.parseDouble(arg.trim());

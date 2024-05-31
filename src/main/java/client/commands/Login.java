@@ -4,14 +4,14 @@ import common.Feedbacker;
 import common.UserData;
 
 /**
- * Class for the "sort" command
+ * Class for the "info" command
  */
-public class Sort extends AbstractCommand{
-    public Sort() {
-        super("sort", "Sorts collection by default (in this case by DAMAGE stat values).");
+public class Login extends AbstractCommand {
+    public Login() {
+        super("login", "authorize");
     }
     /**
-     * Executes the "sort" command
+     * Executes the "info" command
      *
      * @param arg
      * @param userData
@@ -20,10 +20,9 @@ public class Sort extends AbstractCommand{
     @Override
     public Feedbacker execute(String arg, UserData userData) {
 //            if(!arg.isEmpty()) return new Feedbacker(false,">Wrong argument usage. See 'help' for reference.");
-//            else {
-////                cm.getCollection().sort(new HumanComparator());
-//            }
-//            return new Feedbacker(">Sorted successfully.");
+//            cl.printLn("Collection size: "+cm.getCollection().size());
+//            cl.printLn("Collection initialization date: "+cm.getInitDate());
+//            return new Feedbacker(">Shown successfully");
         return new Feedbacker("");
     }
 }

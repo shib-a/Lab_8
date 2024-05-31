@@ -2,6 +2,7 @@ package server.cls.commands.redo;
 
 import client.CommandLine;
 import common.AbstractCommand;
+import common.UserData;
 import server.cls.commands.CommandManager;
 import common.Feedbacker;
 import server.cls.commands.RuntimeEnv;
@@ -27,11 +28,13 @@ public class RedoFile extends AbstractCommand {
     }
     /**
      * Executes the "redo" command
+     *
      * @param arg
+     * @param userData
      * @return Feedbacker
      */
     @Override
-    public Feedbacker execute(String arg) {
+    public Feedbacker execute(String arg, UserData userData) {
         if(arg.isEmpty()){
 //            re.executeCommand(new String[]{"execute_script", "log.txt"});
             return new Feedbacker(">Redone successfully.");

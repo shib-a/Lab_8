@@ -13,7 +13,9 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.Scanner;
+import java.util.Set;
 
 import static java.lang.Thread.sleep;
 
@@ -100,6 +102,7 @@ public class ClientMain {
             System.out.println(">Awaiting connection...");
             SocketChannel socketChannel;
             Scanner scan = new Scanner(System.in);
+            Selector selector = Selector.open();
 //            Connector connector = new Connector();
             while (true){
             try {
@@ -113,6 +116,8 @@ public class ClientMain {
                         socketChannel = Connector.getSC();
                         socketChannel.connect(Connector.adr);
                         socketChannel.configureBlocking(false);
+                        socketChannel.register(selector, SelectionKey.OP_READ | SelectionKey.OP_WRITE);
+                        selector.select();
                         break;
                     } catch (NumberFormatException e){
                         System.out.println("Enter a proper integer value.");
@@ -148,15 +153,41 @@ public class ClientMain {
                     com.getCommandList().put("get_history", new GetHistory());
                     com.getCommandList().put("help", new Help());
 
-                    Feedbacker temp = null;
-                    while(temp==null) {
-                        temp = re.askAuth();
+                    Feedbacker temp = new Feedbacker(false,"");
+                    while(!temp.getIsSuccessful()) {
+                        selector.select();
+                        Set<SelectionKey> keys = selector.selectedKeys();
+                        Iterator<SelectionKey> iterator = keys.iterator();
+
+                        while (iterator.hasNext()){
+                            SelectionKey key = iterator.next();
+                            iterator.remove();
+                            if(key.isWritable()){
+                                re.askAuthWrite(key, selector);
+                            }
+                            if(key.isReadable()){
+                                re.askAuthRead(key, selector);
+                                temp = re.currentFeedbacker;
+                                if(temp.getIsSuccessful()){break;}
+                            }
+                        }
+
                     }
-                    re.mannedMode();
-                    break;
+//                    while (true) {
+//                        selector.select();
+//                        Set<SelectionKey> keys = selector.selectedKeys();
+//                        Iterator<SelectionKey> iterator = keys.iterator();
+//                        while (iterator.hasNext()){
+//                            SelectionKey key = iterator.next();
+//                            re.mannedMode(key);
+//                        }
+//
+//                        break;
+//                    }
+                re.mannedMode(selector);
 
             }    catch (NullPointerException e){
-                System.out.println("Unexpected error :"+ Arrays.toString(e.getStackTrace()));
+                System.out.println("Unexpected error :"+ Arrays.toString(e.getStackTrace()) + e.getMessage() + e.getCause());
             }    // fix error after closing server and inputting a command on client
         }
         }

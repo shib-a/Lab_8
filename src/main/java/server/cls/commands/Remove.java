@@ -2,6 +2,7 @@ package server.cls.commands;
 
 import common.AbstractCommand;
 import common.Feedbacker;
+import common.UserData;
 import server.CommandLine;
 import server.CollectionManager;
 
@@ -18,11 +19,13 @@ public class Remove extends AbstractCommand {
     }
     /**
      * Executes the "remove_by_id" command
+     *
      * @param arg
+     * @param userData
      * @return Feedbacker
      */
     @Override
-    public Feedbacker execute(String arg) {
+    public Feedbacker execute(String arg, UserData userData) {
             if(arg.isEmpty()) return new Feedbacker(false,">Wrong argument usage. See 'help' for reference.");
         try{
             var id = Integer.parseInt(arg.trim());

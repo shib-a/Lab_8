@@ -2,6 +2,7 @@ package server.cls.commands;
 
 import common.AbstractCommand;
 import common.Feedbacker;
+import common.UserData;
 import server.*;
 
 import java.util.Objects;
@@ -19,11 +20,13 @@ public class Show extends AbstractCommand {
     }
     /**
      * Executes the "show" command
+     *
      * @param arg
+     * @param userData
      * @return Feedbacker
      */
     @Override
-    public Feedbacker execute(String arg) {
+    public Feedbacker execute(String arg, UserData userData) {
         if (!arg.isEmpty()) return new Feedbacker(false, ">Wrong argument usage. See 'help' for reference.");
         if (cm.getCollection().isEmpty()) return new Feedbacker(">Collection is empty.");
         StringBuilder str = new StringBuilder();

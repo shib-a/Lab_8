@@ -9,9 +9,12 @@ import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.Scanner;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.logging.Logger;
 
 
@@ -25,11 +28,13 @@ public class ServerMain {
         ServerSocketChannel ssc = ServerSocketChannel.open();
         ssc.socket().setReuseAddress(true);
         ssc.configureBlocking(false);
+        Selector selector = Selector.open();
         while (true){
             try{
                 System.out.println("enter the port: ");
                 port = Integer.parseInt(scan.nextLine());
                 ssc.socket().bind(new InetSocketAddress("localhost", port));
+                ssc.register(selector, SelectionKey.OP_ACCEPT);
                 logger.info("Server started on port "+port);
                 break;
             } catch (NumberFormatException e){
@@ -84,20 +89,71 @@ public class ServerMain {
         InteraciveServerConsole intServCons = new InteraciveServerConsole(cl,com);
         executorService.execute(intServCons);
 
-        while (true){
-            SocketChannel clientSocket = ssc.accept();
 
-            if (clientSocket != null) {
-//                logger.info("New connection acquired" + ServerConnector.selector.keys().toString());
-                logger.info("New connection acquired");
-                clientSocket.configureBlocking(false);
-                ServerConnector.setSelector(Selector.open());
-                SelectionKey sk = clientSocket.register(ServerConnector.getSelector(), SelectionKey.OP_READ | SelectionKey.OP_WRITE);
-                ThreadClientHandler tch = new ThreadClientHandler(clientSocket,re);
-                try{
-                    executorService.execute(tch);
-                } catch (RuntimeException e){logger.info("Clent disconnected");}
+
+        IOHandler handler = new IOHandler(re);
+        ExecutorService cachedThreadPool = Executors.newCachedThreadPool();
+
+        while (true){
+            int readyChannels = selector.select(1000);
+            if (readyChannels==0){continue;}
+            Set<SelectionKey> selectedKeys = selector.selectedKeys();
+            Iterator<SelectionKey> iterator = selectedKeys.iterator();
+            while (iterator.hasNext()) {
+                SelectionKey key = iterator.next();
+                iterator.remove();
+                if(!key.isValid()){continue;}
+                try {
+                    if (key.isValid() && key.isAcceptable()){
+                        handler.handleConnection(ssc, selector);
+
+                    }
+                    if (key.isValid() && key.isReadable()){
+//                        SocketChannel sc = (SocketChannel) key.channel();
+                        ReadHandler rh = new ReadHandler(re, key);
+//                        handler.handleRead(selector, key);
+//                        Executors.newCachedThreadPool().execute(rh);
+//                        sc.close();
+                        rh.handle();
+                        logger.info("reading handled");
+                    }
+                    if (key.isValid() && key.isWritable()){
+                        logger.info("about to handle writing");
+//                        SocketChannel sc = (SocketChannel) key.channel();
+                        WriteHandler wh = new WriteHandler(key);
+//                        handler.handleWrite(selector, key);
+                        wh.handle();
+//                        sc.close();
+                    }
+                } catch (IOException e) {
+                    System.out.println(Arrays.toString(e.getStackTrace()) + e.getMessage());
+                }
+//            if(clientSocket!=null) {
+//                logger.info("New connection acquired");
+//                clientSocket.configureBlocking(false);
+//                clientSocket.register(selector, SelectionKey.OP_READ | SelectionKey.OP_WRITE);
+//                while (true) {
+//                    selector.select();
+//                    Set<SelectionKey> selectedKeys = selector.selectedKeys();
+//                    Iterator<SelectionKey> iterator = selectedKeys.iterator();
+//
+//                    }
+//                }
             }
+
+//            if (clientSocket != null) {
+
+//                logger.info("New connection acquired" + ServerConnector.selector.keys().toString());
+//                logger.info("New connection acquired");
+//                clientSocket.configureBlocking(false);
+//                ServerConnector.setSelector(Selector.open());
+//                SelectionKey sk = clientSocket.register(ServerConnector.getSelector(), SelectionKey.OP_READ | SelectionKey.OP_WRITE);
+//                ThreadClientHandler tch = new ThreadClientHandler(clientSocket,re);
+//                try{
+//                    executorService.execute(tch);
+//                } catch (RuntimeException e){logger.info("Clent disconnected");}
+
+//            }
 
         }
     } catch (IOException e){

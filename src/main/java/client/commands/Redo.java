@@ -3,6 +3,7 @@ import common.AbstractCommand;
 import client.CommandLine;
 
 import common.Feedbacker;
+import common.UserData;
 
 /**
  * Class for the "redo" command
@@ -19,11 +20,13 @@ public class Redo extends AbstractCommand{
     }
     /**
      * Executes the "redo" command
+     *
      * @param arg
+     * @param userData
      * @return Feedbacker
      */
     @Override
-    public Feedbacker execute(String arg) {
+    public Feedbacker execute(String arg, UserData userData) {
         if(arg.isEmpty()){
             re.executeCommand(new String[]{"execute_script", "log.txt"});
             return new Feedbacker(">Redone successfully.");

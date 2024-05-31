@@ -3,6 +3,7 @@ package client.commands;
 import common.AbstractCommand;
 import java.io.Serializable;
 import common.Feedbacker;
+import common.UserData;
 
 /**
  * Class for the "help" command
@@ -13,11 +14,13 @@ public class Help extends AbstractCommand implements Serializable {
     }
     /**
      * Executes the "help" command
+     *
      * @param arg
+     * @param userData
      * @return Feedbacker
      */
     @Override
-    public Feedbacker execute(String arg) {
+    public Feedbacker execute(String arg, UserData userData) {
 //        if(!arg.isEmpty()) return new Feedbacker(false,">Wrong argument usage. See 'help' for reference.");
 //        for(AbstractCommand el: com.getCommandList().values()){
 //            System.out.println(el.getName() + "-" +el.getDesc());

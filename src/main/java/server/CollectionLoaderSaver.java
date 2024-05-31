@@ -60,7 +60,30 @@ public class CollectionLoaderSaver implements Serializable {
             } catch (NullPointerException | IOException e){return;}
         }catch (IOException e){}
     }
-
+    public void writeToFile(ArrayList<String> col, int s){
+        BufferedOutputStream wr = null;
+        ArrayList<String> data = arrToCsvArr(col, s);
+        if(data==null){return;}
+        try {
+            FileOutputStream fls = new FileOutputStream(fileName);
+            wr = new BufferedOutputStream(fls);
+            try{
+                for(String el:data) {
+                    wr.write(el.getBytes());
+                    wr.write("\n".getBytes());
+                }
+                wr.flush();
+                System.out.println(">Collection saved.");
+            } catch (NullPointerException | IOException e){return;}
+        }catch (IOException e){}
+    }
+    public ArrayList<String> arrToCsvArr(ArrayList<String> arr, int s){
+        ArrayList<String> ans = new ArrayList<>();
+        for(int i = 0; i < s-8; i+=8){
+           ans.add(arr.get(i)+","+arr.get(i+1)+","+arr.get(i+2)+","+arr.get(i+3)+","+arr.get(i+4)+","+arr.get(i+5)+","+arr.get(i+6)+","+arr.get(i+7));
+        }
+        return ans;
+    }
     /**
      * Parses a CSV file, turns extracted values to Human instances and adds them to a collection
      * @param fileName
@@ -74,7 +97,7 @@ public class CollectionLoaderSaver implements Serializable {
                 BufferedInputStream is = new BufferedInputStream(f);
                 CSVParser csvp = CSVParser.parse(is,StandardCharsets.UTF_8,CSVFormat.DEFAULT);
                 for(CSVRecord line:csvp){
-                    if (!(line.values().length>=11 && line.values().length<=19)) throw new ArrayIndexOutOfBoundsException();
+//                    if (!(line.values().length>=11 && line.values().length<=19)) throw new ArrayIndexOutOfBoundsException();
                     try{
                         var st = line.values();
                         String str = "";

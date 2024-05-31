@@ -1,9 +1,7 @@
 package server.cls.commands;
 
 import client.classes.AskHumanData;
-import common.CommandObject;
-import common.Feedbacker;
-import common.HumanData;
+import common.*;
 import server.*;
 
 import java.io.*;
@@ -11,15 +9,14 @@ import java.net.Socket;
 import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.NoSuchElementException;
-import java.util.Scanner;
+import java.util.*;
 import java.util.logging.Logger;
 
+import static java.lang.Thread.enumerate;
 import static java.lang.Thread.sleep;
 
 /**
@@ -33,6 +30,7 @@ public class RuntimeEnv {
     private static BufferedWriter bw;
     private Socket ss;
     private SocketChannel sc;
+    UserData currUserData;
     private HumanData currHumanData = null;
     public RuntimeEnv(CommandLine cl, CommandManager cm){this.cl=cl;this.cm=cm;try{bw = new BufferedWriter(new FileWriter("log.txt"));} catch (IOException e){bw = null;}}
     public RuntimeEnv(CommandLine cl, CommandManager cm, SocketChannel ssc){this.cl=cl;this.cm=cm;this.sc=ssc;try{bw = new BufferedWriter(new FileWriter("log.txt"));} catch (IOException e){bw = null;}}
@@ -173,6 +171,7 @@ public class RuntimeEnv {
      */
     public Feedbacker executeCommand(CommandObject co) {
             currHumanData = co.getHd();
+            currUserData = co.getUserData();
             if (co.getCommand().getName().equals("")) return new Feedbacker("");
             if (co.getCommand().getName().equals("exit")) {
                 return new Feedbacker("exit");}
@@ -181,37 +180,39 @@ public class RuntimeEnv {
             if (command == null)
                 return new Feedbacker(false, ">Command " + co.getCommand() + " not found. See 'help' for reference.");
             command = cm.getCommandList().get(co.getCommand().getName());
-            Feedbacker fb = command.execute(co.getArgument());
+            String arg = co.getArgument();
+
+            Feedbacker fb = command.execute(arg,co.getUserData());
             logger.info("Command processed, answer is ready");
         return fb;
     }
 
-    public Feedbacker executeCommand(String[] inputCommand){
-        if (inputCommand[0].equals("")) return new Feedbacker("");
-        var command = cm.getCommandList().get(inputCommand[0]);
-        if (command==null) return new Feedbacker(false,">Command "+inputCommand[0]+" not found. See 'help' for reference.");
-        else if (inputCommand[0].equals("execute_script")){
-            Feedbacker fp = cm.getCommandList().get("execute_script").execute(inputCommand[1]);
-            if(!fp.getIsSuccessful()) return fp;
-//            Feedbacker fp2 = autoMode(inputCommand[1].trim());
-            Feedbacker fp2 = null;
-            return new Feedbacker(fp2.getIsSuccessful(),fp2.getMessage());
-        } else {
-            HumanData hd = null;
-            CommandObject co = new CommandObject(command,inputCommand[1],hd);
-            if (co.getCommand().getIsNeedData()){
-                try{
-                    hd = server.AskHumanData.askHuman(cl);
-                } catch (server.AskHumanData.AskBreaker a){}
-            }
-            try{
-                if (hd!=null){
-                    co.setHd(hd);}
-                return executeCommand(co);
-            } catch (NullPointerException  e){}
-        }
-        return null;
-    }
+//    public Feedbacker executeCommand(String[] inputCommand){
+//        if (inputCommand[0].equals("")) return new Feedbacker("");
+//        var command = cm.getCommandList().get(inputCommand[0]);
+//        if (command==null) return new Feedbacker(false,">Command "+inputCommand[0]+" not found. See 'help' for reference.");
+//        else if (inputCommand[0].equals("execute_script")){
+//            Feedbacker fp = cm.getCommandList().get("execute_script").execute(inputCommand[1]);
+//            if(!fp.getIsSuccessful()) return fp;
+////            Feedbacker fp2 = autoMode(inputCommand[1].trim());
+//            Feedbacker fp2 = null;
+//            return new Feedbacker(fp2.getIsSuccessful(),fp2.getMessage());
+//        } else {
+//            HumanData hd = null;
+//            CommandObject co = new CommandObject(command,inputCommand[1],hd);
+//            if (co.getCommand().getIsNeedData()){
+//                try{
+//                    hd = server.AskHumanData.askHuman(cl);
+//                } catch (server.AskHumanData.AskBreaker a){}
+//            }
+//            try{
+//                if (hd!=null){
+//                    co.setHd(hd);}
+//                return executeCommand(co);
+//            } catch (NullPointerException  e){}
+//        }
+//        return null;
+//    }
     /**
      * Checks whether a referenced file has already been executed
      * @param path
@@ -257,36 +258,67 @@ public class RuntimeEnv {
         addToLog(co.getCommand()+" "+co.getArgument());
         return co;
     }
+    public CommandObject recieve(SocketChannel sch) throws IOException, ClassNotFoundException {
+        ByteBuffer buf = ByteBuffer.allocate(1024*1024);
+        sch.read(buf);
+        ByteArrayInputStream bis = new ByteArrayInputStream(buf.array());
+        ObjectInputStream ois = new ObjectInputStream(bis);
+        logger.info("Receiving data from client... ");
+        CommandObject co = (CommandObject) ois.readObject();
+        logger.info("Data received");
+//        System.out.println(co.getArgument());
+        addToLog(co.getCommand()+" "+co.getArgument());
+        return co;
+    }
     public void setSc(SocketChannel sc){
         this.sc=sc;
     }
-    public Feedbacker askAuth(SocketChannel sc) {
+    public Feedbacker askAuth(String data) {
         logger.info("Auth started");
         try {
-            CommandObject co = recieve();
-            String arg = co.getArgument();
-            System.out.println(co);
-            logger.info(co.getArgument());
-            var cargs = arg.trim().split(" ");
+            logger.info(data);
+            var cargs = data.trim().split(" ");
+            logger.info(String.valueOf(cargs.length));
             if (cargs.length != 2){return new Feedbacker(false,"incorrect");}
 //            String[] cargs = co.getArgument().split(" ");
-            ArrayList<String> data = DataConnector.getUserInfo(Integer.parseInt(cargs[1]));
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] hash = digest.digest(cargs[1].getBytes("UTF-8"));
+            byte[] hash = digest.digest(cargs[1].getBytes(StandardCharsets.UTF_8));
             String encoded = Base64.getEncoder().encodeToString(hash);
-            if(encoded.equals(data.get(1))){
-                return new Feedbacker("yes");
-            } else {
-                DataConnector.addUserInfo(cargs[0],encoded);
+            logger.info("branching");
+            try {
+                ArrayList<String> data_arr = DataConnector.getUserInfo(cargs[0]);
+                logger.info("user info got");
+                if (!data_arr.isEmpty() && encoded.equals(data_arr.get(1))) {
+                    return new Feedbacker("Successfully entered account. Welcome back!");
+                } else if (!data_arr.isEmpty() && !encoded.equals(data_arr.get(1))){
+//                    DataConnector.addUserInfo(cargs[0], encoded);
+                    return new Feedbacker(false,"Wrong password. Try again.");
+                } else if (data_arr.isEmpty()){
+                    logger.info("adding a user");
+                    DataConnector.addUserInfo(cargs[0], encoded, Permissinons.NORMAL_ACCESS);
+                    return new Feedbacker("Registered successfully");
+                }
+//                System.out.println("passed");
+            } catch (CustomException | RuntimeException e){
+                logger.info(e.getMessage() + Arrays.toString(e.getStackTrace()));
             }
-            System.out.println("passed");
-        } catch (IOException | ClassNotFoundException | NoSuchAlgorithmException  e){} catch (CustomException e){
-            System.out.println(e.getMessage());
+        } catch (NoSuchAlgorithmException e){
+            System.out.println(Arrays.toString(e.getStackTrace()) + e.getMessage() + e.getCause());
+//        } catch (CustomException e){
+//            System.out.println(e.getMessage());
         }
         return new Feedbacker(false,"No pass but ok");
     }
 
     public SocketChannel getSc() {
         return sc;
+    }
+
+    public UserData getUserData() {
+        return currUserData;
+    }
+
+    public void setUserData(UserData ud) {
+        this.currUserData = ud;
     }
 }

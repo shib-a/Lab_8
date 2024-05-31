@@ -3,6 +3,7 @@ package server.cls.commands;
 import common.AbstractCommand;
 import common.Feedbacker;
 import common.ResearcherType;
+import common.UserData;
 import server.*;
 
 public class CountByResearcherType extends AbstractCommand {
@@ -15,7 +16,7 @@ public class CountByResearcherType extends AbstractCommand {
     }
 
     @Override
-    public Feedbacker execute(String arg) {
+    public Feedbacker execute(String arg, UserData userData) {
         if(arg.isEmpty()) return new Feedbacker(false,">Wrong argument usage. see 'help' for reference.");
         try{
             var val = ResearcherType.valueOf(arg.trim());

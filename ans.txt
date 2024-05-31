@@ -1,1 +1,0 @@
-10,name,GUN,EXPEDITIONIST,true,10.0,10.0,10.0,10.0,10.0,5,null,null,null,null

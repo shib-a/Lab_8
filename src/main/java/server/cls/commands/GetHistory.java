@@ -3,6 +3,7 @@ package server.cls.commands;
 import common.AbstractCommand;
 import common.Feedbacker;
 import client.CommandLine;
+import common.UserData;
 
 /**
  * Executes the "get_history" command
@@ -17,11 +18,13 @@ public class GetHistory extends AbstractCommand {
     }
     /**
      * Executes the "get_history" command
+     *
      * @param arg
+     * @param userData
      * @return Feedbacker
      */
     @Override
-    public Feedbacker execute(String arg) {
+    public Feedbacker execute(String arg, UserData userData) {
         if(!arg.isEmpty()) return new Feedbacker(false,">Wrong argument usage. See 'help' for reference.");
         cl.printLn(com.getCommandHistory());
         return new Feedbacker(">Showed successfully.");

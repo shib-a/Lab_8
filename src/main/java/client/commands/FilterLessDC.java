@@ -1,6 +1,8 @@
 package client.commands;
 import common.AbstractCommand;
 import common.Feedbacker;
+import common.UserData;
+
 /**
  * Executes the "filter_by_less_than_number_of_dug_counter" command
  */
@@ -10,11 +12,13 @@ public class FilterLessDC extends AbstractCommand{
     }
     /**
      * Executes the "filter_by_less_than_number_of_dug_counter" command
+     *
      * @param arg
+     * @param userData
      * @return Feedbacker
      */
     @Override
-    public Feedbacker execute(String arg) {
+    public Feedbacker execute(String arg, UserData userData) {
 //        if(arg.isEmpty()) return new Feedbacker(false,">Wrong argument usage. see 'help' for reference.");
 //        try{
 //            var val = Integer.parseInt(arg.trim());

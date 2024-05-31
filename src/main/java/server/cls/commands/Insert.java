@@ -2,6 +2,7 @@ package server.cls.commands;
 
 import common.AbstractCommand;
 import common.Feedbacker;
+import common.UserData;
 import server.*;
 
 /**
@@ -19,17 +20,19 @@ public class Insert extends AbstractCommand {
     }
     /**
      * Executes the "insert" command
+     *
      * @param arg
+     * @param userData
      * @return Feedbacker
      */
     @Override
-    public Feedbacker execute(String arg) {
+    public Feedbacker execute(String arg, UserData userData) {
         try {
             if (arg.isEmpty()) return new Feedbacker(false, ">Wrong argument usage. See 'help' for reference.");
             var val = Integer.parseInt(arg.trim());
             if(val<=cm.getCollection().size() && !(val<0)){
                 cl.printLn(">Creating new Human for insertion:");
-                Human h = Ask.askHuman(re.getCurrHumanData(), cm.getUnusedId());
+                Human h = Ask.askHuman(re.getCurrHumanData(), cm.getUnusedId(), userData);
                 if (h != null && h.validate()) {
                     cm.insert(val,h);
                     return new Feedbacker(">Inserted successfully.");

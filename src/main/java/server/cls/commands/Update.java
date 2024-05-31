@@ -2,6 +2,7 @@ package server.cls.commands;
 
 import common.AbstractCommand;
 import common.Feedbacker;
+import common.UserData;
 import server.*;
 
 /**
@@ -19,16 +20,18 @@ public class Update extends AbstractCommand {
     }
     /**
      * Executes the "update" command
+     *
      * @param arg
+     * @param userData
      * @return Feedbacker
      */
     @Override
-    public Feedbacker execute(String arg) {
+    public Feedbacker execute(String arg, UserData userData) {
         if(arg.isEmpty()) return new Feedbacker(false,">Wrong argument usage. See 'help' for reference");
         cl.printLn(">Updating a Human. Input new values:");
         System.out.println(Integer.parseInt(arg.trim()));
         try {
-            Human h=Ask.askHuman(re.getCurrHumanData(),Integer.parseInt(arg.trim()));
+            Human h=Ask.askHuman(re.getCurrHumanData(),Integer.parseInt(arg.trim()), userData);
             if (h != null && h.validate()) {
                 cm.updateEl(h);
                 return new Feedbacker(">Updated successfully.");

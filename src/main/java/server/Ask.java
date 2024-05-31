@@ -3,6 +3,7 @@ package server;
 import common.HumanData;
 import common.ResearcherType;
 import common.ToolKinds;
+import common.UserData;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -23,7 +24,7 @@ public class Ask {
      * @return Human
      * @throws AskBreaker
      */
-    public static Human askHuman(HumanData hd, int id) throws AskBreaker{
+    public static Human askHuman(HumanData hd, int id, UserData userData) throws AskBreaker{
         System.out.println("cock");
         try{
             String name = hd.getName();
@@ -35,7 +36,8 @@ public class Ask {
             for (int i=0;i<stats.length;i++){stats[i]=Double.parseDouble(st[i]);}
             boolean ia = hd.getAl();
             int dc = Integer.parseInt(hd.getDc());
-            return new Human(id,name, ptt, rt, ia,stats[0],stats[1],stats[2], stats[3], stats[4],dc);
+            String owner = userData.getName();
+            return new Human(id,name, ptt, rt, ia,stats[0],stats[1],stats[2], stats[3], stats[4],dc, owner);
         } catch (NoSuchElementException   e){
             System.out.println(">Failed to read"+ e);
             return null;

@@ -1,6 +1,8 @@
 package client.commands;
 import common.AbstractCommand;
 import common.Feedbacker;
+import common.UserData;
+
 /**
  * Class for the "update" command
  */
@@ -10,11 +12,13 @@ public class Update extends AbstractCommand{
     }
     /**
      * Executes the "update" command
+     *
      * @param arg
+     * @param userData
      * @return Feedbacker
      */
     @Override
-    public Feedbacker execute(String arg) {
+    public Feedbacker execute(String arg, UserData userData) {
 //        if(arg.isEmpty()) return new Feedbacker(false,">Wrong argument usage. See 'help' for reference");
 //        cl.printLn(">Updating a Human. Input new values:");
 //        System.out.println(Integer.parseInt(arg.trim()));

@@ -2,6 +2,7 @@ package server.cls.commands;
 
 import common.AbstractCommand;
 import common.Feedbacker;
+import common.UserData;
 import server.CommandLine;
 import server.Ask;
 import server.CollectionManager;
@@ -23,15 +24,17 @@ public class Add extends AbstractCommand {
 
     /**
      * Executes the "add" command
+     *
      * @param arg
+     * @param userData
      * @return Feedbacker
      */
     @Override
-    public Feedbacker execute(String arg) {
+    public Feedbacker execute(String arg, UserData userData) {
         try {
             if(!arg.isEmpty()) return new Feedbacker(false,">Wrong argument usage. see 'help' for reference.");
             cl.printLn(">Creating new Human:");
-            Human h = Ask.askHuman(re.getCurrHumanData(),cm.getUnusedId());
+            Human h = Ask.askHuman(re.getCurrHumanData(),cm.getUnusedId(), userData);
             if(h!=null && h.validate()){
                 cm.add(h);
                 return new Feedbacker(">Added successfully.");

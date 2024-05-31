@@ -1,6 +1,8 @@
 package client.commands;
 import common.AbstractCommand;
 import common.Feedbacker;
+import common.UserData;
+
 /**
  * Class for the "info" command
  */
@@ -10,11 +12,13 @@ public class Info extends AbstractCommand {
     }
     /**
      * Executes the "info" command
+     *
      * @param arg
+     * @param userData
      * @return Feedbacker
      */
     @Override
-    public Feedbacker execute(String arg) {
+    public Feedbacker execute(String arg, UserData userData) {
 //            if(!arg.isEmpty()) return new Feedbacker(false,">Wrong argument usage. See 'help' for reference.");
 //            cl.printLn("Collection size: "+cm.getCollection().size());
 //            cl.printLn("Collection initialization date: "+cm.getInitDate());

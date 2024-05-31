@@ -5,6 +5,7 @@ import server.Human;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class CollectionManager implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -21,12 +22,16 @@ public class CollectionManager implements Serializable {
     public ArrayList<Human> getCollection(){
         return collection;
     }
+    private final ReentrantLock lock = new ReentrantLock();
     public Human getById(int id){
+        lock.lock();
         for (Human el: collection){
             if (el.getId()==id){
+                lock.unlock();
                 return el;
             }
         }
+        lock.unlock();
         return null;
     }
 
@@ -36,10 +41,10 @@ public class CollectionManager implements Serializable {
      * @return boolean
      */
     public boolean isInCol(Human h){
-                if(getById(h.getId())!=null){return true;} else {return false;}
+                lock.lock(); if(getById(h.getId())!=null){lock.unlock(); return true;} else {lock.unlock(); return false;}
         }
     public int getUnusedId(){
-        while(getById(++currId)!=null); return currId;
+        return DataConnector.getLatestId();
     }
 
     /**
@@ -98,6 +103,9 @@ public class CollectionManager implements Serializable {
      */
     public void initialaze(){
         collection.clear();
+        ArrayList<String> colFromDB = DataConnector.getCollectionInfo();
+        var s = colFromDB.size();
+        cls.writeToFile(colFromDB, s);
         collection = cls.readFromFile(cls.getFileName());
         initDate = LocalDateTime.now();
         if (!collection.isEmpty()) {

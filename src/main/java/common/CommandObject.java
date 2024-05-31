@@ -1,5 +1,7 @@
 package common;
 
+import com.sun.source.tree.UsesTree;
+
 import java.io.Serializable;
 
 public class CommandObject implements Serializable {
@@ -7,10 +9,12 @@ public class CommandObject implements Serializable {
     String argument;
     AbstractCommand command;
     HumanData hd;
-    public CommandObject(AbstractCommand command, String arg, HumanData hd){
+    UserData ud;
+    public CommandObject(AbstractCommand command, String arg, HumanData hd, UserData ud){
         this.argument = arg;
         this.command = command;
         this.hd=hd;
+        this.ud = ud;
     }
     public String deriveCommand(){
         return command + argument;
@@ -20,7 +24,7 @@ public class CommandObject implements Serializable {
     public String toString() {
         return "CommandObject{" +
                 "argument='" + argument + '\'' +
-                ", command=" + command +
+                ", command=" + command + ", userData = " + ud.getName()+
                 '}';
     }
 
@@ -34,6 +38,10 @@ public class CommandObject implements Serializable {
 
     public HumanData getHd() {
         return hd;
+    }
+
+    public UserData getUserData() {
+        return ud;
     }
 
     public void setHd(HumanData hd) {
