@@ -33,7 +33,7 @@ public class Update extends AbstractCommand {
         try {
             Human h=Ask.askHuman(re.getCurrHumanData(),Integer.parseInt(arg.trim()), userData);
             if (h != null && h.validate()) {
-                cm.updateEl(h);
+                cm.updateEl(h,userData);
                 return new Feedbacker(">Updated successfully.");
             } else return new Feedbacker(false, ">Failed to update. Invalid arguments.");
         } catch (NumberFormatException | Ask.AskBreaker e){ return new Feedbacker(false,">Invalid number.");}

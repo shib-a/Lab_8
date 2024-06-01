@@ -22,11 +22,19 @@ public class ReadHandler {
     public void handle(){
         SocketChannel sc = (SocketChannel) key.channel();
         ByteBuffer buf = ByteBuffer.allocate(1024 * 1024);
-        try {sc.read(buf);
+        try {
+                int bytesRead = sc.read(buf);
+                if (bytesRead == -1) {
+                    logger.info("Client side disconnected...");
+                    sc.close();
+                    key.cancel();
+                    return;
+                }
+//            sc.read(buf);
         ByteArrayInputStream bis = new ByteArrayInputStream(buf.array());
                 synchronized (bis) {
                     ObjectInputStream ois = new ObjectInputStream(bis);
-                    concWrite(sc, ois, bis, key, buf);
+                    concRead(sc, ois, bis, key, buf);
                 }
 //        try {
 //            int bytesRead = sc.read(buf);
@@ -60,15 +68,8 @@ public class ReadHandler {
                 }
             }
         }
-    public static void concWrite(SocketChannel sc, ObjectInputStream ois, ByteArrayInputStream bis, SelectionKey key, ByteBuffer buf){
+    public void concRead(SocketChannel sc, ObjectInputStream ois, ByteArrayInputStream bis, SelectionKey key, ByteBuffer buf){
         ex.execute(() -> {try {
-            int bytesRead = sc.read(buf);
-            if (bytesRead == -1) {
-                logger.info("Client side disconnected...");
-                sc.close();
-                key.cancel();
-                return;
-            }
             logger.info("Receiving data from client... ");
 //            ois.defaultReadObject();
             CommandObject co = (CommandObject) ois.readObject();

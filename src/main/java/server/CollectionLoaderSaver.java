@@ -60,15 +60,15 @@ public class CollectionLoaderSaver implements Serializable {
             } catch (NullPointerException | IOException e){return;}
         }catch (IOException e){}
     }
-    public void writeToFile(ArrayList<String> col, int s){
+    public void writeToFile(ArrayList<String> col){
         BufferedOutputStream wr = null;
-        ArrayList<String> data = arrToCsvArr(col, s);
-        if(data==null){return;}
+//        ArrayList<String> data = arrToCsvArr(col, s);
+        if(col==null){return;}
         try {
             FileOutputStream fls = new FileOutputStream(fileName);
             wr = new BufferedOutputStream(fls);
             try{
-                for(String el:data) {
+                for(String el:col) {
                     wr.write(el.getBytes());
                     wr.write("\n".getBytes());
                 }

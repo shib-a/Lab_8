@@ -1,5 +1,7 @@
 package server;
 
+import common.ResearcherType;
+import common.ToolKinds;
 import common.UserData;
 import server.Human;
 
@@ -54,7 +56,10 @@ public class CollectionManager implements Serializable {
      */
     public void add (Human h){
         if(!isInCol(h)){
-            collection.add(h);
+            if(h.getOwner()!=null) {
+                collection.add(h);
+                String[] arr = h.toCsvStr().split(",");
+            }
 //            System.out.println("Added");
         } else {
 //            System.out.println("Not added: object is already in the collection");
@@ -76,7 +81,7 @@ public class CollectionManager implements Serializable {
     public void updateEl(Human h, UserData userData){
         if(isInCol(h)){
             lock.lock();
-            if(h.getOwner() == userData.getName()) {
+            if(h.getOwner().equals(userData.getName())) {
                 collection.remove(getById(h.getId()));
                 collection.add(h);
             }
@@ -98,8 +103,10 @@ public class CollectionManager implements Serializable {
     public void removeById(int id, UserData userData){
         if(isInCol(getById(id))){
             lock.lock();
-            if(getById(id).getOwner() == userData.getName()) {
+            if(getById(id).getOwner().equals(userData.getName())) {
                 collection.remove(getById(id));
+            } else {
+                System.out.println("not enough rights");
             }
             lock.unlock();
 //            System.out.println("Element removed");
@@ -114,9 +121,12 @@ public class CollectionManager implements Serializable {
         lock.lock();
         collection.clear();
         ArrayList<String> colFromDB = DataConnector.getCollectionInfo();
-        var s = colFromDB.size();
-        cls.writeToFile(colFromDB, s);
+//        System.out.println(colFromDB);
+//        var s = colFromDB.size();
+//        cls.writeToFile(colFromDB, s);
+        cls.writeToFile(colFromDB);
         collection = cls.readFromFile(cls.getFileName());
+
         initDate = LocalDateTime.now();
 //        if (!collection.isEmpty()) {
 //            for (Human el : collection) {
@@ -133,6 +143,7 @@ public class CollectionManager implements Serializable {
         cls.writeToFile(collection);
         lock.unlock();
     }
+//    public static void ()
     @Override
     public String toString() {
         String colInfo = "";

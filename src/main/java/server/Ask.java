@@ -25,10 +25,10 @@ public class Ask {
      * @throws AskBreaker
      */
     public static Human askHuman(HumanData hd, int id, UserData userData) throws AskBreaker{
-        System.out.println("cock");
+//        System.out.println("cock");
         try{
             String name = hd.getName();
-            System.out.println(name);
+//            System.out.println(name);
             ToolKinds ptt = hd.getPtt();
             ResearcherType rt = hd.getRt();
             Double[] stats = new Double[5];
@@ -37,6 +37,7 @@ public class Ask {
             boolean ia = hd.getAl();
             int dc = Integer.parseInt(hd.getDc());
             String owner = userData.getName();
+            DataConnector.addHumanInfo(id, name, ptt, rt,stats[0]+","+stats[1]+","+stats[2]+","+stats[3]+","+stats[4], ia ,dc, owner);
             return new Human(id,name, ptt, rt, ia,stats[0],stats[1],stats[2], stats[3], stats[4],dc, owner);
         } catch (NoSuchElementException   e){
             System.out.println(">Failed to read"+ e);

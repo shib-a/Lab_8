@@ -44,22 +44,9 @@ public class ServerMain {
             }
         }
         DataConnector.initialize_db();
-//        Selector selector = Selector.open();
-//        ServerSocket ss = new ServerSocket(port);
 
         while(true){
             try{
-//            while (true){
-////                ssc = ServerSocketChannel.open();
-//                SocketChannel sc = ssc.accept();
-//                if (sc != null) {
-//                    sc.configureBlocking(false);
-//                    ServerConnector.setSelector(Selector.open());
-//                    SelectionKey sk = sc.register(ServerConnector.getSelector(), SelectionKey.OP_READ | SelectionKey.OP_WRITE);
-//                }
-//                sc.register(selector, SelectionKey.OP_ACCEPT);
-//                selector.select();
-//        Socket s = ss.accept();
 
         CommandLine cl = new CommandLine();
         var cls = new CollectionLoaderSaver("ans.txt",cl);
@@ -128,32 +115,8 @@ public class ServerMain {
                 } catch (IOException e) {
                     System.out.println(Arrays.toString(e.getStackTrace()) + e.getMessage());
                 }
-//            if(clientSocket!=null) {
-//                logger.info("New connection acquired");
-//                clientSocket.configureBlocking(false);
-//                clientSocket.register(selector, SelectionKey.OP_READ | SelectionKey.OP_WRITE);
-//                while (true) {
-//                    selector.select();
-//                    Set<SelectionKey> selectedKeys = selector.selectedKeys();
-//                    Iterator<SelectionKey> iterator = selectedKeys.iterator();
-//
-//                    }
-//                }
             }
 
-//            if (clientSocket != null) {
-
-//                logger.info("New connection acquired" + ServerConnector.selector.keys().toString());
-//                logger.info("New connection acquired");
-//                clientSocket.configureBlocking(false);
-//                ServerConnector.setSelector(Selector.open());
-//                SelectionKey sk = clientSocket.register(ServerConnector.getSelector(), SelectionKey.OP_READ | SelectionKey.OP_WRITE);
-//                ThreadClientHandler tch = new ThreadClientHandler(clientSocket,re);
-//                try{
-//                    executorService.execute(tch);
-//                } catch (RuntimeException e){logger.info("Clent disconnected");}
-
-//            }
 
         }
     } catch (IOException e){

@@ -54,7 +54,7 @@ public class RuntimeEnv {
                     addToLog(inputCommand[0]+" "+inputCommand[1]);
                     completionFeedback = executeCommand(inputCommand);
 //                    cm.addToHistory(inputCommand[0]+" "+inputCommand[1]);
-                    if(completionFeedback.getMessage().equals("exit")) break;
+                    if(completionFeedback.getMessage().equals("exit")){System.exit(0);}
                     cl.printLn(completionFeedback.getMessage());
 
                 }

@@ -12,6 +12,7 @@ public class InteraciveServerConsole implements Runnable {
     CommandManager cm;
     Scanner scanner = new Scanner(System.in);
     HumanData currHumanData = null;
+    UserData userData = new UserData("admin",Permissinons.FULL_ACCESS);
     Logger logger = Logger.getLogger("IntServCons");
     public InteraciveServerConsole(CommandLine cl, CommandManager cm){this.cl = cl; this.cm = cm;}
     @Override
@@ -26,7 +27,7 @@ public class InteraciveServerConsole implements Runnable {
                         cl.printException(">Too many arguments! Check the amount of whitespaces or arguments.");
                     } else {
 //                        addToLog(inputCommand[0]+" "+inputCommand[1]);
-                        completionFeedback = executeCommand(inputCommand);
+                        completionFeedback = executeCommand(inputCommand, userData);
 //                    cm.addToHistory(inputCommand[0]+" "+inputCommand[1]);
                         if (completionFeedback.getMessage().equals("exit")) System.exit(0);
                         cl.printLn(completionFeedback.getMessage());
@@ -50,7 +51,7 @@ public class InteraciveServerConsole implements Runnable {
         if (command == null)
             return new Feedbacker(false, ">Command " + co.getCommand() + " not found. See 'help' for reference.");
         command = cm.getCommandList().get(co.getCommand().getName());
-        Feedbacker fb = command.execute(co.getArgument(), co.getHd().getUserData());
+        Feedbacker fb = command.execute(co.getArgument(), userData);
         logger.info("Command processed, answer is ready");
         return fb;
     }
@@ -90,20 +91,20 @@ public class InteraciveServerConsole implements Runnable {
 //            scriptExecutionList.remove(scriptExecutionList.size()-1);
 //        }
 //    }
-            public Feedbacker executeCommand (String[] inputCommand){
+            public Feedbacker executeCommand (String[] inputCommand, UserData ud){
                 if (inputCommand[0].equals("")) return new Feedbacker("");
                 var command = cm.getCommandList().get(inputCommand[0]);
                 if (command == null)
                     return new Feedbacker(false, ">Command " + inputCommand[0] + " not found. See 'help' for reference.");
                 else if (inputCommand[0].equals("execute_script")) {
-                    Feedbacker fp = cm.getCommandList().get("execute_script").execute(inputCommand[1], new UserData("admin",Permissinons.FULL_ACCESS));
+                    Feedbacker fp = cm.getCommandList().get("execute_script").execute(inputCommand[1], ud);
                     if (!fp.getIsSuccessful()) return fp;
 //            Feedbacker fp2 = autoMode(inputCommand[1].trim());
                     Feedbacker fp2 = null;
                     return new Feedbacker(fp2.getIsSuccessful(), fp2.getMessage());
                 } else {
                     HumanData hd = null;
-                    CommandObject co = new CommandObject(command, inputCommand[1], hd, new UserData("admin", Permissinons.FULL_ACCESS));
+                    CommandObject co = new CommandObject(command, inputCommand[1], hd, ud);
                     if (co.getCommand().getIsNeedData()) {
                         try {
                             hd = server.AskHumanData.askHuman(cl);

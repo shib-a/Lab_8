@@ -110,7 +110,7 @@ public class ClientMain {
                     try{
                         System.out.println("enter the server port: ");
                         var str = scan.nextLine();
-                        if (str.equals("exit")){return;}
+                        if (str.equals("exit")){System.exit(0);}
                         Connector.port = Integer.parseInt(str);
                         Connector.adr =  new InetSocketAddress("localhost",Connector.port);
                         socketChannel = Connector.getSC();
