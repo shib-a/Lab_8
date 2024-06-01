@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="lab_3:server">
+    <output-path>$PROJECT_DIR$/out/artifacts/lab_3_server</output-path>
+    <root id="archive" name="lab_3.jar">
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/META-INF/MANIFEST.MF" />
+      </element>
+      <element id="module-output" name="lab_3.main" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.checkerframework/checker-qual/3.42.0/638ec33f363a94d41a4f03c3e7d3dcfba64e402d/checker-qual-3.42.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-csv/1.10.0/8669bee353424c3223c93723291b5c3753260c1c/commons-csv-1.10.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.postgresql/postgresql/42.7.2/86ed42574cd68662b05d3b00432a34e9a34cb12c/postgresql-42.7.2.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
