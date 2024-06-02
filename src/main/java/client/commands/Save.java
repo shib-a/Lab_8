@@ -2,7 +2,7 @@ package client.commands;
 import common.AbstractCommand;
 
 import common.Feedbacker;
-import common.UserData;
+import common.User;
 
 /**
  * Class for the "save" command
@@ -15,11 +15,11 @@ public class Save extends AbstractCommand{
      * Executes the "save" command
      *
      * @param arg
-     * @param userData
+     * @param user
      * @return Feedbacker
      */
     @Override
-    public Feedbacker execute(String arg, UserData userData) {
+    public Feedbacker execute(String arg, User user) {
 //        if (!arg.isEmpty()) return new Feedbacker(false, ">Wrong argument usage. see 'help' for reference.");
 //        cm.saveToFile();
 //        return new Feedbacker(">Collection saved.");

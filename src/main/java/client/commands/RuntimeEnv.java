@@ -32,8 +32,8 @@ public class RuntimeEnv {
     private Socket ss;
     public static Selector selector;
     public Feedbacker currentFeedbacker;
-    private UserData userData;
-    private static SelectionKey key;
+    private User user = new User(null,Access.NORMAL_ACCESS, false);
+//    private static SelectionKey key;
 
     public RuntimeEnv(CommandLine cl, CommandManager cm, Socket ss){this.cl=cl;this.cm=cm;this.ss=ss;try{bw = new BufferedWriter(new FileWriter("log.txt"));} catch (IOException e){bw = null;}}
     public RuntimeEnv(CommandLine cl, CommandManager cm, SocketChannel ssc){this.cl=cl;this.cm=cm;this.ssc=ssc;try{bw = new BufferedWriter(new FileWriter("log.txt"));} catch (IOException e){bw = null;}}
@@ -114,13 +114,13 @@ public class RuntimeEnv {
         var command = cm.getCommandList().get(inputCommand[0]);
         if (command==null) return new Feedbacker(false,">Command "+inputCommand[0]+" not found. See 'help' for reference.");
         else if (inputCommand[0].equals("execute_script")){
-            Feedbacker fp = cm.getCommandList().get("execute_script").execute(inputCommand[1], getUserData());
+            Feedbacker fp = cm.getCommandList().get("execute_script").execute(inputCommand[1], user);
             if(!fp.getIsSuccessful()) return fp;
             Feedbacker fp2 = autoMode(inputCommand[1].trim());
             return new Feedbacker(fp2.getIsSuccessful(),fp2.getMessage());
         } else {
             HumanData hd = null;
-            CommandObject co = new CommandObject(command,inputCommand[1], hd, getUserData());
+            CommandObject co = new CommandObject(command,inputCommand[1], hd, getUser());
             if (co.getCommand().getIsNeedData()){
                 try{
                     hd = AskHumanData.askHuman(cl);
@@ -248,8 +248,8 @@ public class RuntimeEnv {
             if (inputArr.length > 3 || inputArr.length == 1) {
                 return new Feedbacker(false, "Вы неправы.");
             }
-            setUserData(new UserData(inputArr[0], Permissinons.NORMAL_ACCESS));
-            CommandObject co = new CommandObject(new Login(), input, null, getUserData());
+            setUser(new User(inputArr[0], Access.NORMAL_ACCESS, false));
+            CommandObject co = new CommandObject(new Login(), input, null, getUser());
 
             send(co, (SocketChannel) key.channel());
 
@@ -274,12 +274,12 @@ public class RuntimeEnv {
         return null;
     }
 
-    public void setUserData(UserData userData) {
-        this.userData = userData;
+    public void setUser(User userData) {
+        this.user = userData;
     }
 
-    public UserData getUserData() {
-        return userData;
+    public User getUser() {
+        return user;
     }
 
     public void setSelector(Selector selector){this.selector = selector;}

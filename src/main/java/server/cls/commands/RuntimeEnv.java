@@ -1,22 +1,17 @@
 package server.cls.commands;
 
-import client.classes.AskHumanData;
 import common.*;
 import server.*;
 
 import java.io.*;
-import java.net.Socket;
 import java.nio.ByteBuffer;
-import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.sql.SQLException;
 import java.util.*;
 import java.util.logging.Logger;
 
-import static java.lang.Thread.enumerate;
 import static java.lang.Thread.sleep;
 
 /**
@@ -28,9 +23,9 @@ public class RuntimeEnv {
     private static CommandManager cm;
     private ArrayList<String> scriptExecutionList = new ArrayList<>();
     private static BufferedWriter bw;
-    private Socket ss;
+    private HashMap<String, AbstractBanner> bannerList;
     private SocketChannel sc;
-    UserData currUserData;
+    User currUser;
     private HumanData currHumanData = null;
     public RuntimeEnv(CommandLine cl, CommandManager cm){this.cl=cl;this.cm=cm;try{bw = new BufferedWriter(new FileWriter("log.txt"));} catch (IOException e){bw = null;}}
     public RuntimeEnv(CommandLine cl, CommandManager cm, SocketChannel ssc){this.cl=cl;this.cm=cm;this.sc=ssc;try{bw = new BufferedWriter(new FileWriter("log.txt"));} catch (IOException e){bw = null;}}
@@ -41,83 +36,17 @@ public class RuntimeEnv {
     public void mannedMode() throws CustomException {
         try{
             Feedbacker completionFeedback = null;
-//            while (completionFeedback==null){
-//                var temp = askAuth(sc);
-//                System.out.println(temp.getMessage());
-//                completionFeedback = temp;
-//            }
-//            logger.info("check passed");
-//            Scanner scanner = new Scanner(System.in);
-//            if(scanner.hasNext()){
-//                String[] inputCommand = new String[]{"",""};
-//                inputCommand = (cl.readln().trim()+" ").split(" ",2);
-//                if(inputCommand.length>2){cl.printException(">Too many arguments! Check the amount of whitespaces or arguments.");} else{
-////                        addToLog(inputCommand[0]+" "+inputCommand[1]);
-//                    completionFeedback = executeCommand(inputCommand);
-////                    cm.addToHistory(inputCommand[0]+" "+inputCommand[1]);
-//                    if(completionFeedback.getMessage().equals("exit")) return;
-//                    cl.printLn(completionFeedback.getMessage());
-//                }}
             while (true){
                 if(sc!=null) {
                     try{
-                    CommandObject co = recieve();
-                    Feedbacker fb = executeCommand(co);
-                    sleep(1000);
-                    send(fb);
-                    if (fb.getMessage().equals("exit")){throw new CustomException();}
+                        CommandObject co = recieve();
+                        Feedbacker fb = executeCommand(co);
+                        sleep(1000);
+                        send(fb);
+                        if (fb.getMessage().equals("exit")){throw new CustomException();}
                     } catch (IOException e){}
                 } else break;
-//                Feedbacker completionFeedback = null;
-//                while(true) {
-//                    ServerConnector.getSelector().select();
-//                    Set<SelectionKey> selectedKeys = ServerConnector.getSelector().selectedKeys();
-//                    if (ServerConnector.getSelector().select()>0){
-//                        for (SelectionKey sk : selectedKeys) {
-//                            if (sk.isReadable() && sk.isValid()) {
-////                                ByteBuffer buf = ByteBuffer.allocate(3048);
-////                                ssc.read(buf);
-////                                buf.flip();
-////                                byte[] serializedCommand = new byte[buf.remaining()];
-////                                logger.info(String.valueOf(buf.remaining()));
-////                                buf.get(serializedCommand);
-////                                ByteArrayInputStream bis = new ByteArrayInputStream(serializedCommand);
-////                                ObjectInputStream ois = new ObjectInputStream(bis);
-//////                ObjectInputStream ois = new ObjectInputStream(ss.getInputStream());
-////                                logger.info("Receiving data from client... ");
-////                                CommandObject co = (CommandObject) ois.readObject();
-////                                logger.info("Data received");
-////                                buf.clear();
-////                                buf.flip();
-////                                cl.printLine();
-////                                addToLog(co.getCommand()+" "+co.getArgument());
-////                                completionFeedback = executeCommand(co);
-//                                if(sk.isValid() && sk.isWritable()){
-//                                    try {
-//                                        logger.info("Sending answer to client..." + completionFeedback.getMessage());
-//                                        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-//                                        ObjectOutputStream oos = new ObjectOutputStream(bos);
-//                                        oos.writeObject(completionFeedback);
-//                                        oos.flush();
-//                                        byte[] answer = bos.toByteArray();
-//                                        ByteBuffer outputBuf = ByteBuffer.wrap(answer);
-////                                        outputBuf.flip();
-//                                        logger.info("before output: " + outputBuf.remaining());
-//                                        ssc.write(outputBuf);
-////                                        outputBuf.compact();
-//                                        outputBuf.flip();
-//                                        logger.info("Answer sent successfully");
-//                                    }catch (IOException e){}
-//                                }
-//                                break;
-////                    if(completionFeedback.getMessage().equals("exit")) break;
-//                            }
-//                            System.out.println("cock");
-//                        }
-//                    }
-//                }
-
-                }
+            }
         } catch (NoSuchElementException | ClassNotFoundException | IllegalStateException | InterruptedException e){
             logger.info(e.getMessage());
         }
@@ -171,7 +100,7 @@ public class RuntimeEnv {
      */
     public Feedbacker executeCommand(CommandObject co) {
             currHumanData = co.getHd();
-            currUserData = co.getUserData();
+            currUser = co.getUser();
             if (co.getCommand().getName().equals("")) return new Feedbacker("");
             if (co.getCommand().getName().equals("exit")) {
                 return new Feedbacker("exit");}
@@ -182,7 +111,7 @@ public class RuntimeEnv {
             command = cm.getCommandList().get(co.getCommand().getName());
             String arg = co.getArgument();
 
-            Feedbacker fb = command.execute(arg,co.getUserData());
+            Feedbacker fb = command.execute(arg,co.getUser());
             logger.info("Command processed, answer is ready");
         return fb;
     }
@@ -295,7 +224,7 @@ public class RuntimeEnv {
                     return new Feedbacker(false,"Wrong password. Try again.");
                 } else if (data_arr.isEmpty()){
                     logger.info("adding a user");
-                    DataConnector.addUserInfo(cargs[0], encoded, Permissinons.NORMAL_ACCESS);
+                    DataConnector.addUserInfo(cargs[0], encoded, Access.NORMAL_ACCESS);
                     return new Feedbacker("Registered successfully");
                 }
 //                System.out.println("passed");
@@ -314,11 +243,19 @@ public class RuntimeEnv {
         return sc;
     }
 
-    public UserData getUserData() {
-        return currUserData;
+    public User getUser() {
+        return currUser;
     }
 
-    public void setUserData(UserData ud) {
-        this.currUserData = ud;
+    public void setUserData(User ud) {
+        this.currUser = ud;
+    }
+
+    public HashMap<String, AbstractBanner> getBannerList() {
+        return bannerList;
+    }
+
+    public void setBannerList(HashMap<String, AbstractBanner> bannerList) {
+        this.bannerList = bannerList;
     }
 }

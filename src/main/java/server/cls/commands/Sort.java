@@ -1,8 +1,6 @@
 package server.cls.commands;
 
-import common.AbstractCommand;
-import common.Feedbacker;
-import common.UserData;
+import common.*;
 import server.*;
 
 import java.util.ArrayList;
@@ -23,11 +21,11 @@ public class Sort extends AbstractCommand {
      * Executes the "sort" command
      *
      * @param arg
-     * @param userData
+     * @param user
      * @return Feedbacker
      */
     @Override
-    public Feedbacker execute(String arg, UserData userData) {
+    public Feedbacker execute(String arg, User user) {
             if(!arg.isEmpty()) return new Feedbacker(false,">Wrong argument usage. See 'help' for reference.");
             cm.setCollection((ArrayList<Human>) cm.getCollection().stream().sorted(new HumanComparator()).collect(Collectors.toList()));
             return new Feedbacker(">Sorted successfully.");

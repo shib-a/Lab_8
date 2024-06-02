@@ -1,12 +1,7 @@
 package server;
 
-import common.HumanData;
-import common.ResearcherType;
-import common.ToolKinds;
-import common.UserData;
+import common.*;
 
-import java.io.*;
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.NoSuchElementException;
 
@@ -24,7 +19,7 @@ public class Ask {
      * @return Human
      * @throws AskBreaker
      */
-    public static Human askHuman(HumanData hd, int id, UserData userData) throws AskBreaker{
+    public static Human askHuman(HumanData hd, int id, User user) throws AskBreaker{
 //        System.out.println("cock");
         try{
             String name = hd.getName();
@@ -36,7 +31,7 @@ public class Ask {
             for (int i=0;i<stats.length;i++){stats[i]=Double.parseDouble(st[i]);}
             boolean ia = hd.getAl();
             int dc = Integer.parseInt(hd.getDc());
-            String owner = userData.getName();
+            String owner = user.getName();
             DataConnector.addHumanInfo(id, name, ptt, rt,stats[0]+","+stats[1]+","+stats[2]+","+stats[3]+","+stats[4], ia ,dc, owner);
             return new Human(id,name, ptt, rt, ia,stats[0],stats[1],stats[2], stats[3], stats[4],dc, owner);
         } catch (NoSuchElementException   e){

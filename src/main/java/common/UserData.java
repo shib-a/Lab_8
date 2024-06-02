@@ -4,15 +4,15 @@ import java.io.Serializable;
 
 public class UserData implements Serializable {
     String name;
-    Permissinons permissinon;
-    public UserData(String name, Permissinons perm){this.name=name;this.permissinon = perm;}
-    public void setPermissinon(Permissinons p){this.permissinon = p;}
+    Access permissinon;
+    public UserData(String name, Access perm){this.name=name;this.permissinon = perm;}
+    public void setPermissinon(Access p){this.permissinon = p;}
 
     public String getName() {
         return name;
     }
 
-    public Permissinons getPermissinon() {
+    public Access getPermissinon() {
         return permissinon;
     }
 }

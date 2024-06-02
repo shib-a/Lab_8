@@ -16,6 +16,7 @@ public class Human implements Comparable<Human> {
     @ReadMarkedField
     public final String name;
     protected final ToolKinds preferredTool;
+    public Rarity rarity;
     @ReadMarkedField
     protected final ResearcherType type;
     public boolean isAlive;
@@ -107,6 +108,11 @@ public class Human implements Comparable<Human> {
     public String getName(){
         return name;
     }
+
+    public Rarity getRarity() {
+        return rarity;
+    }
+
     public ResearcherType getType() {
         return type;
     }

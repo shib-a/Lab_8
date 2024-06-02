@@ -2,7 +2,7 @@ package server.cls.commands;
 
 import common.AbstractCommand;
 import common.Feedbacker;
-import common.UserData;
+import common.User;
 import server.*;
 
 import java.util.stream.Stream;
@@ -22,11 +22,11 @@ public class FilterLessDC extends AbstractCommand {
      * Executes the "filter_by_less_than_number_of_dug_counter" command
      *
      * @param arg
-     * @param userData
+     * @param user
      * @return Feedbacker
      */
     @Override
-    public Feedbacker execute(String arg, UserData userData) {
+    public Feedbacker execute(String arg, User user) {
         if(arg.isEmpty()) return new Feedbacker(false,">Wrong argument usage. see 'help' for reference.");
         try{
             var val = Integer.parseInt(arg.trim());

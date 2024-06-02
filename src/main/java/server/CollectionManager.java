@@ -1,9 +1,7 @@
 package server;
 
-import common.ResearcherType;
-import common.ToolKinds;
 import common.UserData;
-import server.Human;
+import common.Human;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;

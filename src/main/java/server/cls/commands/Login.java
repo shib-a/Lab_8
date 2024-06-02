@@ -2,7 +2,7 @@ package server.cls.commands;
 
 import common.AbstractCommand;
 import common.Feedbacker;
-import common.UserData;
+import common.User;
 import server.CollectionManager;
 import server.CommandLine;
 
@@ -21,11 +21,11 @@ public class Login extends AbstractCommand {
      * Executes the "add" command
      *
      * @param arg
-     * @param userData
+     * @param user
      * @return Feedbacker
      */
     @Override
-    public Feedbacker execute(String arg, UserData userData) {
+    public Feedbacker execute(String arg, User user) {
         if(arg.isEmpty()) return new Feedbacker(false,">Wrong argument usage. see 'help' for reference.");
         re.logger.info("check started");
         Feedbacker temp = null;

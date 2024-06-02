@@ -1,6 +1,6 @@
 package common;
 
-public enum Permissinons {
+public enum Access {
     FULL_ACCESS,
     NORMAL_ACCESS,
     RESTRICTED_ACCESS

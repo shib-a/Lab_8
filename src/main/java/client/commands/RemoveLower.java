@@ -2,7 +2,7 @@ package client.commands;
 import common.AbstractCommand;
 
 import common.Feedbacker;
-import common.UserData;
+import common.User;
 
 /**
  * Class for the "remove_lower" command
@@ -15,11 +15,11 @@ public class RemoveLower extends AbstractCommand{
      * Executes the "remove_lower" command
      *
      * @param arg
-     * @param userData
+     * @param user
      * @return Feedbacker
      */
     @Override
-    public Feedbacker execute(String arg, UserData userData) {
+    public Feedbacker execute(String arg, User user) {
 //        if(arg.isEmpty()) return new Feedbacker(false,">Wrong argument usage. See 'help' for reference.");
 //        try{
 //            var val = Double.parseDouble(arg.trim());

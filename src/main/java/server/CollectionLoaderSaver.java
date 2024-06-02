@@ -3,15 +3,14 @@ package server;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
-import server.CommandLine;
-import server.Human;
+import common.Human;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.NoSuchElementException;
 
-import static server.Human.fromCsvStr;
+import static common.Human.fromCsvStr;
 
 /**
  * This class manages loading and saving the collection from and into a file

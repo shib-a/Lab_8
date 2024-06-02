@@ -12,7 +12,7 @@ public class InteraciveServerConsole implements Runnable {
     CommandManager cm;
     Scanner scanner = new Scanner(System.in);
     HumanData currHumanData = null;
-    UserData userData = new UserData("admin",Permissinons.FULL_ACCESS);
+    UserData userData = new UserData("admin", Access.FULL_ACCESS);
     Logger logger = Logger.getLogger("IntServCons");
     public InteraciveServerConsole(CommandLine cl, CommandManager cm){this.cl = cl; this.cm = cm;}
     @Override

@@ -1,9 +1,6 @@
 package server.cls.commands;
 
-import common.AbstractCommand;
-import common.Feedbacker;
-import common.Stat;
-import common.UserData;
+import common.*;
 import server.*;
 
 import java.util.ArrayList;
@@ -24,11 +21,11 @@ public class RemoveLower extends AbstractCommand {
      * Executes the "remove_lower" command
      *
      * @param arg
-     * @param userData
+     * @param user
      * @return Feedbacker
      */
     @Override
-    public Feedbacker execute(String arg, UserData userData) {
+    public Feedbacker execute(String arg, User user) {
         if(arg.isEmpty()) return new Feedbacker(false,">Wrong argument usage. See 'help' for reference.");
         try{
             var val = Double.parseDouble(arg.trim());
@@ -39,7 +36,7 @@ public class RemoveLower extends AbstractCommand {
 //                }
 //                for (Integer el: idArr){cm.removeById(el);}
 
-                cm.setCollection((ArrayList<Human>) cm.getCollection().stream().filter(el -> el.getStat(Stat.DAMAGE)>=val && el.getOwner() == userData.getName()).collect(Collectors.toList()));
+                cm.setCollection((ArrayList<Human>) cm.getCollection().stream().filter(el -> el.getStat(Stat.DAMAGE)>=val && el.getOwner() == user.getName()).collect(Collectors.toList()));
                 return new Feedbacker(">Elements removed successfully.");}
         } catch(NumberFormatException e){ return new Feedbacker(false,">Wrong argument.");}
     }

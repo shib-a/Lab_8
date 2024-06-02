@@ -1,12 +1,4 @@
-package server;
-import common.ResearcherType;
-import common.Stat;
-import common.Tool;
-import common.ToolKinds;
-import common.GeologicalLayer;
-import common.Item;
-import common.PeriodAge;
-import common.StoneDurability;
+package common;
 import client.exceptions.EmptyInventoryException;
 import client.interfaces.ReadMarkedField;
 
@@ -28,6 +20,7 @@ public class Human implements Comparable<Human> {
     public Item[] inventory = new Item[]{null, null, null, null};
     private double[] mas = new double[5];
     private String owner;
+    public Rarity rarity;
     @ReadMarkedField
     private int dugCounter = 0;
     public Human(String name, ToolKinds preferredTool, ResearcherType type, boolean isAlive){
@@ -109,6 +102,11 @@ public class Human implements Comparable<Human> {
         }
         return mn;
     }
+
+    public Rarity getRarity() {
+        return rarity;
+    }
+
     public double getStat(Stat stat){
         return mas[stat.ordinal()];
     }

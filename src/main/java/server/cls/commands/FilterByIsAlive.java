@@ -2,7 +2,7 @@ package server.cls.commands;
 
 import common.AbstractCommand;
 import common.Feedbacker;
-import common.UserData;
+import common.User;
 import server.*;
 
 /**
@@ -20,11 +20,11 @@ public class FilterByIsAlive extends AbstractCommand {
      * Executes the "filter_by_is_alive" command
      *
      * @param arg
-     * @param userData
+     * @param user
      * @return Feedbacker
      */
     @Override
-    public Feedbacker execute(String arg, UserData userData) {
+    public Feedbacker execute(String arg, User user) {
         if(arg.isEmpty()) return new Feedbacker(false,">Wrong argument usage. See 'help' for reference.");
         try{
             StringBuilder str = new StringBuilder();

@@ -1,8 +1,6 @@
 package server.cls.commands;
 
-import common.AbstractCommand;
-import common.Feedbacker;
-import common.UserData;
+import common.*;
 import server.*;
 
 /**
@@ -22,18 +20,18 @@ public class Update extends AbstractCommand {
      * Executes the "update" command
      *
      * @param arg
-     * @param userData
+     * @param user
      * @return Feedbacker
      */
     @Override
-    public Feedbacker execute(String arg, UserData userData) {
+    public Feedbacker execute(String arg, User user) {
         if(arg.isEmpty()) return new Feedbacker(false,">Wrong argument usage. See 'help' for reference");
         cl.printLn(">Updating a Human. Input new values:");
         System.out.println(Integer.parseInt(arg.trim()));
         try {
-            Human h=Ask.askHuman(re.getCurrHumanData(),Integer.parseInt(arg.trim()), userData);
+            Human h=Ask.askHuman(re.getCurrHumanData(),Integer.parseInt(arg.trim()), user);
             if (h != null && h.validate()) {
-                cm.updateEl(h,userData);
+                cm.updateEl(h, user);
                 return new Feedbacker(">Updated successfully.");
             } else return new Feedbacker(false, ">Failed to update. Invalid arguments.");
         } catch (NumberFormatException | Ask.AskBreaker e){ return new Feedbacker(false,">Invalid number.");}

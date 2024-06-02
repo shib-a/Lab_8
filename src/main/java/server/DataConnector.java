@@ -1,9 +1,8 @@
 package server;
 
-import common.Permissinons;
+import common.Access;
 import common.ResearcherType;
 import common.ToolKinds;
-import common.UserData;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -13,14 +12,14 @@ import java.util.logging.Logger;
 public class DataConnector {
     static Logger logger = Logger.getLogger("DataConn");
 //    static String jdbcUrl = "jdbc:postgresql:localhost:5432:studs&user=s409091&password=NUTd/6706";
-//    static String jdbcUrl = "jdbc:postgresql://localhost:5432/postgres";
-    static String jdbcUrl = "jdbc:postgresql://pg:5432/studs";
+    static String jdbcUrl = "jdbc:postgresql://localhost:5432/postgres";
+//    static String jdbcUrl = "jdbc:postgresql://pg:5432/studs";
     static Connection conn;
 
     static {
         try {
-//            conn = DriverManager.getConnection(jdbcUrl,"postgres","NUTd/6706");
-            conn = DriverManager.getConnection(jdbcUrl,"s409091","0QdjvOPZ6gsasXOL");
+            conn = DriverManager.getConnection(jdbcUrl,"postgres","NUTd/6706");
+//            conn = DriverManager.getConnection(jdbcUrl,"s409091","0QdjvOPZ6gsasXOL");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -71,13 +70,13 @@ public class DataConnector {
             logger.info("Added to sql table " + stats);
         }catch (SQLException e){e.printStackTrace();}
     }
-    public static void addUserInfo(String name, String passw, Permissinons permissinons){
+    public static void addUserInfo(String name, String passw, Access access){
         try {
             String query = "INSERT INTO user_info(name, hash, permissions) VALUES (?,?,?)";
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setString(1,name);
             ps.setString(2,passw);
-            ps.setString(3, permissinons.name());
+            ps.setString(3, access.name());
             ps.executeQuery();
             logger.info("added to table");
         }catch (SQLException e){
