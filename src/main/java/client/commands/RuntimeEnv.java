@@ -182,7 +182,7 @@ public class RuntimeEnv {
                         if (key.isReadable()){
                             var sc = (SocketChannel) key.channel();
                             var rec = recieve(selector, sc);
-
+                            user = rec.getUser();
 //                            sc.register(selector, SelectionKey.OP_WRITE);
                             key.interestOps(SelectionKey.OP_WRITE);
                             if(rec!=null){temp = rec;user = rec.getUser();break;}
@@ -216,19 +216,19 @@ public class RuntimeEnv {
             bw.flush();
         } catch (IOException e){}
     }
-    public void send(Object serializedObj) throws IOException {
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        ObjectOutputStream oos = new ObjectOutputStream(bos);
-        oos.writeObject(serializedObj);
-        oos.flush();
-        byte[] data = bos.toByteArray();
-        ByteBuffer buf = ByteBuffer.wrap(data);
-        ssc.write(buf);
-        bos.close();
-        oos.close();
-//                buf.compact();
-        logger.info("Answer sent");
-    }
+//    public void send(Object serializedObj) throws IOException {
+//        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+//        ObjectOutputStream oos = new ObjectOutputStream(bos);
+//        oos.writeObject(serializedObj);
+//        oos.flush();
+//        byte[] data = bos.toByteArray();
+//        ByteBuffer buf = ByteBuffer.wrap(data);
+//        ssc.write(buf);
+//        bos.close();
+//        oos.close();
+////                buf.compact();
+//        logger.info("Answer sent");
+//    }
     public void send(Object serializedObj, SocketChannel sc) throws IOException {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         ObjectOutputStream oos = new ObjectOutputStream(bos);
@@ -243,21 +243,21 @@ public class RuntimeEnv {
 //                buf.compact();
         logger.info("Answer sent");
     }
-    public Feedbacker recieve() throws IOException, ClassNotFoundException {
-        Feedbacker fb = null;
-        ByteBuffer buffer = ByteBuffer.allocate(1024*1024);
-        ssc.read(buffer);
-//        recObj.flip();
-//        byte[] receivedObj = new byte[recObj.remaining()];
-//                            logger.info(String.valueOf(recObj.remaining()));
-//        recObj.get(receivedObj);
-        ByteArrayInputStream bis = new ByteArrayInputStream(buffer.array());
-        ObjectInputStream ois = new ObjectInputStream(bis);
-//                            logger.info(ois.readObject().toString());
-        fb = (Feedbacker) ois.readObject();
-        logger.info("Answer read" + fb.getMessage());
-        return fb;
-    }
+//    public Feedbacker recieve() throws IOException, ClassNotFoundException {
+//        Feedbacker fb = null;
+//        ByteBuffer buffer = ByteBuffer.allocate(1024*1024);
+//        ssc.read(buffer);
+////        recObj.flip();
+////        byte[] receivedObj = new byte[recObj.remaining()];
+////                            logger.info(String.valueOf(recObj.remaining()));
+////        recObj.get(receivedObj);
+//        ByteArrayInputStream bis = new ByteArrayInputStream(buffer.array());
+//        ObjectInputStream ois = new ObjectInputStream(bis);
+////                            logger.info(ois.readObject().toString());
+//        fb = (Feedbacker) ois.readObject();
+//        logger.info("Answer read" + fb.getMessage());
+//        return fb;
+//    }
     public Feedbacker recieve(Selector selector ,SocketChannel sc) throws IOException, ClassNotFoundException {
         Feedbacker fb = null;
         ByteBuffer buffer = ByteBuffer.allocate(1024*1024);
@@ -265,49 +265,50 @@ public class RuntimeEnv {
         ByteArrayInputStream bis = new ByteArrayInputStream(buffer.array());
         ObjectInputStream ois = new ObjectInputStream(bis);
         fb = (Feedbacker) ois.readObject();
+
 //        if(key!=null){key.attach(fb);}
 //        if(key!=null){key.interestOps(SelectionKey.OP_WRITE);}
 //        sc.register(selector, SelectionKey.OP_WRITE);
         logger.info("Answer read " + fb.getMessage());
         return fb;
     }
-    public Feedbacker askAuthWrite(SelectionKey key, Selector selector){
-        try {
-            var sc = (SocketChannel) key.channel();
-            System.out.println("Enter login and password: ");
-            String input = cl.readln();
-            if (input.isEmpty() || input.isBlank()) {
-                return new Feedbacker(false, "Вы неправы.", user);
-            }
-            String[] inputArr = input.trim().split(" ");
-            if (inputArr.length > 3 || inputArr.length == 1) {
-                return new Feedbacker(false, "Вы неправы.", user);
-            }
-            setUser(new User(inputArr[0], Access.NORMAL_ACCESS, false));
-            CommandObject co = new CommandObject(new Login(), input, null, getUser());
-
-            send(co, (SocketChannel) key.channel());
-
-            sc.register(selector, SelectionKey.OP_READ);
-            logger.info("sent");
-        }catch (IOException | NumberFormatException e) {
-            System.out.println(e.getCause().toString() + Arrays.toString(e.getStackTrace()));
-        }
-        return null;
-    }
-    public Feedbacker askAuthRead(SelectionKey key, Selector selector){
-        try{
-            var sc = (SocketChannel) key.channel();
-            Feedbacker fb = recieve(selector, sc);
-            currentFeedbacker = fb;
-            System.out.println(fb.getMessage());
-            sc.register(selector, SelectionKey.OP_WRITE);
-            return fb;
-        } catch (IOException | NumberFormatException | ClassNotFoundException e){
-            System.out.println(e.getCause().toString() + Arrays.toString(e.getStackTrace()));
-        }
-        return null;
-    }
+//    public Feedbacker askAuthWrite(SelectionKey key, Selector selector){
+//        try {
+//            var sc = (SocketChannel) key.channel();
+//            System.out.println("Enter login and password: ");
+//            String input = cl.readln();
+//            if (input.isEmpty() || input.isBlank()) {
+//                return new Feedbacker(false, "Вы неправы.", user);
+//            }
+//            String[] inputArr = input.trim().split(" ");
+//            if (inputArr.length > 3 || inputArr.length == 1) {
+//                return new Feedbacker(false, "Вы неправы.", user);
+//            }
+//            setUser(new User(inputArr[0], Access.NORMAL_ACCESS, false));
+//            CommandObject co = new CommandObject(new Login(), input, null, getUser());
+//
+//            send(co, (SocketChannel) key.channel());
+//
+//            sc.register(selector, SelectionKey.OP_READ);
+//            logger.info("sent");
+//        }catch (IOException | NumberFormatException e) {
+//            System.out.println(e.getCause().toString() + Arrays.toString(e.getStackTrace()));
+//        }
+//        return null;
+//    }
+//    public Feedbacker askAuthRead(SelectionKey key, Selector selector){
+//        try{
+//            var sc = (SocketChannel) key.channel();
+//            Feedbacker fb = recieve(selector, sc);
+//            currentFeedbacker = fb;
+//            System.out.println(fb.getMessage());
+//            sc.register(selector, SelectionKey.OP_WRITE);
+//            return fb;
+//        } catch (IOException | NumberFormatException | ClassNotFoundException e){
+//            System.out.println(e.getCause().toString() + Arrays.toString(e.getStackTrace()));
+//        }
+//        return null;
+//    }
 
     public void setUser(User userData) {
         this.user = userData;

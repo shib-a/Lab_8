@@ -98,7 +98,6 @@ public class CollectionLoaderSaver implements Serializable {
                 BufferedInputStream is = new BufferedInputStream(f);
                 CSVParser csvp = CSVParser.parse(is,StandardCharsets.UTF_8,CSVFormat.DEFAULT);
                 for(CSVRecord line:csvp){
-//                    if (!(line.values().length>=11 && line.values().length<=19)) throw new ArrayIndexOutOfBoundsException();
                     try{
                         var st = line.values();
                         String str = "";

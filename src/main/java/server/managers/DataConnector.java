@@ -1,8 +1,9 @@
 package server.managers;
 
 import common.Access;
-import common.ResearcherType;
-import common.ToolKinds;
+import common.Color;
+import common.Coordinates;
+import common.Status;
 import server.CustomException;
 
 import java.sql.*;
@@ -31,9 +32,9 @@ public class DataConnector {
     public static void initialize_db(){
         try{
             Statement st = conn.createStatement();
-            st.execute("CREATE TABLE IF NOT EXISTS collection_info (id SERIAL PRIMARY KEY, name TEXT, preferred_tool TEXT, researcher_type TEXT, stats TEXT, isAlive TEXT, dug_counter TEXT, owner TEXT NOT NULL);");
+            st.execute("CREATE TABLE IF NOT EXISTS collection_info (id SERIAL PRIMARY KEY, name TEXT, status TEXT, color TEXT, stats TEXT, isAlive TEXT, coordinates TEXT , owner TEXT NOT NULL);");
             st.execute("CREATE TABLE IF NOT EXISTS user_info (id SERIAL PRIMARY KEY, name TEXT UNIQUE NOT NULL, salt TEXT, hash TEXT, permissions TEXT);");
-            st.execute("CREATE TABLE IF NOT EXISTS banner_info (id SERIAL PRIMARY KEY, name TEXT not null , loot TEXT NOT NULL, roll_req TEXT NOT NULL);");
+            st.execute("CREATE TABLE IF NOT EXISTS banner_info (id SERIAL PRIMARY KEY, name TEXT not null , loot TEXT NOT NULL);");
         }catch (SQLException e){
             System.out.println(Arrays.toString(e.getStackTrace()));
             System.err.println(e);
@@ -56,9 +57,10 @@ public class DataConnector {
             throw new CustomException();
         }
     }
-    public static void addHumanInfo(int id, String name, ToolKinds ptt, ResearcherType rt, String stats, boolean isAlive, int dug_counter, String owner){
+
+    public static void addHumanInfo(int id, String name, Status ptt, Color rt, String stats, boolean isAlive, Coordinates cords, String owner){
         try {
-            String query = "INSERT INTO collection_info(id, name, preferred_tool, researcher_type, stats, isAlive, dug_counter, owner) VALUES (?,?,?,?,?,?,?,?)";
+            String query = "INSERT INTO collection_info(id, name, status, color, stats, isAlive, coordinates, owner) VALUES (?,?,?,?,?,?,?,?)";
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setInt(1,id);
             ps.setString(2,name);
@@ -66,9 +68,10 @@ public class DataConnector {
             ps.setString(4, rt.name());
             ps.setString(5,stats);
             ps.setString(6, String.valueOf(isAlive));
-            ps.setInt(7, dug_counter);
+            if(cords==null){ps.setString(7, "null");}else{
+            ps.setString(7, cords.toString());}
             ps.setString(8, owner);
-            ps.executeQuery();
+            ps.execute();
             logger.info("Added to sql table " + stats);
         }catch (SQLException e){e.printStackTrace();}
     }
@@ -86,6 +89,17 @@ public class DataConnector {
             return;
         }
     };
+    public static void removeCollectionInfo(int id){
+        String query = "DELETE FROM collection_info WHERE id = ?";
+        try {
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setInt(1,id);
+            ps.execute();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
     public static ArrayList<String> getCollectionInfo(){
         try {
             String query = "SELECT * FROM collection_info";
@@ -93,7 +107,7 @@ public class DataConnector {
             ResultSet res = st.executeQuery(query);
             ArrayList<String> result = new ArrayList<>();
             while(res.next()){
-                result.add(res.getString("id")+","+res.getString("name")+","+res.getString("preferred_tool")+","+res.getString("researcher_type")+","+res.getString("isAlive")+","+res.getString("stats")+","+res.getString("dug_counter")+","+res.getString("owner"));
+                result.add(res.getString("id")+","+res.getString("name")+","+res.getString("status")+","+res.getString("color")+","+res.getString("isAlive")+","+res.getString("stats")+","+res.getString("coordinates")+","+res.getString("owner"));
             }
             return result;
         } catch (SQLException e){e.printStackTrace();}

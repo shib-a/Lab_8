@@ -76,11 +76,11 @@ public class ServerMain {
         com.getCommandList().put("help", new Help(com));
         com.getCommandList().put("login {user} {password}", new Login(cl,cm,re));
         logger.info("Ready for IO");
-        Human h = new Human("cock", ToolKinds.GUN, ResearcherType.EXPEDITIONIST, true,1,1,1,1,1,0, Rarity.THREE_STAR);
-        Human h1 = new Human("balls", ToolKinds.GUN, ResearcherType.EXPEDITIONIST, true,1,1,1,1,1,0, Rarity.FOUR_STAR);
-        Human h2 = new Human("cum", ToolKinds.GUN, ResearcherType.EXPEDITIONIST, true,1,1,1,1,1,0, Rarity.FIVE_STAR);
+        Human h = new Human("cock", Status.SCIENTIST, Color.EXPEDITIONIST, true,1,1,1,1,1, Rarity.THREE_STAR);
+        Human h1 = new Human("balls", Status.SCIENTIST, Color.EXPEDITIONIST, true,1,1,1,1,0, Rarity.FOUR_STAR);
+        Human h2 = new Human("cum", Status.SCIENTIST, Color.EXPEDITIONIST, true,1,1,1,1,1, Rarity.FIVE_STAR);
 
-                ArrayList<Human> lp = new ArrayList<>();
+        ArrayList<Human> lp = new ArrayList<>();
         lp.add(h);
         lp.add(h1);
         lp.add(h2);

@@ -1,9 +1,6 @@
 package server.cls.commands;
 
-import common.AbstractCommand;
-import common.Access;
-import common.Feedbacker;
-import common.User;
+import common.*;
 import server.CommandLine;
 import server.managers.CollectionManager;
 
@@ -32,7 +29,10 @@ public class Remove extends AbstractCommand {
         if(arg.isEmpty()) return new Feedbacker(false,">Wrong argument usage. See 'help' for reference.", user);
         try{
             var id = Integer.parseInt(arg.trim());
-            if(cm.getCollection().get(id).getOwner().equals(user.getName()) || user.getAccess().equals(Access.FULL_ACCESS)){
+            Human removeable = null;
+            for(var el: cm.getCollection()){if(el.getId()==id) removeable = el;}
+            if (removeable==null){return new Feedbacker(false,"No element with such id",user);}
+            if(removeable.getOwner().equals(user.getName()) || user.getAccess().equals(Access.FULL_ACCESS)){
                 try{
                     cm.removeById(id);
                     return new Feedbacker(">Element removed successfully.", user);

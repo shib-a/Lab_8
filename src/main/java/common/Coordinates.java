@@ -25,4 +25,10 @@ public class Coordinates implements Serializable {
     public Double getY() {
         return y;
     }
+
+    @Override
+    public String toString() {
+        if(this==null){return "null";}
+        return x.toString()+","+y.toString();
+    }
 }

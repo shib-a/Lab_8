@@ -52,7 +52,14 @@ public class CollectionManager implements Serializable {
      * @return boolean
      */
     public boolean isInCol(Human h){
-                lock.lock(); if(getById(h.getId())!=null){lock.unlock(); return true;} else {lock.unlock(); return false;}
+                lock.lock();
+                if(getById(h.getId())!=null){
+                    lock.unlock();
+                    return true;
+                } else {
+                    lock.unlock();
+                    return false;
+                }
         }
     public int getUnusedId(){
         return DataConnector.getLatestId();
@@ -68,6 +75,7 @@ public class CollectionManager implements Serializable {
                 if(checkByNameAndOwner(h, user)){return;}
                 h.setOwner(user.getName());
                 h.setId(DataConnector.getLatestId());
+                DataConnector.addHumanInfo(h.getId(),h.getName(),h.getStatus(),h.getColor(),h.statsToString(), h.getIsAlive(),h.getCoordinates(),h.getOwner());
                 collection.add(h);
 //                String[] arr = h.toCsvStr().split(",");
 //            }
@@ -117,6 +125,7 @@ public class CollectionManager implements Serializable {
             lock.lock();
 //            if(getById(id).getOwner().equals(userData.getName())) {
                 collection.remove(getById(id));
+                DataConnector.removeCollectionInfo(id);
 //            } else {
 //                System.out.println("not enough rights");
 //            }

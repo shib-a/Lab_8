@@ -210,6 +210,7 @@ public class RuntimeEnv {
                 logger.info("user info got");
                 if (!data_arr.isEmpty() && encoded.equals(data_arr.get(1))) {
                     user.setVerified(true);
+                    user.setName(cargs[0]);
                     return new Feedbacker("Successfully entered account. Welcome back!", user);
                 } else if (!data_arr.isEmpty() && !encoded.equals(data_arr.get(1))){
 //                    DataConnector.addUserInfo(cargs[0], encoded);
@@ -217,7 +218,7 @@ public class RuntimeEnv {
                 } else if (data_arr.isEmpty()){
                     logger.info("adding a user");
                     DataConnector.addUserInfo(cargs[0], encoded, Access.NORMAL_ACCESS);
-                    user.setVerified(true);
+                    user.setVerified(true);user.setName(cargs[0]);
                     return new Feedbacker("Registered successfully", user);
                 }
 //                System.out.println("passed");
