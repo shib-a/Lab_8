@@ -1,0 +1,58 @@
+
+.button-style {
+    -fx-background-color: #734E3F;
+    -fx-text-fill: white;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+}
+
+.borderPane-style {
+    -fx-background-color: #F9FCF8;
+    -fx-border-width: 1px;
+    -fx-border-color: rgba(40, 49, 66, 100);
+    -fx-border-radius: 0px;
+}
+
+.straight-rectangle {
+    -fx-border-radius: 0;
+    -fx-background-radius: 0;
+}
+
+.welcomeBack-style {
+    -fx-font-size: 20px;
+    -fx-letter-spacing: 10px;
+}
+
+.globeIcon-style {
+
+}
+
+
+.signUp-style {
+    -fx-text-fill: #734E3F;
+    -fx-font-size: 10px;
+    -fx-font-family: "Arial";
+}
+
+.label-style {
+    -fx-text-fill: #412e20;
+    -fx-font-size: 12px;
+    -fx-font-family: "Arial";
+}
+.label-bottom-style {
+    -fx-text-fill: #412e20;
+    -fx-font-size: 10px;
+    -fx-font-family: "Arial";
+}
+
+.light-gray-field {
+    -fx-text-fill: #734E3F;
+    -fx-font-size: 12px;
+    -fx-prompt-text-fill: #e7dacf;
+    -fx-border-color: rgba(211, 211, 211, 0.5);
+}
+
+.green-icon {
+    -fx-opacity: 1.0;
+    -fx-background-color:  #e7dacf;
+}
