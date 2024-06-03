@@ -61,7 +61,7 @@ public class ClientMain {
                     com.getCommandList().put("exit", new Exit());
                     com.getCommandList().put("sort", new Sort());
                     com.getCommandList().put("update", new Update());
-                    com.getCommandList().put("remove_by_id (id)", new Remove());
+                    com.getCommandList().put("remove_by_id", new Remove());
                     com.getCommandList().put("filter_by_is_alive", new FilterByIsAlive());
 //            com.getCommandList().put("save", new Save());
                     com.getCommandList().put("filter_by_less_than_number_of_dug_counter", new FilterLessDC());
@@ -72,6 +72,7 @@ public class ClientMain {
                     com.getCommandList().put("get_history", new GetHistory());
                     com.getCommandList().put("help", new Help());
                     com.getCommandList().put("login", new Login());
+                    com.getCommandList().put("register", new Register());
 
                 re.mannedMode(selector);
 

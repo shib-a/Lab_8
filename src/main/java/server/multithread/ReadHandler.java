@@ -5,6 +5,7 @@ import common.Feedbacker;
 import server.cls.commands.RuntimeEnv;
 
 import java.io.*;
+import java.net.SocketException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
@@ -56,16 +57,17 @@ public class ReadHandler {
 //            key.attach(result);
 
 //            sc.register(selector,SelectionKey.OP_WRITE);
-            } catch (IOException e) {
+            } catch (SocketException e) {
                 try {
-                    e.printStackTrace();
-                    System.out.println(e.getMessage() + e.getCause());
+//                    e.printStackTrace();
+//                    System.out.println(e.getMessage() + e.getCause());
+                    logger.info("Client disconnected...");
                     sc.close();
                     key.cancel();
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
-            }
+            } catch (IOException e){e.printStackTrace();}
         }
     public void concRead(SocketChannel sc, ObjectInputStream ois, ByteArrayInputStream bis, SelectionKey key, ByteBuffer buf){
         ex.execute(() -> {try {

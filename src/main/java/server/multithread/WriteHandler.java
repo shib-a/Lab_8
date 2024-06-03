@@ -46,7 +46,7 @@ public class WriteHandler {
                     ByteBuffer outputBuf = ByteBuffer.wrap(answer);
                     sc.write(outputBuf);
                     key.interestOps(SelectionKey.OP_READ);
-        } catch (IOException e){e.printStackTrace();}
+        } catch (IOException e){e.printStackTrace();try{sc.close();}catch (IOException ex){ex.printStackTrace();}}
         });
     }
 //    @Override

@@ -193,46 +193,6 @@ public class RuntimeEnv {
     public void setSc(SocketChannel sc){
         this.sc=sc;
     }
-    public Feedbacker askAuth(String data, User user) {
-        logger.info("Auth started");
-        try {
-            logger.info(data);
-            var cargs = data.trim().split(" ");
-            logger.info(String.valueOf(cargs.length));
-            if (cargs.length != 2){return new Feedbacker(false,"incorrect", user);}
-//            String[] cargs = co.getArgument().split(" ");
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] hash = digest.digest(cargs[1].getBytes(StandardCharsets.UTF_8));
-            String encoded = Base64.getEncoder().encodeToString(hash);
-            logger.info("branching");
-            try {
-                ArrayList<String> data_arr = DataConnector.getUserInfo(cargs[0]);
-                logger.info("user info got");
-                if (!data_arr.isEmpty() && encoded.equals(data_arr.get(1))) {
-                    user.setVerified(true);
-                    user.setName(cargs[0]);
-                    return new Feedbacker("Successfully entered account. Welcome back!", user);
-                } else if (!data_arr.isEmpty() && !encoded.equals(data_arr.get(1))){
-//                    DataConnector.addUserInfo(cargs[0], encoded);
-                    return new Feedbacker(false,"Wrong password. Try again.", user);
-                } else if (data_arr.isEmpty()){
-                    logger.info("adding a user");
-                    DataConnector.addUserInfo(cargs[0], encoded, Access.NORMAL_ACCESS);
-                    user.setVerified(true);user.setName(cargs[0]);
-                    return new Feedbacker("Registered successfully", user);
-                }
-//                System.out.println("passed");
-            } catch (CustomException | RuntimeException e){
-                logger.info(e.getMessage() + Arrays.toString(e.getStackTrace()));
-            }
-        } catch (NoSuchAlgorithmException e){
-            System.out.println(Arrays.toString(e.getStackTrace()) + e.getMessage() + e.getCause());
-//        } catch (CustomException e){
-//            System.out.println(e.getMessage());
-        }
-        return new Feedbacker(false,"No pass but ok", user);
-    }
-
     public SocketChannel getSc() {
         return sc;
     }

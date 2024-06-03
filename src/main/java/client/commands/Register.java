@@ -1,14 +1,12 @@
 package client.commands;
+
 import common.AbstractCommand;
 import common.Feedbacker;
 import common.User;
 
-/**
- * Class for the "info" command
- */
-public class Login extends AbstractCommand {
-    public Login() {
-        super("login {user} {password}", "authorize");
+public class Register extends AbstractCommand {
+    public Register() {
+        super("register {user} {password}", "authorize");
     }
     /**
      * Executes the "info" command
@@ -18,7 +16,7 @@ public class Login extends AbstractCommand {
      * @return Feedbacker
      */
     @Override
-    public Feedbacker execute(String arg, User user) {
+    public common.Feedbacker execute(String arg, User user) {
         return new Feedbacker("", user);
     }
 }

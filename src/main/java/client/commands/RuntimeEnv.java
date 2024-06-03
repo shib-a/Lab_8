@@ -145,7 +145,7 @@ public class RuntimeEnv {
     public Feedbacker executeCommand(String[] inputCommand){
 
         if (inputCommand[0].equals("")) return new Feedbacker("", user);
-        var command = cm.getCommandList().get(inputCommand[0]);
+        var command = cm.getCommandList().get(inputCommand[0].trim());
         if (command==null) return new Feedbacker(false,">Command "+inputCommand[0]+" not found. See 'help' for reference.", user);
         else if (inputCommand[0].equals("execute_script")){
             Feedbacker fp = cm.getCommandList().get("execute_script").execute(inputCommand[1], user);

@@ -74,7 +74,9 @@ public class ServerMain {
 //        com.getCommandList().put("insert (positive_integer_value)", new Insert(cl,cm,re));
         com.getCommandList().put("execute_script (file_name)", new ExecuteScript(cl,cm));
         com.getCommandList().put("help", new Help(com));
-        com.getCommandList().put("login {user} {password}", new Login(cl,cm,re));
+        com.getCommandList().put("login {user} {password}", new Login());
+        com.getCommandList().put("register {user} {password}", new Register());
+
         logger.info("Ready for IO");
         Human h = new Human("cock", Status.SCIENTIST, Color.EXPEDITIONIST, true,1,1,1,1,1, Rarity.THREE_STAR);
         Human h1 = new Human("balls", Status.SCIENTIST, Color.EXPEDITIONIST, true,1,1,1,1,0, Rarity.FOUR_STAR);
@@ -131,7 +133,6 @@ public class ServerMain {
                     System.out.println(Arrays.toString(e.getStackTrace()) + e.getMessage());
                 }
             }
-
 
         }
     } catch (IOException e){
