@@ -44,6 +44,10 @@ public class CommandObject implements Serializable {
         return user;
     }
 
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     public void setHd(HumanData hd) {
         this.hd = hd;
     }

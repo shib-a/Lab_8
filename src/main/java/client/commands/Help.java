@@ -26,6 +26,6 @@ public class Help extends AbstractCommand implements Serializable {
 //            System.out.println(el.getName() + "-" +el.getDesc());
 //        }
 //        return new Feedbacker(">Shown successfully.");
-        return new Feedbacker("");
+        return new Feedbacker("", user);
     }
 }

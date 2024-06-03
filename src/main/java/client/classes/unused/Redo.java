@@ -1,4 +1,6 @@
-package client.commands;
+package client.classes.unused;
+import client.commands.CommandManager;
+import client.commands.RuntimeEnv;
 import common.AbstractCommand;
 import client.CommandLine;
 
@@ -29,12 +31,12 @@ public class Redo extends AbstractCommand{
     public Feedbacker execute(String arg, User user) {
         if(arg.isEmpty()){
             re.executeCommand(new String[]{"execute_script", "log.txt"});
-            return new Feedbacker(">Redone successfully.");
+            return new Feedbacker(">Redone successfully.", user);
         }
         try{
             int ind = Integer.parseInt(arg.trim());
-            if(ind<=0){return new Feedbacker(false,">Wrong argument usage. Value should be higher than 0.");}
-            else if(ind>=com.getCommandHistory().size()){return new Feedbacker(false,">Wrong argument usage. Value should not exceed the history length.");}
+            if(ind<=0){return new Feedbacker(false,">Wrong argument usage. Value should be higher than 0.", user);}
+            else if(ind>=com.getCommandHistory().size()){return new Feedbacker(false,">Wrong argument usage. Value should not exceed the history length.", user);}
             var lore = com.getCommandHistory();
             int i = lore.size()-ind;
             System.out.println(i);
@@ -42,7 +44,7 @@ public class Redo extends AbstractCommand{
                 if (!lore.get(lore.size()-i).split(" ",2)[0].equals("redo")){re.executeCommand(lore.get(lore.size()-i).split(" ",2));
                     i++;}  // надо сделать какое то взаимодействие с экз скрипт иначе add и прочее не работает
             }while(i<lore.size());
-            return new Feedbacker(">Redone Successfully.");
-        } catch (NullPointerException | NumberFormatException e){return new Feedbacker(false,">Wrong argument usage. See 'help' for reference.");}
+            return new Feedbacker(">Redone Successfully.", user);
+        } catch (NullPointerException | NumberFormatException e){return new Feedbacker(false,">Wrong argument usage. See 'help' for reference.", user);}
     }
 }

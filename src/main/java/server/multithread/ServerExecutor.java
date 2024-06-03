@@ -1,4 +1,4 @@
-package server;
+package server.multithread;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

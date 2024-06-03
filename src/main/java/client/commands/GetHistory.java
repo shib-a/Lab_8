@@ -22,6 +22,6 @@ public class GetHistory extends AbstractCommand{
 //        if(!arg.isEmpty()) return new Feedbacker(false,">Wrong argument usage. See 'help' for reference.");
 //        cl.printLn(com.getCommandHistory());
 //        return new Feedbacker(">Showed successfully.");
-        return new Feedbacker("");
+        return new Feedbacker("",user);
     }
 }

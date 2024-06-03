@@ -1,4 +1,4 @@
-package server.cls.commands;
+package server.multithread;
 
 import java.io.*;
 import java.nio.ByteBuffer;

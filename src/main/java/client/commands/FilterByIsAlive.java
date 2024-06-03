@@ -28,6 +28,6 @@ public class FilterByIsAlive extends AbstractCommand{
 //            }
 //            return new Feedbacker(">Elements shown successfully.");}
 //        } catch(IllegalArgumentException e){ return new Feedbacker(false,">Wrong argument.");}
-        return new Feedbacker("");
+        return new Feedbacker("", user);
     }
 }

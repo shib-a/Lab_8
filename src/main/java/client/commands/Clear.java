@@ -23,6 +23,6 @@ public class Clear extends AbstractCommand {
 //        if(!arg.isEmpty()) return new Feedbacker(false,">Wrong argument usage. see 'help' for reference.");
 //        cm.getCollection().clear();
 //        return new Feedbacker(">Collection cleared.");
-        return new Feedbacker("");
+        return new Feedbacker("", user);
     }
 }

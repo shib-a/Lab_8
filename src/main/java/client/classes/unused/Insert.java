@@ -1,4 +1,4 @@
-package client.commands;
+package client.classes.unused;
 import common.AbstractCommand;
 import common.Feedbacker;
 /**

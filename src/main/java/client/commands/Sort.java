@@ -24,6 +24,6 @@ public class Sort extends AbstractCommand{
 ////                cm.getCollection().sort(new HumanComparator());
 //            }
 //            return new Feedbacker(">Sorted successfully.");
-        return new Feedbacker("");
+        return new Feedbacker("", user);
     }
 }

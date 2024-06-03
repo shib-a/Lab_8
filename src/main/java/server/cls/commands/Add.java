@@ -2,10 +2,12 @@ package server.cls.commands;
 
 import common.*;
 import server.CommandLine;
-import server.Ask;
-import server.CollectionManager;
+import server.managers.CollectionManager;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.logging.Logger;
 
 /**
  * Class for "add" command
@@ -21,7 +23,7 @@ public class Add extends AbstractCommand {
         this.cm=cm;
         this.re=re;
     }
-
+    private static Logger logger = Logger.getLogger("ADd");
     /**
      * Executes the "add" command
      *
@@ -32,24 +34,25 @@ public class Add extends AbstractCommand {
     @Override
     public Feedbacker execute(String arg, User user) {
         try {
-            if(!arg.isEmpty()) return new Feedbacker(false,">Wrong argument usage. see 'help' for reference.");
-            if(!user.isVerified()) return new Feedbacker(false, ">You need to log in first.");
-            if(user.getAccess().equals(Access.RESTRICTED_ACCESS)) return new Feedbacker(false, ">You don't have permission for this.");
-//            Human h = Ask.askHuman(re.getCurrHumanData(),cm.getUnusedId(), userData);
-            AbstractBanner banner = re.getBannerList().get(arg);
+            if(!user.isVerified()) return new Feedbacker(false, ">You need to log in first." + user.getName() + user.isVerified(), user);
+            if(user.getAccess().equals(Access.RESTRICTED_ACCESS)) return new Feedbacker(false, ">You don't have permission for this.", user);
+            if(!arg.isEmpty()) return new Feedbacker(false,">Wrong argument usage. see 'help' for reference.", user);
+//            if(!bl.containsKey(arg.trim())){return new Feedbacker(false, "no such banner", user);}
+            AbstractBanner banner = re.getBanner();
+            logger.info(banner.toString() + banner.getLootPool().size());
             if (user.getRollAmount()<warrantConst){
                 Human loot = banner.roll();
                 loot.setOwner(user.getName());
-                cm.add(loot);
-                return new Feedbacker(">Rolled successfully.");
+                cm.add(loot, user);
+                return new Feedbacker(">Rolled successfully.", user);
             } else {
                 Human loot = banner.rollWarrant();
                 loot.setOwner(user.getName());
-                cm.add(loot);
-                return new Feedbacker(">Rolled successfully.");
+                cm.add(loot, user);
+                return new Feedbacker(">Rolled successfully.", user);
             }
         } catch (NullPointerException e) {
-            return new Feedbacker(false,">Error occurred:"+ e.getMessage() + Arrays.toString(e.getStackTrace()));
+            return new Feedbacker(false,">Error occurred:"+ e.getMessage() + Arrays.toString(e.getStackTrace()), user);
         }
     }
 }

@@ -1,4 +1,4 @@
-package server.cls.commands;
+package server.managers;
 
 import common.AbstractCommand;
 

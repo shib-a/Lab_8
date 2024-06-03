@@ -1,8 +1,9 @@
-package server;
+package server.managers;
 
 import common.Access;
 import common.ResearcherType;
 import common.ToolKinds;
+import server.CustomException;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -32,6 +33,7 @@ public class DataConnector {
             Statement st = conn.createStatement();
             st.execute("CREATE TABLE IF NOT EXISTS collection_info (id SERIAL PRIMARY KEY, name TEXT, preferred_tool TEXT, researcher_type TEXT, stats TEXT, isAlive TEXT, dug_counter TEXT, owner TEXT NOT NULL);");
             st.execute("CREATE TABLE IF NOT EXISTS user_info (id SERIAL PRIMARY KEY, name TEXT UNIQUE NOT NULL, salt TEXT, hash TEXT, permissions TEXT);");
+            st.execute("CREATE TABLE IF NOT EXISTS banner_info (id SERIAL PRIMARY KEY, name TEXT not null , loot TEXT NOT NULL, roll_req TEXT NOT NULL);");
         }catch (SQLException e){
             System.out.println(Arrays.toString(e.getStackTrace()));
             System.err.println(e);
@@ -91,17 +93,7 @@ public class DataConnector {
             ResultSet res = st.executeQuery(query);
             ArrayList<String> result = new ArrayList<>();
             while(res.next()){
-//                result.add(Integer.toString(res.getInt("id")));
-//                result.add(res.getString("name"));
-//                result.add(res.getString("preferred_tool"));
-//                result.add(res.getString("researcher_type"));
-//                result.add(res.getString("stats"));
-//                result.add(res.getString("isAlive"));
-//                result.add(res.getString("dug_counter"));
-//                result.add(res.getString("owner"));
-//                result.add("");
                 result.add(res.getString("id")+","+res.getString("name")+","+res.getString("preferred_tool")+","+res.getString("researcher_type")+","+res.getString("isAlive")+","+res.getString("stats")+","+res.getString("dug_counter")+","+res.getString("owner"));
-
             }
             return result;
         } catch (SQLException e){e.printStackTrace();}

@@ -25,6 +25,6 @@ public class Show extends AbstractCommand{ ;
 //            cl.printLn(el.toString());
 //        }
 //        return new Feedbacker(">Elements shown.");}
-        return new Feedbacker("");
+        return new Feedbacker("", user);
     }
 }

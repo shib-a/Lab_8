@@ -1,16 +1,12 @@
-package server.cls.commands.redo;
-
+package client.classes.unused.redo;
+import common.Feedbacker;
+import client.commands.CommandManager;
 import client.CommandLine;
+import client.commands.RuntimeEnv;
 import common.AbstractCommand;
 import common.User;
-import server.cls.commands.CommandManager;
-import common.Feedbacker;
-import server.cls.commands.RuntimeEnv;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 
 /**
@@ -36,13 +32,13 @@ public class RedoFile extends AbstractCommand {
     @Override
     public Feedbacker execute(String arg, User user) {
         if(arg.isEmpty()){
-//            re.executeCommand(new String[]{"execute_script", "log.txt"});
-            return new Feedbacker(">Redone successfully.");
+            re.executeCommand(new String[]{"execute_script", "log.txt"});
+            return new Feedbacker(">Redone successfully.", user);
         }
         try{
             int ind = Integer.parseInt(arg.trim());
-            if(ind<=0){return new Feedbacker(false,">Wrong argument usage. Value should be higher than 0.");}
-            else if(ind>=com.getCommandHistory().size()){return new Feedbacker(false,">Wrong argument usage. Value should not exceed the history length.");}
+            if(ind<=0){return new Feedbacker(false,">Wrong argument usage. Value should be higher than 0.", user);}
+            else if(ind>=com.getCommandHistory().size()){return new Feedbacker(false,">Wrong argument usage. Value should not exceed the history length.", user);}
             var lore = com.getCommandHistory();
             int i = lore.size()-ind;
             var log = new File("log.txt");
@@ -55,9 +51,9 @@ public class RedoFile extends AbstractCommand {
             }while(i<lore.size());
             bw.flush();
             bw.close();
-//            re.executeCommand(new String[]{"execute_script","temp.txt"});
+            re.executeCommand(new String[]{"execute_script","temp.txt"});
             f.delete();
-            return new Feedbacker(">Redone Successfully.");
-        } catch (NullPointerException | NumberFormatException | IOException e){return new Feedbacker(false,">Wrong argument usage. See 'help' for reference.");}
+            return new Feedbacker(">Redone Successfully.", user);
+        } catch (NullPointerException | NumberFormatException | IOException e){return new Feedbacker(false,">Wrong argument usage. See 'help' for reference.", user);}
     }
 }

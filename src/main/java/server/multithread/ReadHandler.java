@@ -1,4 +1,4 @@
-package server;
+package server.multithread;
 
 import common.CommandObject;
 import common.Feedbacker;
@@ -7,7 +7,6 @@ import server.cls.commands.RuntimeEnv;
 import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
-import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

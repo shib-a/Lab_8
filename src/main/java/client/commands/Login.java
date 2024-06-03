@@ -8,7 +8,7 @@ import common.User;
  */
 public class Login extends AbstractCommand {
     public Login() {
-        super("login", "authorize");
+        super("login {user} {password}", "authorize");
     }
     /**
      * Executes the "info" command
@@ -23,6 +23,6 @@ public class Login extends AbstractCommand {
 //            cl.printLn("Collection size: "+cm.getCollection().size());
 //            cl.printLn("Collection initialization date: "+cm.getInitDate());
 //            return new Feedbacker(">Shown successfully");
-        return new Feedbacker("");
+        return new Feedbacker("", user);
     }
 }

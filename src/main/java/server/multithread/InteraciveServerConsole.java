@@ -1,7 +1,8 @@
-package server.cls.commands;
+package server.multithread;
 
 import common.*;
 import server.CommandLine;
+import server.managers.CommandManager;
 
 import java.util.Arrays;
 import java.util.Scanner;
@@ -12,7 +13,7 @@ public class InteraciveServerConsole implements Runnable {
     CommandManager cm;
     Scanner scanner = new Scanner(System.in);
     HumanData currHumanData = null;
-    UserData userData = new UserData("admin", Access.FULL_ACCESS);
+    User user = new User("admin", Access.FULL_ACCESS, true);
     Logger logger = Logger.getLogger("IntServCons");
     public InteraciveServerConsole(CommandLine cl, CommandManager cm){this.cl = cl; this.cm = cm;}
     @Override
@@ -27,7 +28,7 @@ public class InteraciveServerConsole implements Runnable {
                         cl.printException(">Too many arguments! Check the amount of whitespaces or arguments.");
                     } else {
 //                        addToLog(inputCommand[0]+" "+inputCommand[1]);
-                        completionFeedback = executeCommand(inputCommand, userData);
+                        completionFeedback = executeCommand(inputCommand, user);
 //                    cm.addToHistory(inputCommand[0]+" "+inputCommand[1]);
                         if (completionFeedback.getMessage().equals("exit")) System.exit(0);
                         cl.printLn(completionFeedback.getMessage());
@@ -42,16 +43,16 @@ public class InteraciveServerConsole implements Runnable {
 
     public Feedbacker executeCommand (CommandObject co){
         currHumanData = co.getHd();
-        if (co.getCommand().getName().equals("")) return new Feedbacker("");
+        if (co.getCommand().getName().equals("")) return new Feedbacker("", user);
         if (co.getCommand().getName().equals("exit")) {
-            return new Feedbacker("exit");
+            return new Feedbacker("exit", user);
         }
         var command = cm.getCommandList().get(co.getCommand().getName());
         logger.info("Processing received command: " + command);
         if (command == null)
-            return new Feedbacker(false, ">Command " + co.getCommand() + " not found. See 'help' for reference.");
+            return new Feedbacker(false, ">Command " + co.getCommand() + " not found. See 'help' for reference.", user);
         command = cm.getCommandList().get(co.getCommand().getName());
-        Feedbacker fb = command.execute(co.getArgument(), userData);
+        Feedbacker fb = command.execute(co.getArgument(), user);
         logger.info("Command processed, answer is ready");
         return fb;
     }
@@ -91,20 +92,20 @@ public class InteraciveServerConsole implements Runnable {
 //            scriptExecutionList.remove(scriptExecutionList.size()-1);
 //        }
 //    }
-            public Feedbacker executeCommand (String[] inputCommand, UserData ud){
-                if (inputCommand[0].equals("")) return new Feedbacker("");
+            public Feedbacker executeCommand (String[] inputCommand, User user){
+                if (inputCommand[0].equals("")) return new Feedbacker("", user);
                 var command = cm.getCommandList().get(inputCommand[0]);
                 if (command == null)
-                    return new Feedbacker(false, ">Command " + inputCommand[0] + " not found. See 'help' for reference.");
+                    return new Feedbacker(false, ">Command " + inputCommand[0] + " not found. See 'help' for reference.", user);
                 else if (inputCommand[0].equals("execute_script")) {
-                    Feedbacker fp = cm.getCommandList().get("execute_script").execute(inputCommand[1], ud);
+                    Feedbacker fp = cm.getCommandList().get("execute_script").execute(inputCommand[1], user);
                     if (!fp.getIsSuccessful()) return fp;
 //            Feedbacker fp2 = autoMode(inputCommand[1].trim());
                     Feedbacker fp2 = null;
-                    return new Feedbacker(fp2.getIsSuccessful(), fp2.getMessage());
+                    return new Feedbacker(fp2.getIsSuccessful(), fp2.getMessage(), fp2.getUser());
                 } else {
                     HumanData hd = null;
-                    CommandObject co = new CommandObject(command, inputCommand[1], hd, ud);
+                    CommandObject co = new CommandObject(command, inputCommand[1], hd, user);
                     if (co.getCommand().getIsNeedData()) {
                         try {
                             hd = server.AskHumanData.askHuman(cl);

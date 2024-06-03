@@ -1,10 +1,11 @@
 package server.cls.commands;
 
 import common.AbstractCommand;
+import common.Access;
 import common.Feedbacker;
 import common.User;
 import server.CommandLine;
-import server.CollectionManager;
+import server.managers.CollectionManager;
 
 /**
  * Executes the "remove_by_id" command
@@ -26,11 +27,20 @@ public class Remove extends AbstractCommand {
      */
     @Override
     public Feedbacker execute(String arg, User user) {
-            if(arg.isEmpty()) return new Feedbacker(false,">Wrong argument usage. See 'help' for reference.");
+        if(!user.isVerified()) return new Feedbacker(false, ">You need to log in first.", user);
+        if(user.getAccess().equals(Access.RESTRICTED_ACCESS)) return new Feedbacker(false, ">You don't have permission for this.", user);
+        if(arg.isEmpty()) return new Feedbacker(false,">Wrong argument usage. See 'help' for reference.", user);
         try{
             var id = Integer.parseInt(arg.trim());
-            try{cm.removeById(id, user);}catch (NullPointerException e){return new Feedbacker(">No element with such id.");}
-            return new Feedbacker(">Element removed successfully.");
-        } catch(NumberFormatException e){ return new Feedbacker(false,">Wrong argument.");}
+            if(cm.getCollection().get(id).getOwner().equals(user.getName()) || user.getAccess().equals(Access.FULL_ACCESS)){
+                try{
+                    cm.removeById(id);
+                    return new Feedbacker(">Element removed successfully.", user);
+                } catch (NullPointerException e){
+                    e.printStackTrace();
+                    return new Feedbacker(false, "you're wr0ng.", user);
+                }
+            } else return new Feedbacker(false,"You don't have enough rights", user);
+        } catch(NumberFormatException e){ return new Feedbacker(false,">Wrong argument.", user);}
     }
 }

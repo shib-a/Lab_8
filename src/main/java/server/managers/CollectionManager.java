@@ -1,7 +1,7 @@
-package server;
+package server.managers;
 
-import common.UserData;
 import common.Human;
+import common.User;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -35,6 +35,16 @@ public class CollectionManager implements Serializable {
         lock.unlock();
         return null;
     }
+    public boolean checkByNameAndOwner(Human human, User user){
+        lock.lock();
+        for (Human el: collection){
+            if (el.getName().equals(human.name) && el.getOwner().equals(user.getName())){
+                return true;
+            }
+        }
+        lock.unlock();
+        return false;
+    }
 
     /**
      * Determines whether a Human instance is in a collection
@@ -47,21 +57,25 @@ public class CollectionManager implements Serializable {
     public int getUnusedId(){
         return DataConnector.getLatestId();
     }
-
     /**
      * Adds a Human instance to the collection
      * @param h
      */
-    public void add (Human h){
-        if(!isInCol(h)){
+    public void add (Human h, User user){
+        lock.lock();
+//        if(!isInCol(h)){
             if(h.getOwner()!=null) {
+                if(checkByNameAndOwner(h, user)){return;}
+                h.setOwner(user.getName());
+                h.setId(DataConnector.getLatestId());
                 collection.add(h);
-                String[] arr = h.toCsvStr().split(",");
-            }
+//                String[] arr = h.toCsvStr().split(",");
+//            }
 //            System.out.println("Added");
         } else {
 //            System.out.println("Not added: object is already in the collection");
         }
+        lock.unlock();
     }
     /**
      * Inserts a Human instance into the entered index
@@ -76,13 +90,13 @@ public class CollectionManager implements Serializable {
      * Updates a Human instance with the entered index
      * @param h
      */
-    public void updateEl(Human h, UserData userData){
-        if(isInCol(h)){
+    public void updateEl(int id, Human h){
+        if(isInCol(getById(id))){
             lock.lock();
-            if(h.getOwner().equals(userData.getName())) {
-                collection.remove(getById(h.getId()));
+//            if(h.getOwner().equals(user.getName())) {
+                collection.remove(getById(id));
                 collection.add(h);
-            }
+//            }
             lock.unlock();
 //            System.out.println("Updated");
         } else {
@@ -98,14 +112,14 @@ public class CollectionManager implements Serializable {
      * Removes a Human instance with the entered id
      * @param id
      */
-    public void removeById(int id, UserData userData){
+    public void removeById(int id){
         if(isInCol(getById(id))){
             lock.lock();
-            if(getById(id).getOwner().equals(userData.getName())) {
+//            if(getById(id).getOwner().equals(userData.getName())) {
                 collection.remove(getById(id));
-            } else {
-                System.out.println("not enough rights");
-            }
+//            } else {
+//                System.out.println("not enough rights");
+//            }
             lock.unlock();
 //            System.out.println("Element removed");
         } else {

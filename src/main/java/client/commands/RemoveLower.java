@@ -31,6 +31,6 @@ public class RemoveLower extends AbstractCommand{
 //                for (Integer el: idArr){cm.removeById(el);}
 //                return new Feedbacker(">Elements removed successfully.");}
 //        } catch(NumberFormatException e){ return new Feedbacker(false,">Wrong argument.");}
-        return new Feedbacker("");
+        return new Feedbacker("", user);
     }
 }

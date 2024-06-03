@@ -2,6 +2,8 @@ package server.cls.commands;
 
 import common.*;
 import server.*;
+import server.managers.CommandManager;
+import server.managers.DataConnector;
 
 import java.io.*;
 import java.nio.ByteBuffer;
@@ -23,7 +25,8 @@ public class RuntimeEnv {
     private static CommandManager cm;
     private ArrayList<String> scriptExecutionList = new ArrayList<>();
     private static BufferedWriter bw;
-    private HashMap<String, AbstractBanner> bannerList;
+//    private HashMap<String, AbstractBanner> bannerList = new HashMap<>();
+    private StandardBanner banner;
     private SocketChannel sc;
     User currUser;
     private HumanData currHumanData = null;
@@ -101,16 +104,16 @@ public class RuntimeEnv {
     public Feedbacker executeCommand(CommandObject co) {
             currHumanData = co.getHd();
             currUser = co.getUser();
-            if (co.getCommand().getName().equals("")) return new Feedbacker("");
+            if (co.getCommand().getName().equals("")) return new Feedbacker("", co.getUser());
             if (co.getCommand().getName().equals("exit")) {
-                return new Feedbacker("exit");}
+                return new Feedbacker("exit", co.getUser());}
             var command = cm.getCommandList().get(co.getCommand().getName());
             logger.info("Processing received command: "+command);
             if (command == null)
-                return new Feedbacker(false, ">Command " + co.getCommand() + " not found. See 'help' for reference.");
+                return new Feedbacker(false, ">Command " + co.getCommand() + " not found. See 'help' for reference.", co.getUser());
             command = cm.getCommandList().get(co.getCommand().getName());
             String arg = co.getArgument();
-
+            logger.info(co.getArgument());
             Feedbacker fb = command.execute(arg,co.getUser());
             logger.info("Command processed, answer is ready");
         return fb;
@@ -187,28 +190,16 @@ public class RuntimeEnv {
         addToLog(co.getCommand()+" "+co.getArgument());
         return co;
     }
-    public CommandObject recieve(SocketChannel sch) throws IOException, ClassNotFoundException {
-        ByteBuffer buf = ByteBuffer.allocate(1024*1024);
-        sch.read(buf);
-        ByteArrayInputStream bis = new ByteArrayInputStream(buf.array());
-        ObjectInputStream ois = new ObjectInputStream(bis);
-        logger.info("Receiving data from client... ");
-        CommandObject co = (CommandObject) ois.readObject();
-        logger.info("Data received");
-//        System.out.println(co.getArgument());
-        addToLog(co.getCommand()+" "+co.getArgument());
-        return co;
-    }
     public void setSc(SocketChannel sc){
         this.sc=sc;
     }
-    public Feedbacker askAuth(String data) {
+    public Feedbacker askAuth(String data, User user) {
         logger.info("Auth started");
         try {
             logger.info(data);
             var cargs = data.trim().split(" ");
             logger.info(String.valueOf(cargs.length));
-            if (cargs.length != 2){return new Feedbacker(false,"incorrect");}
+            if (cargs.length != 2){return new Feedbacker(false,"incorrect", user);}
 //            String[] cargs = co.getArgument().split(" ");
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
             byte[] hash = digest.digest(cargs[1].getBytes(StandardCharsets.UTF_8));
@@ -218,14 +209,16 @@ public class RuntimeEnv {
                 ArrayList<String> data_arr = DataConnector.getUserInfo(cargs[0]);
                 logger.info("user info got");
                 if (!data_arr.isEmpty() && encoded.equals(data_arr.get(1))) {
-                    return new Feedbacker("Successfully entered account. Welcome back!");
+                    user.setVerified(true);
+                    return new Feedbacker("Successfully entered account. Welcome back!", user);
                 } else if (!data_arr.isEmpty() && !encoded.equals(data_arr.get(1))){
 //                    DataConnector.addUserInfo(cargs[0], encoded);
-                    return new Feedbacker(false,"Wrong password. Try again.");
+                    return new Feedbacker(false,"Wrong password. Try again.", user);
                 } else if (data_arr.isEmpty()){
                     logger.info("adding a user");
                     DataConnector.addUserInfo(cargs[0], encoded, Access.NORMAL_ACCESS);
-                    return new Feedbacker("Registered successfully");
+                    user.setVerified(true);
+                    return new Feedbacker("Registered successfully", user);
                 }
 //                System.out.println("passed");
             } catch (CustomException | RuntimeException e){
@@ -236,7 +229,7 @@ public class RuntimeEnv {
 //        } catch (CustomException e){
 //            System.out.println(e.getMessage());
         }
-        return new Feedbacker(false,"No pass but ok");
+        return new Feedbacker(false,"No pass but ok", user);
     }
 
     public SocketChannel getSc() {
@@ -251,11 +244,11 @@ public class RuntimeEnv {
         this.currUser = ud;
     }
 
-    public HashMap<String, AbstractBanner> getBannerList() {
-        return bannerList;
+    public StandardBanner getBanner() {
+        return banner;
     }
 
-    public void setBannerList(HashMap<String, AbstractBanner> bannerList) {
-        this.bannerList = bannerList;
+    public void setBanner(StandardBanner banner) {
+        this.banner = banner;
     }
 }

@@ -4,6 +4,7 @@ import common.AbstractCommand;
 import common.Feedbacker;
 import common.User;
 import server.*;
+import server.managers.CollectionManager;
 
 /**
  * Class for the "save" command
@@ -25,8 +26,8 @@ public class Save extends AbstractCommand {
      */
     @Override
     public Feedbacker execute(String arg, User user) {
-        if (!arg.isEmpty()) return new Feedbacker(false, ">Wrong argument usage. see 'help' for reference.");
+        if (!arg.isEmpty()) return new Feedbacker(false, ">Wrong argument usage. see 'help' for reference.", user);
         cm.saveToFile();
-        return new Feedbacker(">Collection saved.");
+        return new Feedbacker(">Collection saved.", user);
     }
 }

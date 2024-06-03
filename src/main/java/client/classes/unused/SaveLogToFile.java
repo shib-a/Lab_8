@@ -1,4 +1,4 @@
-package client.commands;
+package client.classes.unused;
 import common.AbstractCommand;
 import client.CommandLine;
 import client.classes.CollectionManager;
@@ -25,8 +25,8 @@ public class SaveLogToFile extends AbstractCommand{
      */
     @Override
     public Feedbacker execute(String arg, User user) {
-        if (!arg.isEmpty()) return new Feedbacker(false, "Wrong argument usage. see 'help' for reference");
+        if (!arg.isEmpty()) return new Feedbacker(false, "Wrong argument usage. see 'help' for reference", user);
         cm.saveToFile();
-        return new Feedbacker("Collection saved");
+        return new Feedbacker("Collection saved", user);
     }
 }

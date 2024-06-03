@@ -2,6 +2,7 @@ package server.cls.commands;
 
 import common.*;
 import server.*;
+import server.managers.CollectionManager;
 
 import java.util.ArrayList;
 import java.util.stream.Collectors;
@@ -26,18 +27,18 @@ public class RemoveLower extends AbstractCommand {
      */
     @Override
     public Feedbacker execute(String arg, User user) {
-        if(arg.isEmpty()) return new Feedbacker(false,">Wrong argument usage. See 'help' for reference.");
+        if(arg.isEmpty()) return new Feedbacker(false,">Wrong argument usage. See 'help' for reference.", user);
         try{
             var val = Double.parseDouble(arg.trim());
 //            var idArr = new ArrayList<Integer>();
-            if (cm.getCollection().isEmpty()){return new Feedbacker(">Empty collection.");} else{
+            if (cm.getCollection().isEmpty()){return new Feedbacker(">Empty collection.", user);} else{
 //                for(Human el: cm.getCollection()){
 //                    if (el.getStat(Stat.DAMAGE)<val) idArr.add(el.getId());
 //                }
 //                for (Integer el: idArr){cm.removeById(el);}
 
                 cm.setCollection((ArrayList<Human>) cm.getCollection().stream().filter(el -> el.getStat(Stat.DAMAGE)>=val && el.getOwner() == user.getName()).collect(Collectors.toList()));
-                return new Feedbacker(">Elements removed successfully.");}
-        } catch(NumberFormatException e){ return new Feedbacker(false,">Wrong argument.");}
+                return new Feedbacker(">Elements removed successfully.", user);}
+        } catch(NumberFormatException e){ return new Feedbacker(false,">Wrong argument.", user);}
     }
 }

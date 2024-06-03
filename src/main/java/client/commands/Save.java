@@ -23,7 +23,7 @@ public class Save extends AbstractCommand{
 //        if (!arg.isEmpty()) return new Feedbacker(false, ">Wrong argument usage. see 'help' for reference.");
 //        cm.saveToFile();
 //        return new Feedbacker(">Collection saved.");
-        return new Feedbacker("");
+        return new Feedbacker("", user);
     }
 
 }

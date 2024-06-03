@@ -37,7 +37,7 @@ public abstract class AbstractCommand implements Serializable {
      * @param user
      * @return Feedbacker
      */
-    public Feedbacker execute(String args, User user){return new Feedbacker("");};
+    public Feedbacker execute(String args, User user){return new Feedbacker("", user);};
     @Override
     public String toString() {
         return "AbstractCommand{" +

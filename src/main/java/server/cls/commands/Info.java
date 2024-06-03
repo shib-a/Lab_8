@@ -4,7 +4,7 @@ import common.AbstractCommand;
 import common.Feedbacker;
 import common.User;
 import server.CommandLine;
-import server.CollectionManager;
+import server.managers.CollectionManager;
 
 /**
  * Class for the "info" command
@@ -26,7 +26,7 @@ public class Info extends AbstractCommand {
      */
     @Override
     public Feedbacker execute(String arg, User user) {
-            if(!arg.isEmpty()) return new Feedbacker(false,">Wrong argument usage. See 'help' for reference.");
-            return new Feedbacker(new StringBuilder().append("Collection size: ").append(cm.getCollection().size()).append("Collection initialization date: ").append(cm.getInitDate()).append(">Shown successfully").toString());
+            if(!arg.isEmpty()) return new Feedbacker(false,">Wrong argument usage. See 'help' for reference.", user);
+            return new Feedbacker(new StringBuilder().append("Collection size: ").append(cm.getCollection().size()).append("Collection initialization date: ").append(cm.getInitDate()).append(">Shown successfully").toString(), user);
     }
 }

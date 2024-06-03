@@ -3,6 +3,7 @@ import client.exceptions.EmptyInventoryException;
 import client.interfaces.ReadMarkedField;
 
 import java.util.Arrays;
+import java.util.Random;
 import java.util.Scanner;
 
 /**
@@ -21,6 +22,7 @@ public class Human implements Comparable<Human> {
     private double[] mas = new double[5];
     private String owner;
     public Rarity rarity;
+    public Coordinates coordinates;
     @ReadMarkedField
     private int dugCounter = 0;
     public Human(String name, ToolKinds preferredTool, ResearcherType type, boolean isAlive){
@@ -42,6 +44,20 @@ public class Human implements Comparable<Human> {
         this.mas[Stat.SANITY.ordinal()] = san;
         this.dugCounter = dc;
         this.owner = owner;
+        if(this.getStat(Stat.HP)<=0){isAlive=false;} else{isAlive=true;}
+    }
+    public Human(String name, ToolKinds preferredTool, ResearcherType type, boolean isAlive, double hp, double intel, double lck, double dmg, double san, int dc, Rarity rarity){
+        this.name = name;
+        this.preferredTool = preferredTool;
+        this.type = type;
+        this.isAlive = isAlive;
+        this.mas[Stat.HP.ordinal()] = hp;
+        this.mas[Stat.INTELLIGENCE.ordinal()] = intel;
+        this.mas[Stat.LUCK.ordinal()] = lck;
+        this.mas[Stat.DAMAGE.ordinal()] = dmg;
+        this.mas[Stat.SANITY.ordinal()] = san;
+        this.dugCounter = dc;
+        this.rarity=rarity;
         if(this.getStat(Stat.HP)<=0){isAlive=false;} else{isAlive=true;}
     }
     public Human(int id, String name, ToolKinds preferredTool, ResearcherType type, boolean isAlive, double hp, double intel, double lck, double dmg, double san, int dc, String owner, Item[] inv){
@@ -79,6 +95,9 @@ public class Human implements Comparable<Human> {
         mas[stat.ordinal()] = mas[stat.ordinal()]+value;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
     //getters
 
     public int getDugCounter(){
@@ -490,6 +509,7 @@ public class Human implements Comparable<Human> {
                 ", inventory=" + Arrays.toString(inventory) +
                 ", stats=" + Arrays.toString(mas) +
                 ", dugCounter=" + dugCounter +
+                ", rarity=" + rarity+
                 ", owner=" + owner +
                 '}';
     }
@@ -597,6 +617,14 @@ public class Human implements Comparable<Human> {
             } else{ return new Human(id,name,ft,rt,isal,hp,intel,luck,dmg,san,dc,owner);}
         } catch (ArrayIndexOutOfBoundsException e){}
         return null;
+    }
+
+    public void setCoordinates(Coordinates coordinates) {
+        this.coordinates = coordinates;
+    }
+
+    public Coordinates getCoordinates() {
+        return coordinates;
     }
 
     public void setOwner(String owner) {

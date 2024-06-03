@@ -30,6 +30,6 @@ public class FilterLessDC extends AbstractCommand{
 //                if (count==0) return new Feedbacker(">No elements with lower value.");
 //                return new Feedbacker(">Elements shown successfully.");}
 //        } catch(IllegalArgumentException e){ return new Feedbacker(false,">Wrong argument.");}
-        return new Feedbacker("");
+        return new Feedbacker("", user);
     }
 }

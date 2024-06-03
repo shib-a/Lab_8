@@ -23,6 +23,6 @@ public class Info extends AbstractCommand {
 //            cl.printLn("Collection size: "+cm.getCollection().size());
 //            cl.printLn("Collection initialization date: "+cm.getInitDate());
 //            return new Feedbacker(">Shown successfully");
-        return new Feedbacker("");
+        return new Feedbacker("", user);
     }
 }

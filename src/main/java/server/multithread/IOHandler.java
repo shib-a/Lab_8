@@ -1,4 +1,4 @@
-package server;
+package server.multithread;
 
 import common.CommandObject;
 import common.Feedbacker;

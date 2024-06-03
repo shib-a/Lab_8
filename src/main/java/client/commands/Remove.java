@@ -25,6 +25,6 @@ public class Remove extends AbstractCommand{
 //            try{cm.removeById(id);}catch (NullPointerException e){return new Feedbacker(">No element with such id.");}
 //            return new Feedbacker(">Element removed successfully.");
 //        } catch(NumberFormatException e){ return new Feedbacker(false,">Wrong argument.");}
-        return new Feedbacker("");
+        return new Feedbacker("", user);
     }
 }

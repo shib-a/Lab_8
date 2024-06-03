@@ -4,6 +4,7 @@ import common.AbstractCommand;
 import common.Feedbacker;
 import common.User;
 import server.*;
+import server.managers.CollectionManager;
 
 /**
  * Class for the "exit" command
@@ -25,8 +26,8 @@ public class Exit extends AbstractCommand {
      */
     @Override
     public Feedbacker execute(String arg, User user) {
-        if(!arg.isEmpty()) return new Feedbacker(false,">Wrong argument usage. See 'help' for reference.");
+        if(!arg.isEmpty()) return new Feedbacker(false,">Wrong argument usage. See 'help' for reference.", user);
         cm.saveToFile();
-        return new Feedbacker("exit");
+        return new Feedbacker("exit", user);
     }
 }

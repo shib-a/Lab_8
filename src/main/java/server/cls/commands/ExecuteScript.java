@@ -1,9 +1,12 @@
 package server.cls.commands;
 
 import common.AbstractCommand;
+import common.Access;
 import common.Feedbacker;
 import common.User;
 import server.*;
+import server.managers.CollectionManager;
+
 /**
  * Class for the "execute_script" command
  */
@@ -24,7 +27,9 @@ public class ExecuteScript extends AbstractCommand {
      */
     @Override
     public Feedbacker execute(String arg, User user) {
-        if(arg.isEmpty()) return new Feedbacker(false,"Wrong argument usage. see 'help' for reference.");
-        return new Feedbacker(">Executing script...");
+        if(!user.isVerified()) return new Feedbacker(false, ">You need to log in first.", user);
+        if(user.getAccess().equals(Access.FULL_ACCESS)) return new Feedbacker(false, ">You don't have permission for this.", user);
+        if(arg.isEmpty()) return new Feedbacker(false,"Wrong argument usage. see 'help' for reference.", user);
+        return new Feedbacker(">Executing script...", user);
     }
 }

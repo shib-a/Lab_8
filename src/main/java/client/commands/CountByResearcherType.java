@@ -23,6 +23,6 @@ public class CountByResearcherType extends AbstractCommand{
 //                cl.printLn(count);
 //                return new Feedbacker(">Elements counted successfully.");}
 //        } catch(IllegalArgumentException e){ return new Feedbacker(false,">Wrong argument.");}
-        return new Feedbacker("");
+        return new Feedbacker("", user);
     }
 }

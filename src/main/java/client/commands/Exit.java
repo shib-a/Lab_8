@@ -20,6 +20,6 @@ public class Exit extends AbstractCommand {
     @Override
     public Feedbacker execute(String arg, User user) {
 //        if(!arg.isEmpty()) return new Feedbacker(false,">Wrong argument usage. See 'help' for reference.");
-        return new Feedbacker("");
+        return new Feedbacker("",user);
     }
 }
