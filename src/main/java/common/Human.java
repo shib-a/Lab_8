@@ -239,7 +239,7 @@ public class Human implements Comparable<Human> {
                 ", type=" + color +
                 ", inventory=" + Arrays.toString(inventory) +
                 ", stats=" + Arrays.toString(mas) +
-                ", dugCounter=" + dugCounter +
+                ", coordinates=" + coordinates.toString() +
                 ", rarity=" + rarity+
                 ", owner=" + owner +
                 '}';
