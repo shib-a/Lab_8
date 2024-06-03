@@ -5,5 +5,8 @@ module main.gui {
     requires org.controlsfx.controls;
 
     opens main.gui to javafx.fxml;
+    opens main.gui.login to javafx.fxml;
     exports main.gui;
+
+    exports main.gui.login;
 }

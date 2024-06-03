@@ -14,7 +14,8 @@
 <?import javafx.scene.control.PasswordField?>
 <?import java.lang.String?>
 <?import javafx.scene.text.Text?>
-<AnchorPane prefHeight="700.0" prefWidth="1000.0" xmlns:fx="http://javafx.com/fxml">
+<?import java.net.URL?>
+<AnchorPane prefHeight="700.0" prefWidth="1000.0" xmlns:fx="http://javafx.com/fxml" fx:controller="main.gui.login.LoginWindowController">
     <children>
         <BorderPane prefWidth="1000.0" prefHeight="700.0">
             <left>
@@ -27,24 +28,58 @@
                     <rowConstraints>
                         <RowConstraints prefHeight="200"/>
                         <RowConstraints prefHeight="30"/>
+                        <RowConstraints prefHeight="17"/>
+                        <RowConstraints prefHeight="30"/>
+                        <RowConstraints prefHeight="30"/>
                         <RowConstraints prefHeight="30"/>
                         <RowConstraints prefHeight="30"/>
                         <RowConstraints prefHeight="30"/>
                         <RowConstraints prefHeight="200"/>
                     </rowConstraints>
                     <children>
-                        <Text GridPane.rowIndex="1" GridPane.columnIndex="1"> Добро пожаловать </Text>
-                        <TextField GridPane.columnIndex="1" GridPane.rowIndex="2" promptText="Введите текст"/>
+                        <Label fx:id="welcomeLabel" alignment="BOTTOM_CENTER" prefHeight="30.0" prefWidth="200" text="Welcome back" styleClass="welcomeBack-style" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                        <Label fx:id="detailsLabel" alignment="CENTER" opacity="0.79" prefHeight="30.0" prefWidth="200.0" stylesheets="@style.css" text="Please enter your details" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+
+                        <Label fx:id="usernameLabel" prefHeight="30.0" prefWidth="136.0" styleClass="label-style" stylesheets="@style.css" text="Username" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+                        <TextField fx:id="usernameField" styleClass="light-gray-field" stylesheets="@style.css" GridPane.columnIndex="1" GridPane.rowIndex="4" promptText="enter login"/>
+
+                        <Label fx:id="passwordLabel" prefHeight="17.0" prefWidth="146.0" styleClass="label-style" stylesheets="@style.css" text="Password" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+                        <PasswordField fx:id="passwordField" promptText="enter password" prefHeight="18.0" prefWidth="145.0" styleClass="light-gray-field" stylesheets="@style.css" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
+
+                        <Button onMouseClicked="#onSignInButtonClick" fx:id="signInButton" accessibleText="signInButton" mnemonicParsing="false"  prefHeight="21.0" prefWidth="200.0" styleClass="button-style" stylesheets="@style.css" text="Sign in" textFill="WHITE" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="7"/>
+
+                        <GridPane GridPane.rowIndex="8" GridPane.columnIndex="1">
+                            <columnConstraints>
+                                <ColumnConstraints prefWidth="150"/>
+                                <ColumnConstraints prefWidth="50"/>
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints prefHeight="30"/>
+                            </rowConstraints>
+                            <children>
+                                <Label fx:id="accountLabel" alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="10.0" prefWidth="126.0" styleClass="label-bottom-style" stylesheets="@style.css" text="Don't have an account?" textAlignment="RIGHT" GridPane.rowIndex="0" />
+                                <Label onMouseClicked="#onSignUpLabelClick" fx:id="signUpLabel"  prefHeight="17.0" prefWidth="58.0" stylesheets="@style.css" styleClass="signUp-style" text=" Sign up" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                            </children>
+                        </GridPane>
+                        <ImageView fx:id="geoIcon" fitHeight="150.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="9" onMouseClicked="#onGeoIconClick">
+                            <image>
+                                <Image url="@../images/language_cat.png" />
+                            </image>
+                        </ImageView>
                     </children>
                 </GridPane>
             </left>
             <right>
                 <ImageView fitHeight="700.0" fitWidth="600.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
                     <image>
-                        <Image url="@thumbnail_350x622.jpg" requestedWidth="600.0" requestedHeight="700.0"/>
+                        <Image url="@../images/thumbnail_350x622.jpg" requestedWidth="600.0" requestedHeight="700.0"/>
                     </image>
                 </ImageView>
             </right>
+            <stylesheets>
+                <URL value="@style.css" />
+                <URL value="@style.css" />
+            </stylesheets>
         </BorderPane>
     </children>
 

@@ -14,11 +14,11 @@ public class LoginWindow {
     public LoginWindow(Stage stage) {
         try {
             this.stage = stage;
-            stage.setResizable(false);
             URL fxmlLocation = LoginWindow.class.getResource("loginWindow.fxml");
             System.out.println(fxmlLocation);
             FXMLLoader loader = new FXMLLoader(fxmlLocation);
             Parent root = loader.load();
+
 
             this.stage.setScene(new Scene(root));
         } catch (IOException e) {
