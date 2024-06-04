@@ -26,7 +26,6 @@ public class ServerMain {
     private static ExecutorService executorService = Executors.newCachedThreadPool();
     public static void main(String[] args) throws IOException {
         Logger logger = Logger.getLogger(ServerMain.class.getName());
-//        logger.info("Starting server");
         Scanner scan = new Scanner(System.in);
         int port;
         ServerSocketChannel ssc = ServerSocketChannel.open();
@@ -113,21 +112,14 @@ public class ServerMain {
 
                     }
                     if (key.isValid() && key.isReadable()){
-//                        SocketChannel sc = (SocketChannel) key.channel();
                         ReadHandler rh = new ReadHandler(re, key);
-//                        handler.handleRead(selector, key);
-//                        Executors.newCachedThreadPool().execute(rh);
-//                        sc.close();
                         rh.handle();
                         logger.info("reading handled");
                     }
                     if (key.isValid() && key.isWritable()){
                         logger.info("about to handle writing");
-//                        SocketChannel sc = (SocketChannel) key.channel();
                         WriteHandler wh = new WriteHandler(key);
-//                        handler.handleWrite(selector, key);
                         wh.handle();
-//                        sc.close();
                     }
                 } catch (IOException e) {
                     System.out.println(Arrays.toString(e.getStackTrace()) + e.getMessage());
@@ -136,9 +128,7 @@ public class ServerMain {
 
         }
     } catch (IOException e){
-//                System.err.println(">Client-side connection closed...");
                 logger.severe("Client-side connection closed..." + e.getMessage() +  Arrays.toString(e.getStackTrace()));
-//                ServerConnector.getSelector().keys().clear();
             } catch (RuntimeException e){logger.info("Client-side connection closed..." + e.getMessage() + Arrays.toString(e.getStackTrace()));
             }
         }

@@ -1,9 +1,6 @@
 package server.managers;
 
-import common.Access;
-import common.Color;
-import common.Coordinates;
-import common.Status;
+import common.*;
 import server.CustomException;
 
 import java.sql.*;
@@ -123,10 +120,11 @@ public class DataConnector {
         }catch (SQLException e){e.printStackTrace();}
         return null;
     }
-//    public static void update(int id, UserData ud){
-//        String query = "UPDATE ";
-//        PreparedStatement st = conn.prepareStatement(query);
-//        st.setInt(1,id);
+//    public static void addToLootPool(Human human){
+//        try{
+//            String query = "INSERT INTO banner_info(name, loot) VALUES ()";
+//            Statement st = conn.prepareStatement(query);
+//
+//        }catch (SQLException e){e.printStackTrace();}
 //    }
-
 }

@@ -21,7 +21,7 @@ public class Human implements Comparable<Human> {
     private double[] mas = new double[5];
     private String owner;
     public Rarity rarity;
-    public Coordinates coordinates;
+    public Coordinates coordinates; //разделить в два столбца
     @ReadMarkedField
     private int dugCounter = 0;
     public Human(String name, Status status, Color color, boolean isAlive){
