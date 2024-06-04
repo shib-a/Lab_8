@@ -15,7 +15,6 @@ public class LoginWindow {
         try {
             this.stage = stage;
             URL fxmlLocation = LoginWindow.class.getResource("loginWindow.fxml");
-            System.out.println(fxmlLocation);
             FXMLLoader loader = new FXMLLoader(fxmlLocation);
             Parent root = loader.load();
 

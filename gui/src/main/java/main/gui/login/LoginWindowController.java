@@ -1,11 +1,17 @@
 package main.gui.login;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import main.gui.UTF8Control;
+import main.gui.collections.CollectionsWindow;
 
 
+import java.io.IOException;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
@@ -75,13 +81,17 @@ public class LoginWindowController {
     }
 
     @FXML
-    protected void onSignInButtonClick() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Привет");
-        alert.setHeaderText(null);
-        alert.setContentText("Привет!");
-
-        alert.showAndWait();
+    protected void onSignInButtonClick() throws IOException {
+//        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+//        alert.setTitle("Привет");
+//        alert.setHeaderText(null);
+//        alert.setContentText("Привет!");
+//
+//        alert.showAndWait();
+        Stage stage = (Stage) signInButton.getScene().getWindow();
+        stage.close();
+        CollectionsWindow collectionsWindow = new CollectionsWindow();
+        collectionsWindow.show();
     }
 
     @FXML
