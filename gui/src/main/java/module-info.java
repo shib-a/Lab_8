@@ -7,6 +7,8 @@ module main.gui {
     opens main.gui to javafx.fxml;
     opens main.gui.login to javafx.fxml;
     opens main.gui.collections to javafx.fxml;
+    opens main.gui.commands to javafx.fxml;
+    exports main.gui.commands;
     exports main.gui;
     exports main.gui.collections;
     exports main.gui.login;

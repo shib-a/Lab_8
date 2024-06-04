@@ -6,13 +6,16 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import main.gui.collections.CollectionsWindow;
+import main.gui.commands.CommandsWindow;
 import main.gui.login.LoginWindow;
 
 public class Main extends Application {
     @Override
     public void start(Stage stage) {
-        CollectionsWindow collectionsWindow = new CollectionsWindow();
-        collectionsWindow.show();
+//        CollectionsWindow collectionsWindow = new CollectionsWindow();
+//        collectionsWindow.show();
+        CommandsWindow commandsWindow = new CommandsWindow();
+        commandsWindow.show();
 //        LoginWindow loginWindow = new LoginWindow(stage);
 //        loginWindow.show();
     }
