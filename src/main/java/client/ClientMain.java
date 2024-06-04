@@ -20,6 +20,7 @@ import java.util.Set;
 import static java.lang.Thread.sleep;
 
 public class ClientMain {
+    public static RuntimeEnv re = null;
         public static void main(String[] args) throws IOException, InterruptedException {
             CommandManager com = new CommandManager();
             System.out.println(">Awaiting connection...");
@@ -53,23 +54,18 @@ public class ClientMain {
                     cm.initialaze();
                     cl.printLn("\n");
                     cl.printLn("Welcome back. Enter 'help' to see information on available commands");
-                    var re = new RuntimeEnv(cl, com, socketChannel);
+                    re = new RuntimeEnv(cl, com, socketChannel);
                     com.getCommandList().put("add", new Add(cl));
                     com.getCommandList().put("clear", new Clear());
                     com.getCommandList().put("info", new Info());
                     com.getCommandList().put("show", new Show());
                     com.getCommandList().put("exit", new Exit());
-//                    com.getCommandList().put("sort", new Sort());
                     com.getCommandList().put("update", new Update());
                     com.getCommandList().put("remove_by_id", new Remove());
                     com.getCommandList().put("filter_by_is_alive", new FilterByIsAlive());
-//            com.getCommandList().put("save", new Save());
                     com.getCommandList().put("filter_by_status", new FilterLessDC());
                     com.getCommandList().put("count_by_rarity", new CountByResearcherType());
                     com.getCommandList().put("remove_lower", new RemoveLower());
-//                    com.getCommandList().put("insert", new Insert());
-//                    com.getCommandList().put("execute_script", new ExecuteScript());
-                    com.getCommandList().put("get_history", new GetHistory());
                     com.getCommandList().put("help", new Help());
                     com.getCommandList().put("login", new Login());
                     com.getCommandList().put("register", new Register());
@@ -81,4 +77,8 @@ public class ClientMain {
             }    // fix error after closing server and inputting a command on client
         }
         }
+
+    public static RuntimeEnv getRe() {
+        return re;
+    }
 }

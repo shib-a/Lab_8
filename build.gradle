@@ -1,5 +1,12 @@
+
+
 plugins {
+    id 'idea'
     id 'java'
+    id 'application'
+    id 'org.javamodularity.moduleplugin' version '1.8.12'
+    id 'org.openjfx.javafxplugin' version '0.0.13'
+    id 'org.beryx.jlink' version '2.25.0'
 }
 repositories {
     mavenCentral()
@@ -9,9 +16,39 @@ dependencies {
     implementation 'org.apache.commons:commons-csv:1.10.0'
     implementation 'org.postgresql:postgresql:42.7.2'
     implementation 'org.openjfx:javafx:20.0.2'
+    implementation 'org.apache.logging.log4j:log4j-api:2.20.0'
+    implementation 'org.apache.logging.log4j:log4j-core:2.20.0'
+    implementation 'org.modelmapper:modelmapper:3.1.1'
+    implementation('org.controlsfx:controlsfx:11.1.2')
+    implementation('com.dlsc.formsfx:formsfx-core:11.6.0')
+    implementation('net.synedra:validatorfx:0.4.0')
+    implementation('org.kordamp.ikonli:ikonli-javafx:12.3.1')
+    implementation('org.kordamp.bootstrapfx:bootstrapfx-core:0.4.0')
+    implementation 'org.controlsfx:controlsfx:11.1.0'
+    implementation 'me.friwi:jcefmaven:110.0.25'
+    implementation 'org.json:json:20210307'
 }
-jar{
+
+version '2.2'
+
+javafx {
+    version = '18.0.2'
+    modules = ['javafx.controls', 'javafx.fxml', 'javafx.web', 'javafx.media']
+}
+
+application {
+    mainClass = 'gui.Main'
+}
+
+run {
+    standardInput = System.in
+}
+
+jar {
     manifest {
-        attributes "Main-Class": "org.example.Main"
+        attributes(
+                'Main-Class': 'gui.Main',
+                'Class-Path': configurations.runtimeClasspath.files.collect { it.getName() }.join(' ')
+        )
     }
 }

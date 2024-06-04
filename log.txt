@@ -1,4 +1,0 @@
-shoe 
-show 
-exit 
-exit 
