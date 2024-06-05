@@ -180,6 +180,7 @@ public class RuntimeEnv {
                             key.interestOps(SelectionKey.OP_READ);
                         }
                         if (key.isReadable()){
+                            sleep(1000);
                             var sc = (SocketChannel) key.channel();
                             var rec = recieve(selector, sc);
                             user = rec.getUser();
@@ -191,7 +192,7 @@ public class RuntimeEnv {
                     }
                     if(temp!=null){return temp;}
                 }
-            }catch (IOException  | ClassNotFoundException e){System.err.println(Arrays.toString(e.getStackTrace()));} catch (
+            }catch (IOException  | ClassNotFoundException | InterruptedException e){System.err.println(Arrays.toString(e.getStackTrace()));} catch (
                     NumberFormatException e) {
                 throw new RuntimeException(e);
             }

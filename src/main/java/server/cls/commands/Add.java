@@ -43,13 +43,15 @@ public class Add extends AbstractCommand {
             if (user.getRollAmount()<warrantConst){
                 Human loot = banner.roll();
                 loot.setOwner(user.getName());
+                loot.setRandomCords();
                 cm.add(loot, user);
-                return new Feedbacker(">Rolled successfully.", user);
+                return new Feedbacker(loot.toCsvStr(), user);
             } else {
                 Human loot = banner.rollWarrant();
                 loot.setOwner(user.getName());
+                loot.setRandomCords();
                 cm.add(loot, user);
-                return new Feedbacker(">Rolled successfully.", user);
+                return new Feedbacker(loot.toCsvStr(), user);
             }
         } catch (NullPointerException e) {
             return new Feedbacker(false,">Error occurred:"+ e.getMessage() + Arrays.toString(e.getStackTrace()), user);

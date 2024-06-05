@@ -25,33 +25,39 @@ public class AbstractBanner {
         //different rarities for different types of layers
         if (roll > 19) {
             ArrayList<Human> sc = getLootPool().stream().filter((a) -> a.getRarity() == Rarity.THREE_STAR).collect(Collectors.toCollection(ArrayList::new));
-            logger.info(String.valueOf(sc));
+//            logger.info(String.valueOf(sc));
             Random r = new Random();
-            return sc.get(r.nextInt(sc.size()));
+            var t = sc.get(r.nextInt(sc.size()));
+            t.setRandomCords();
+            return t;
         } else if (roll > 9) {
             ArrayList<Human> sc = getLootPool().stream().filter((a) -> a.getRarity() == Rarity.FOUR_STAR).collect(Collectors.toCollection(ArrayList::new));
-            logger.info(String.valueOf(sc));
+//            logger.info(String.valueOf(sc));
             Random r = new Random();
-            return sc.get(r.nextInt(sc.size()));
+            var t = sc.get(r.nextInt(sc.size()));
+            t.setRandomCords();
+            return t;
         } else {
             ArrayList<Human> sc = getLootPool().stream().filter((a) -> a.getRarity() == Rarity.FIVE_STAR).collect(Collectors.toCollection(ArrayList::new));
-            logger.info(String.valueOf(sc));
+//            logger.info(String.valueOf(sc));
             Random r = new Random();
-            return sc.get(r.nextInt(sc.size()));
+            var t = sc.get(r.nextInt(sc.size()));
+            t.setRandomCords();
+            return t;
         }
     }
     public Human rollWarrant(){
         ArrayList<Human> sc = getLootPool().stream().filter((a) -> a.getRarity() == Rarity.FIVE_STAR).collect(Collectors.toCollection(ArrayList::new));
         Random r = new Random();
-        return sc.get(r.nextInt(sc.size()));
+        var t = sc.get(r.nextInt(sc.size()));
+        t.setRandomCords();
+        return t;
     }
 
     @Override
     public String toString() {
         return "AbstractBanner{" +
                 "name='" + name + '\'' +
-                ", lootPool=" + lootPool +
-                ", req=" + req +
                 '}';
     }
 }

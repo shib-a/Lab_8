@@ -17,7 +17,7 @@ public class DataConnector {
 
     static {
         try {
-            conn = DriverManager.getConnection(jdbcUrl,"postgres","1234");
+            conn = DriverManager.getConnection(jdbcUrl,"postgres","NUTd/6706");
 //            conn = DriverManager.getConnection(jdbcUrl,"s409091","0QdjvOPZ6gsasXOL");
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -29,7 +29,7 @@ public class DataConnector {
     public static void initialize_db(){
         try{
             Statement st = conn.createStatement();
-            st.execute("CREATE TABLE IF NOT EXISTS collection_info (id SERIAL PRIMARY KEY, name TEXT, status TEXT, color TEXT, stats TEXT, isAlive TEXT, coordinates TEXT , owner TEXT NOT NULL);");
+            st.execute("CREATE TABLE IF NOT EXISTS collection_info (id SERIAL PRIMARY KEY, name TEXT, status TEXT, color TEXT, stats TEXT, isAlive TEXT ,rarity TEXT, owner TEXT NOT NULL, coordinates TEXT);");
             st.execute("CREATE TABLE IF NOT EXISTS user_info (id SERIAL PRIMARY KEY, name TEXT UNIQUE NOT NULL, salt TEXT, hash TEXT, permissions TEXT);");
             st.execute("CREATE TABLE IF NOT EXISTS banner_info (id SERIAL PRIMARY KEY, name TEXT not null , loot TEXT NOT NULL);");
         }catch (SQLException e){
@@ -55,9 +55,9 @@ public class DataConnector {
         }
     }
 
-    public static void addHumanInfo(int id, String name, Status ptt, Color rt, String stats, boolean isAlive, Coordinates cords, String owner){
+    public static void addHumanInfo(int id, String name, Status ptt, Color rt, String stats, boolean isAlive, Rarity rarity, String owner, Coordinates cords){
         try {
-            String query = "INSERT INTO collection_info(id, name, status, color, stats, isAlive, coordinates, owner) VALUES (?,?,?,?,?,?,?,?)";
+            String query = "INSERT INTO collection_info(id, name, status, color, stats, isAlive, rarity, owner, coordinates) VALUES (?,?,?,?,?,?,?,?,?)";
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setInt(1,id);
             ps.setString(2,name);
@@ -65,9 +65,10 @@ public class DataConnector {
             ps.setString(4, rt.name());
             ps.setString(5,stats);
             ps.setString(6, String.valueOf(isAlive));
-            if(cords==null){ps.setString(7, "null");}else{
-            ps.setString(7, cords.toString());}
+            ps.setString(7,rarity.name());
             ps.setString(8, owner);
+            if(cords==null){ps.setString(9, "null");}else{
+                ps.setString(9, cords.toString());}
             ps.execute();
             logger.info("Added to sql table " + stats);
         }catch (SQLException e){e.printStackTrace();}
@@ -104,7 +105,7 @@ public class DataConnector {
             ResultSet res = st.executeQuery(query);
             ArrayList<String> result = new ArrayList<>();
             while(res.next()){
-                result.add(res.getString("id")+","+res.getString("name")+","+res.getString("status")+","+res.getString("color")+","+res.getString("isAlive")+","+res.getString("stats")+","+res.getString("coordinates")+","+res.getString("owner"));
+                result.add(res.getString("id")+","+res.getString("name")+","+res.getString("status")+","+res.getString("color")+","+res.getString("isAlive")+","+res.getString("stats")+","+res.getString("rarity")+","+res.getString("owner")+","+res.getString("coordinates"));
             }
             return result;
         } catch (SQLException e){e.printStackTrace();}

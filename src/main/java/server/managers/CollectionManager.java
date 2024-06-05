@@ -75,7 +75,7 @@ public class CollectionManager implements Serializable {
                 if(checkByNameAndOwner(h, user)){return;}
                 h.setOwner(user.getName());
                 h.setId(DataConnector.getLatestId());
-                DataConnector.addHumanInfo(h.getId(),h.getName(),h.getStatus(),h.getColor(),h.statsToString(), h.getIsAlive(),h.getCoordinates(),h.getOwner());
+                DataConnector.addHumanInfo(h.getId(),h.getName(),h.getStatus(),h.getColor(),h.statsToString(), h.getIsAlive(), h.getRarity(),h.getOwner(),h.getCoordinates());
                 collection.add(h);
 //                String[] arr = h.toCsvStr().split(",");
 //            }

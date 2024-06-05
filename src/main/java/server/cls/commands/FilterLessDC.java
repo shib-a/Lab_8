@@ -2,6 +2,7 @@ package server.cls.commands;
 
 import common.AbstractCommand;
 import common.Feedbacker;
+import common.Rarity;
 import common.User;
 import server.*;
 import server.managers.CollectionManager;
@@ -30,10 +31,10 @@ public class FilterLessDC extends AbstractCommand {
     public Feedbacker execute(String arg, User user) {
         if(arg.isEmpty()) return new Feedbacker(false,">Wrong argument usage. see 'help' for reference.", user);
         try{
-            var val = Integer.parseInt(arg.trim());
+            var val = Rarity.valueOf(arg);
             if (cm.getCollection().isEmpty()){return new Feedbacker(">Empty collection.", user);}else{
                 StringBuilder str = new StringBuilder();
-                Stream st = cm.getCollection().stream().filter(el -> el.getDugCounter()<val);
+                Stream st = cm.getCollection().stream().filter(el -> el.getRarity()==val);
                 if (st.count()==0) return new Feedbacker(">No elements with lower value.", user);
                 return new Feedbacker(str.append(st.map(el -> el.toString()).reduce((a,b)-> a+"\n"+b).get()).append(">Elements shown successfully.").toString(), user);
             }

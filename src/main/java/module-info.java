@@ -8,6 +8,7 @@ module main.gui {
     requires java.sql;
     requires java.base;
 
+    opens common to javafx.base;
     opens gui to javafx.fxml;
     opens gui.login to javafx.fxml;
     opens gui.collections to javafx.fxml;

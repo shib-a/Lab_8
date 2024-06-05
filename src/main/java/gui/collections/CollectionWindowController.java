@@ -2,12 +2,15 @@ package gui.collections;
 
 import client.ClientMain;
 import client.commands.RuntimeEnv;
+import common.Feedbacker;
+import common.Human;
 import gui.commands.CommandsWindow;
 import gui.visualization.VisualizationWindow;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 import java.util.Arrays;
@@ -18,9 +21,36 @@ import java.util.logging.Logger;
 public class CollectionWindowController {
     Logger logger = Logger.getLogger("cwc");
     @FXML
-    private Button signInButton;
+    private Button createButton;
     @FXML
-    private TextField usernameField;
+    private Button clearButton;
+    @FXML
+    private Button visualizeButton;
+    @FXML
+    private Button commandsButton;
+    @FXML
+    private TableView<Human> table;
+    @FXML
+    private TableColumn<Human,String> idColumn;
+    @FXML
+    private TableColumn<Human,String> nameColumn;
+    @FXML
+    private TableColumn<Human,String> statusColumn;
+    @FXML
+    private TableColumn<Human,String> colorColumn;
+    @FXML
+    private TableColumn<Human,String> isAliveColumn;
+    @FXML
+    private TableColumn<Human,String> statsColumn;
+    @FXML
+    private TableColumn<Human,String> ownerColumn;
+    @FXML
+    private TableColumn<Human,String> rarityColumn;
+    @FXML
+    private TableColumn<Human,String> coordXColumn;
+    @FXML
+    private TableColumn<Human,String> coordYColumn;
+    private ObservableList<Human> data;
     @FXML
     private PasswordField passwordField;
 
@@ -32,10 +62,36 @@ public class CollectionWindowController {
     );
     private int currentLocaleIndex = 0;
     @FXML
-    private void onSignInButtonClick(){
+    private void initialize(){
+        data = FXCollections.observableArrayList();
+        idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+        nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
+        colorColumn.setCellValueFactory(new PropertyValueFactory<>("color"));
+        isAliveColumn.setCellValueFactory(new PropertyValueFactory<>("isAlive"));
+        statsColumn.setCellValueFactory(new PropertyValueFactory<>("stats"));
+        ownerColumn.setCellValueFactory(new PropertyValueFactory<>("owner"));
+        rarityColumn.setCellValueFactory(new PropertyValueFactory<>("rarity"));
+        coordXColumn.setCellValueFactory(new PropertyValueFactory<>("coordX"));
+        coordYColumn.setCellValueFactory(new PropertyValueFactory<>("coordY"));
+        table.setItems(data);
+    }
+    @FXML
+    private void onCreateButtonClick(){
         logger.info("clicked");
         try {
-
+            RuntimeEnv re = ClientMain.getRe();
+            Feedbacker fb = re.executeCommand(new String[]{"add",""});
+            logger.info(fb.getMessage());
+            if(fb!=null) {
+                try {
+                    Human h = Human.fromCsvStr(fb.getMessage());
+                    logger.info(h.getName());
+            data.add(h);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else logger.info("fb is null");
 //            AuthRequestSender rqSender = new AuthRequestSender();
 //            AuthResponse response = rqSender.sendAuthData(username, password, ServerConnectionHandler.getCurrentConnection());
 //

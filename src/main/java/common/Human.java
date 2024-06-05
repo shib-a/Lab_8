@@ -3,6 +3,7 @@ import client.exceptions.EmptyInventoryException;
 import client.interfaces.ReadMarkedField;
 
 import java.util.Arrays;
+import java.util.Random;
 import java.util.Scanner;
 
 /**
@@ -21,7 +22,7 @@ public class Human implements Comparable<Human> {
     private double[] mas = new double[5];
     private String owner;
     public Rarity rarity;
-    public Coordinates coordinates; //разделить в два столбца
+    public Coordinates coordinates = new Coordinates((double) 0, (double) 0); //разделить в два столбца
     @ReadMarkedField
     private int dugCounter = 0;
     public Human(String name, Status status, Color color, boolean isAlive){
@@ -30,7 +31,7 @@ public class Human implements Comparable<Human> {
         this.color = color;
         this.isAlive = isAlive;
     }
-    public Human(int id, String name, Status status, Color color, boolean isAlive, double hp, double intel, double lck, double dmg, double san, Coordinates cords, String owner){
+    public Human(int id, String name, Status status, Color color, boolean isAlive, double hp, double intel, double lck, double dmg, double san, Coordinates cords, String owner, Rarity rarity){
         this.id=id;
         this.name = name;
         this.status = status;
@@ -43,6 +44,7 @@ public class Human implements Comparable<Human> {
         this.mas[Stat.SANITY.ordinal()] = san;
         this.coordinates = cords;
         this.owner = owner;
+        this.rarity=rarity;
         if(this.getStat(Stat.HP)<=0){isAlive=false;} else{isAlive=true;}
     }
     public Human(String name, Status status, Color color, boolean isAlive, double hp, double intel, double lck, double dmg, double san, Rarity rarity){
@@ -83,9 +85,6 @@ public class Human implements Comparable<Human> {
         this.mas[Stat.DAMAGE.ordinal()] = dmg;
         this.mas[Stat.SANITY.ordinal()] = san;
     }
-    public void setDugCounter(int amount){
-        this.dugCounter = amount;
-    }
     public void setNewStat(Stat stat, double value){
         mas[stat.ordinal()] = value;
     }
@@ -98,32 +97,9 @@ public class Human implements Comparable<Human> {
     }
     //getters
 
-    public int getDugCounter(){
-        return dugCounter;
-    }
-    public String[] getInventory() throws EmptyInventoryException {
-        String[] mn = new String[4];
-        int cnt = 0;
-        for (int i = 0; i < 4; i++) {
-            if (inventory[i]!=null){
-                for (int j = 0; j < 4; j++) {
-                    if (mn[i]==null){
-                        mn[i] = inventory[i].itemName;
-                    }
-                }
-            }
-            cnt+=1;
-        }
-        if (cnt==4 && mn[0]==null){
-            throw new EmptyInventoryException("nothing to return: empty inventory");
-        }
-        return mn;
-    }
-
     public Rarity getRarity() {
         return rarity;
     }
-
     public double getStat(Stat stat){
         return mas[stat.ordinal()];
     }
@@ -136,49 +112,6 @@ public class Human implements Comparable<Human> {
     public boolean getIsAlive(){
         return isAlive;
     }
-    //other methods
-
-    public void attack(Human this, Human defender){
-        System.out.println("- "+ this.name + ": Get a taste of that!");
-        defender.recieveDamage(this.mas[Stat.DAMAGE.ordinal()]);
-        if (defender.mas[Stat.HP.ordinal()] <=0){
-            System.out.println(defender.name + " died");
-            defender.isAlive = false;
-            defender = null;
-            System.gc();
-        }
-    }
-
-    public void recieveDamage(double damage){
-        changeStat(Stat.HP,-damage);
-        if (mas[Stat.HP.ordinal()]<=0){
-            System.out.println(name + " died");
-        }
-        else{
-            System.out.println("- "+ name + ": That shit hurt! HP left: " + mas[Stat.HP.ordinal()]);
-        }
-    }
-
-//    public void read(Book book){
-//        changeStat(Stat.INTELLIGENCE,book.getIntelligenceEffect());
-//        if (book.getIntelligenceEffect()>0){
-//            System.out.println(this.name + ": " + "I can feel the knowledge coming inside of me!" + "\tRead: " + book.itemName + "\t Current intelligence: " + this.getStat(Stat.INTELLIGENCE));
-//        } else if (book.getIntelligenceEffect()<0){
-//            System.out.println(this.name + ": " + "I can feel my braincells dying. It was entertaining tho." + "\tRead: " + book.itemName + " \tCurrent intelligence: " + this.getStat(Stat.INTELLIGENCE));
-//        }
-//    }
-//    public void readext(NecronExtract extract){
-//        changeStat(Stat.INTELLIGENCE,extract.getIntelligenceEffect());
-//        changeStat(Stat.LUCK,extract.getSanityEffect()/2);
-//        if (getType()==ResearcherType.FOLK_RESEARCHER) {
-//            changeStat(Stat.SANITY,-(extract.getSanityEffect()/2));
-//        } else {
-//            changeStat(Stat.SANITY,-(extract.getSanityEffect()));
-//        }
-//        System.out.print(this.name + ": " + "That was... Interesting." + "\tRead: " + extract.itemName + "\t Current intelligence/Sanity/Luck: " + this.getStat(Stat.INTELLIGENCE) + " ");
-//        System.out.print(getStat(Stat.SANITY) + " ");
-//        System.out.println(getStat(Stat.LUCK));
-//    }
 
     public void drop(Item item){
         int count=0;
@@ -250,17 +183,7 @@ public class Human implements Comparable<Human> {
      * @return
      */
     public String toCsvStr(){
-        String csvStr = getId()+","+getName().toString()+","+ status.toString()+","+ color.toString()+","+isAlive+","+getStat(Stat.HP)+","+getStat(Stat.INTELLIGENCE)+","+getStat(Stat.LUCK)+","+getStat(Stat.DAMAGE)+","+getStat(Stat.SANITY)+","+dugCounter;
-//        for(Item el: inventory){
-//            if (el==null){csvStr+=","+null;}
-//            else if(el.getClass().toString().contains("Tool")){
-//                csvStr+=","+el.itemName+((Tool) el).kind;
-//            } else if (el.getClass().toString().contains("Book")) {
-////                csvStr+=","+el.itemName+((Book) el).getIntelligenceEffect();
-//            } else if (el!=null) {
-//                csvStr+=","+el.itemName;
-//            } else {csvStr+=","+null;}
-//        }
+        String csvStr = getId()+","+getName().toString()+","+ status.toString()+","+ color.toString()+","+isAlive+","+getStat(Stat.HP)+","+getStat(Stat.INTELLIGENCE)+","+getStat(Stat.LUCK)+","+getStat(Stat.DAMAGE)+","+getStat(Stat.SANITY)+","+getRarity()+","+getOwner()+","+getCoordinates().toString();
         return csvStr;
     }
 
@@ -281,8 +204,9 @@ public class Human implements Comparable<Human> {
         Double luck;
         Double dmg;
         Double san;
-        Coordinates cords;
         String owner;
+        Rarity rarity;
+        Coordinates cords;
         Item[] inv = new Item[4];
         try{
             try{id = Integer.parseInt(splitStr[0]);} catch (NumberFormatException e){id = null;}
@@ -305,9 +229,10 @@ public class Human implements Comparable<Human> {
             try{luck = Double.parseDouble(splitStr[7]);} catch (NumberFormatException | NullPointerException e){luck = null;}
             try{dmg = Double.parseDouble(splitStr[8]);} catch (NumberFormatException | NullPointerException e){dmg = null;}
             try{san = Double.parseDouble(splitStr[9]);} catch (NumberFormatException | NullPointerException e){san = null;}
-            try{cords = new Coordinates(Double.parseDouble(splitStr[10]), Double.parseDouble(splitStr[11]));} catch (NumberFormatException | ArrayIndexOutOfBoundsException e){cords=null;}
             try{owner = splitStr[11];}catch (ArrayIndexOutOfBoundsException e){owner = null;}
-            return new Human(id,name,status,color,isal,hp,intel,luck,dmg,san,cords,owner);
+            try{rarity = Rarity.valueOf(splitStr[10]);}catch (ArrayIndexOutOfBoundsException e){rarity=null;}
+            try{cords = new Coordinates(Double.parseDouble(splitStr[12]), Double.parseDouble(splitStr[13]));} catch (NumberFormatException | ArrayIndexOutOfBoundsException e){cords=null;}
+            return new Human(id,name,status,color,isal,hp,intel,luck,dmg,san,cords,owner,rarity);
         } catch (ArrayIndexOutOfBoundsException e){}
         return null;
     }
@@ -334,5 +259,18 @@ public class Human implements Comparable<Human> {
 
     public Status getStatus() {
         return status;
+    }
+    public void setRandomCords(){
+        this.coordinates.x = new Random().nextDouble(500);
+        this.coordinates.y = new Random().nextDouble(500);
+    }
+    public String getStats(){
+        return statsToString();
+    }
+    public Double getCoordX(){
+        return coordinates.x;
+    }
+    public Double getCoordY(){
+        return coordinates.y;
     }
 }

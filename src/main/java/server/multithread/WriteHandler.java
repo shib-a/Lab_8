@@ -13,8 +13,8 @@ public class WriteHandler {
     Selector selector;
 
     SelectionKey key;
-    static ExecutorService ex = Executors.newSingleThreadExecutor();
-    private Logger logger = Logger.getLogger("WriteHandler");
+    static ExecutorService ex = Executors.newCachedThreadPool();
+    private static Logger logger = Logger.getLogger("WriteHandler");
     public WriteHandler(SelectionKey key){this.key=key;}
     public void handle(){
         try {
@@ -42,8 +42,10 @@ public class WriteHandler {
                 try {
                     oos.writeObject(key.attachment());
                     oos.flush();
+                    logger.info(key.attachment().toString());
                     byte[] answer = bos.toByteArray();
                     ByteBuffer outputBuf = ByteBuffer.wrap(answer);
+//                    key.attach(null);
                     sc.write(outputBuf);
                     key.interestOps(SelectionKey.OP_READ);
         } catch (IOException e){e.printStackTrace();try{sc.close();}catch (IOException ex){ex.printStackTrace();}}

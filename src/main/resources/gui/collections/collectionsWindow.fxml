@@ -67,7 +67,7 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
-                <Button fx:id="createButton"  prefHeight="32.0" prefWidth="150.0" styleClass="button" stylesheets="@style.css" text="Добавить" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+                <Button onAction="#onCreateButtonClick" fx:id="createButton"  prefHeight="32.0" prefWidth="150.0" styleClass="button" stylesheets="@style.css" text="Добавить" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
 
                 <Button fx:id="clearButton"  prefHeight="32.0" prefWidth="150.0" styleClass="button" stylesheets="@style.css" text="Удалить" GridPane.columnIndex="2" GridPane.rowIndex="2" />
 
