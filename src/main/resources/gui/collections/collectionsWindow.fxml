@@ -19,11 +19,11 @@
 
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="gui.collections.CollectionsWindow"
+            fx:controller="gui.collections.CollectionWindowController"
             prefHeight="700.0" prefWidth="1000.0"
             style="-fx-background-color: #f9f6f3;">
     <children>
-        <Text fx:id="usernameText" fill="#333333"  layoutX="400.0" styleClass="bold-text" text="Username" textAlignment="CENTER" wrappingWidth="200" AnchorPane.topAnchor="40.0" />
+        <Text fx:id="usernameText" fill="#333333"  layoutX="400.0" styleClass="bold-text" text="Имя пользователя" textAlignment="CENTER" wrappingWidth="200" AnchorPane.topAnchor="40.0" />
         <Line endX="300.0" layoutX="400.0" layoutY="60.0" startX="-100"/>
         <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="450.0" prefWidth="800.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="113.0">
             <content>
@@ -43,7 +43,7 @@
                 </TableView>
             </content>
         </ScrollPane>
-        <Label fx:id="filterByLabel" layoutX="580.0" layoutY="80.0" prefHeight="25.0" prefWidth="80.0" styleClass="collections-text" stylesheets="@style.css" text="Filter by" textAlignment="RIGHT" />
+        <Label fx:id="filterByLabel" layoutX="530.0" layoutY="80.0" prefHeight="25.0" prefWidth="130.0" styleClass="collections-text" stylesheets="@style.css" text="Фильтр по" textAlignment="RIGHT" />
         <ComboBox fx:id="comboBox" layoutX="660.0" layoutY="80.0" prefHeight="25.0" prefWidth="120.0" />
         <TextField fx:id="filterByText" layoutX="800.0" layoutY="80.0" prefHeight="25.0" prefWidth="100.0" />
         <Line endX="100.0" endY="2" layoutX="800.0" layoutY="107.0" startX="-300" startY="2" />
@@ -67,13 +67,13 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
-                <Button fx:id="createButton"  prefHeight="32.0" prefWidth="150.0" styleClass="button" stylesheets="@style.css" text="Create" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+                <Button fx:id="createButton"  prefHeight="32.0" prefWidth="150.0" styleClass="button" stylesheets="@style.css" text="Добавить" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
 
-                <Button fx:id="clearButton"  prefHeight="32.0" prefWidth="150.0" styleClass="button" stylesheets="@style.css" text="Delete" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                <Button fx:id="clearButton"  prefHeight="32.0" prefWidth="150.0" styleClass="button" stylesheets="@style.css" text="Удалить" GridPane.columnIndex="2" GridPane.rowIndex="2" />
 
-                <Button fx:id="visualizeButton"  prefHeight="32.0" prefWidth="200.0" styleClass="button" stylesheets="@style.css" text="Visualize" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+                <Button fx:id="visualizeButton"  prefHeight="32.0" prefWidth="200.0" styleClass="button" stylesheets="@style.css" text="Визуализировать" GridPane.columnIndex="4" GridPane.rowIndex="2" />
 
-                <Button fx:id="commandsButton"  prefHeight="32.0" prefWidth="200.0" styleClass="button" stylesheets="@style.css" text="Commands" GridPane.columnIndex="6" GridPane.rowIndex="2" />
+                <Button fx:id="commandsButton" onAction="#onCommandsButtonClick" prefHeight="32.0" prefWidth="200.0" styleClass="button" stylesheets="@style.css" text="Команды" GridPane.columnIndex="6" GridPane.rowIndex="2" />
 
             </children>
         </GridPane>
@@ -97,5 +97,6 @@
                 <Image url="@../images/six-Photoroom.png"/>
             </image>
         </ImageView>
+
     </children>
 </AnchorPane>

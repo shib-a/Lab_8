@@ -19,7 +19,7 @@ public class CommandsWindow {
         this.localeIndex = localeIndex;
         try {
             stage = new Stage();
-            URL fxmlLocation = CollectionsWindow.class.getResource("commandsWindow.fxml");
+            URL fxmlLocation = CommandsWindow.class.getResource("commandsWindow.fxml");
             FXMLLoader loader = new FXMLLoader(fxmlLocation);
             Parent root = loader.load();
 

@@ -14,12 +14,10 @@ public class CollectionsWindow {
 //    private CollectionsWindowController controller;
     private int localeIndex;
 
-    public CollectionsWindow() {
+    public CollectionsWindow(int localeIndex) {
         this.localeIndex = localeIndex;
-        System.out.println(getClass().getResource("/gui/collections/collectionsWindow.fxml"));
         try {
             stage = new Stage();
-//            URL fxmlLocation = CollectionsWindow.class.getResource("collectionsWindow.fxml");
             URL fxmlLocation = CollectionsWindow.class.getResource("collectionsWindow.fxml");
 //
             FXMLLoader loader = new FXMLLoader(fxmlLocation);

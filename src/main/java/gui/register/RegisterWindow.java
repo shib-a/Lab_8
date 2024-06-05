@@ -9,14 +9,19 @@ import java.io.IOException;
 import java.net.URL;
 
 public class RegisterWindow {
+    private int localeIndex;
     private Stage stage;
+    private RegisterWindowController controller;
 
-    public RegisterWindow() {
+    public RegisterWindow(int localeIndex) {
         try {
+            this.localeIndex = localeIndex;
             stage = new Stage();
             URL fxmlLocation = RegisterWindow.class.getResource("registerWindow.fxml");
             FXMLLoader loader = new FXMLLoader(fxmlLocation);
             Parent root = loader.load();
+            controller = loader.getController();
+            setup();
 
 
             Scene scene = new Scene(root);
@@ -28,6 +33,12 @@ public class RegisterWindow {
 
     public void show() {
         stage.show();
+    }
+
+    private void setup() {
+        stage.setResizable(false);
+        controller.setLocale(localeIndex);
+//        controller.setStage(stage);
     }
 }
 

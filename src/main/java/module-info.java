@@ -6,6 +6,7 @@ module main.gui {
     requires org.apache.commons.csv;
     requires java.logging;
     requires java.sql;
+    requires java.base;
 
     opens gui to javafx.fxml;
     opens gui.login to javafx.fxml;

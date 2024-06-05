@@ -62,7 +62,7 @@
                             </children>
                         </GridPane>
                         <ImageView fx:id="geoIcon" fitHeight="150.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="9" onMouseClicked="#onGeoIconClick">
-                            <image>
+                            <image >
                                 <Image url="@../images/language_cat.png" />
                             </image>
                         </ImageView>

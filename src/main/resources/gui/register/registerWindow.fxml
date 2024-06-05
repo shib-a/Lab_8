@@ -31,7 +31,7 @@
             <RowConstraints prefHeight="100"/>
         </rowConstraints>
         <children>
-            <Label fx:id="welcomeLabel" alignment="BOTTOM_CENTER" prefHeight="30.0" prefWidth="200" text="Регистрация" styleClass="welcomeBack-style" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+            <Label fx:id="welcomeRegLabel" alignment="BOTTOM_CENTER" prefHeight="30.0" prefWidth="200" text="Регистрация" styleClass="welcomeBack-style" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
 
             <Label fx:id="usernameLabel" prefHeight="30.0" prefWidth="136.0" styleClass="label-style" stylesheets="@style.css" text="Логин" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
             <TextField fx:id="usernameField" styleClass="light-gray-field" stylesheets="@style.css" GridPane.columnIndex="1" GridPane.rowIndex="4" promptText="введите логин"/>
@@ -39,8 +39,8 @@
             <Label fx:id="passwordLabel" prefHeight="17.0" prefWidth="146.0" styleClass="label-style" stylesheets="@style.css" text="Пароль" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
             <PasswordField fx:id="passwordField" promptText="введите пароль" prefHeight="18.0" prefWidth="145.0" styleClass="light-gray-field" stylesheets="@style.css" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
 
-            <Label fx:id="passwordAgainLabel" prefHeight="17.0" prefWidth="146.0" styleClass="label-style" stylesheets="@style.css" text="Пароль" GridPane.columnIndex="1" GridPane.rowIndex="7"/>
-            <PasswordField fx:id="passwordAgainField" promptText="введите пароль" prefHeight="18.0" prefWidth="145.0" styleClass="light-gray-field" stylesheets="@style.css" GridPane.columnIndex="1" GridPane.rowIndex="8"/>
+            <Label fx:id="passwordAgainLabel" prefHeight="17.0" prefWidth="146.0" styleClass="label-style" stylesheets="@style.css" text="Повторите пароль" GridPane.columnIndex="1" GridPane.rowIndex="7"/>
+            <PasswordField fx:id="passwordAgainField" promptText="повторите пароль" prefHeight="18.0" prefWidth="145.0" styleClass="light-gray-field" stylesheets="@style.css" GridPane.columnIndex="1" GridPane.rowIndex="8"/>
 
             <Button fx:id="signUpButton" onAction="#onSignIiLabelClick" accessibleText="signUpButton" mnemonicParsing="false"  prefHeight="21.0" prefWidth="200.0" styleClass="button-style" stylesheets="@style.css" text="Вход" textFill="WHITE" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="10"/>
 
