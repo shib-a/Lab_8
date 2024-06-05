@@ -78,7 +78,7 @@ public class CollectionWindowController {
         coordXColumn.setCellValueFactory(new PropertyValueFactory<>("coordX"));
         coordYColumn.setCellValueFactory(new PropertyValueFactory<>("coordY"));
         table.setItems(data);
-//        handle(re.executeCommand(new String[]{"show",""}).getMessage());
+        handle(re.executeCommand(new String[]{"show",""}).getMessage());
         logger.info(re.getUser().getName());
     }
     @FXML
@@ -119,15 +119,11 @@ public class CollectionWindowController {
     }
     @FXML
     private void onClearButtonClick(){
-//        RuntimeEnv re = ClientMain.getRe();
-//        try{
         re.executeCommand(new String[]{"clear",""});
-//        wait(500);
-//        Feedbacker fb = re.executeCommand(new String[]{"show",""});
-//        data.removeAll();
-//        handle(fb.getMessage());
-//    }
-//        catch (InterruptedException e){e.printStackTrace();}
+        Feedbacker fb = re.executeCommand(new String[]{"show",""});
+        var temp = data;
+        data.removeAll(temp);
+        handle(fb.getMessage());
     }
     public void handle(String str){
         String[] strings = str.split("\n");

@@ -31,10 +31,10 @@ public class Clear extends AbstractCommand {
         if(!user.isVerified()) return new Feedbacker(false, ">You need to log in first.", user);
         if(user.getAccess().equals(Access.RESTRICTED_ACCESS)) return new Feedbacker(false, ">You don't have permission for this.", user);
         if(!arg.isEmpty()) return new Feedbacker(false,">Wrong argument usage. see 'help' for reference.", user);
-//        Iterator<Human> iterator = cm.getCollection().iterator();
-        var temp = cm.getCollection();
-        for (var el: temp){
-            if (el.getOwner().equals(user.getName())){cm.removeById(el.getId());}
+        Iterator<Human> iterator = cm.getCollection().iterator();
+        while (iterator.hasNext()){
+            var temp = iterator.next();
+            if (temp.getOwner().equals(user.getName())){iterator.remove();}
         }
 //        cm.getCollection().stream().filter(el -> !el.getOwner().equals(user.getName())).collect(Collectors.toCollection(ArrayList::new));
 //        cm.getCollection().clear();
