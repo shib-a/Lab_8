@@ -1,5 +1,6 @@
 package gui.login;
 
+import common.Feedbacker;
 import client.ClientMain;
 import client.commands.RuntimeEnv;
 import gui.AlertUtility;
@@ -97,12 +98,20 @@ public class LoginWindowController {
         RuntimeEnv re = ClientMain.getRe();
         logger.info(re.getUser().toString());
         logger.info(username +" "+ password);
-        if(re.executeCommand(new String[]{"login", username+" "+password}).getIsSuccessful()){
+        Feedbacker fb = re.executeCommand(new String[]{"login", username+" "+password});
+        if(fb.getIsSuccessful()){
             logger.info(re.getUser().toString());
             Stage stage = (Stage) signInButton.getScene().getWindow();
             stage.close();
             CollectionsWindow collectionsWindow = new CollectionsWindow(currentLocaleIndex);
             collectionsWindow.show();
+        } else if (fb.getMessage().equals("Wrong password. Try again.")){
+            AlertUtility.infoAlert("Wrong password.");
+            passwordField.clear();
+        } else {
+            AlertUtility.infoAlert("No such user.");
+            usernameField.clear();
+            passwordField.clear();
         }
         logger.info(re.getUser().getName());
 //        Stage stage = (Stage) signInButton.getScene().getWindow();
@@ -112,7 +121,9 @@ public class LoginWindowController {
 
     @FXML
     protected void onSignUpLabelClick() {
+        Stage stage = (Stage) signInButton.getScene().getWindow();
         RegisterWindow registerWindow = new RegisterWindow(currentLocaleIndex);
+        stage.close();
         registerWindow.show();
 
     }

@@ -52,7 +52,7 @@ public class Login extends AbstractCommand {
                 } else if (!data_arr.isEmpty() && !encoded.equals(data_arr.get(1))){
                     return new Feedbacker(false,"Wrong password. Try again.", user);
                 } else if (data_arr.isEmpty()){
-                    return new Feedbacker("No such user.", user);
+                    return new Feedbacker(false,"No such user.", user);
                 }
             } catch (CustomException | RuntimeException e){
                 logger.info(e.getMessage() + Arrays.toString(e.getStackTrace()));

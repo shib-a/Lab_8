@@ -1,5 +1,8 @@
 package gui.register;
 
+import client.ClientMain;
+import client.commands.RuntimeEnv;
+import common.Feedbacker;
 import gui.AlertUtility;
 import gui.collections.CollectionsWindow;
 import javafx.fxml.FXML;
@@ -7,6 +10,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 import java.util.Arrays;
 import java.util.List;
@@ -79,10 +83,29 @@ public class RegisterWindowController {
     }
     @FXML
     protected void onSignIiLabelClick() {
-
+        RuntimeEnv re = ClientMain.getRe();
+        String username = usernameField.getText();
+        String password1 = passwordField.getText();
+        String password2 = passwordAgainField.getText();
+        if(!password1.equals(password2)){
+            AlertUtility.infoAlert("Passwords don't match. Try entering password again.");
+            passwordField.clear();
+            passwordAgainField.clear();
+            return;
+        }
+        Feedbacker fb = re.executeCommand(new String[]{"register", username +" "+ password1});
+        if (fb.getIsSuccessful()){
+            CollectionsWindow collectionsWindow = new CollectionsWindow(currentLocaleIndex);
+            Stage stage = (Stage) signUpButton.getScene().getWindow();
+            stage.close();
+            collectionsWindow.show();
+        } else {
+            AlertUtility.infoAlert("Account with this username already exists.");
+            passwordField.clear();
+            passwordAgainField.clear();
+        }
         //тут должно быть добавление юзера в табличку
-        CollectionsWindow collectionsWindow = new CollectionsWindow(currentLocaleIndex);
-        collectionsWindow.show();
+
 
     }
 }
