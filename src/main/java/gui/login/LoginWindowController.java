@@ -3,6 +3,7 @@ package gui.login;
 import client.ClientMain;
 import client.commands.RuntimeEnv;
 import gui.collections.CollectionsWindow;
+import gui.register.RegisterWindow;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
@@ -105,12 +106,8 @@ public class LoginWindowController {
 
     @FXML
     protected void onSignUpLabelClick() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Привет");
-        alert.setHeaderText(null);
-        alert.setContentText("Привет!");
-
-        alert.showAndWait();
+        RegisterWindow registerWindow = new RegisterWindow();
+        registerWindow.show();
 
     }
 }

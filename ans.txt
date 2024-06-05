@@ -1,3 +1,0 @@
-4,cock,SCIENTIST,EXPEDITIONIST,true,1.0,1.0,1.0,1.0,1.0,null,admin
-5,cum,SCIENTIST,EXPEDITIONIST,true,1.0,1.0,1.0,1.0,1.0,null,admin
-7,cock,SCIENTIST,EXPEDITIONIST,true,1.0,1.0,1.0,1.0,1.0,null,user

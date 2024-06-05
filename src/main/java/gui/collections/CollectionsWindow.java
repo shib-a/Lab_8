@@ -20,7 +20,7 @@ public class CollectionsWindow {
         try {
             stage = new Stage();
 //            URL fxmlLocation = CollectionsWindow.class.getResource("collectionsWindow.fxml");
-            URL fxmlLocation = getClass().getResource("/gui/collections/collectionsWindow.fxml");
+            URL fxmlLocation = CollectionsWindow.class.getResource("collectionsWindow.fxml");
 //
             FXMLLoader loader = new FXMLLoader(fxmlLocation);
             Parent root = loader.load();
