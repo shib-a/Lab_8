@@ -2,6 +2,7 @@ package gui.login;
 
 import client.ClientMain;
 import client.commands.RuntimeEnv;
+import gui.AlertUtility;
 import gui.UTF8Control;
 import gui.collections.CollectionsWindow;
 import gui.register.RegisterWindow;

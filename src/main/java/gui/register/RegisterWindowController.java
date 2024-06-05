@@ -1,5 +1,6 @@
 package gui.register;
 
+import gui.AlertUtility;
 import gui.collections.CollectionsWindow;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -48,7 +49,11 @@ public class RegisterWindowController {
     private int currentLocaleIndex;
     public void setLocale(int index) {
         this.currentLocaleIndex = index;
+        AlertUtility.infoAlert(String.valueOf(currentLocaleIndex));
+        currentBundle = ResourceBundle.getBundle("MessagesBundle", supportedLocales.get(currentLocaleIndex));
+        updateUI();
     }
+
 
     @FXML
     public void initialize() {

@@ -14,12 +14,13 @@ public class RegisterWindow {
     private RegisterWindowController controller;
 
     public RegisterWindow(int localeIndex) {
+        this.localeIndex = localeIndex;
         try {
-            this.localeIndex = localeIndex;
             stage = new Stage();
             URL fxmlLocation = RegisterWindow.class.getResource("registerWindow.fxml");
             FXMLLoader loader = new FXMLLoader(fxmlLocation);
             Parent root = loader.load();
+
             controller = loader.getController();
             setup();
 

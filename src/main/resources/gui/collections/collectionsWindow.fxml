@@ -71,7 +71,7 @@
 
                 <Button fx:id="clearButton"  prefHeight="32.0" prefWidth="150.0" styleClass="button" stylesheets="@style.css" text="Удалить" GridPane.columnIndex="2" GridPane.rowIndex="2" />
 
-                <Button fx:id="visualizeButton"  prefHeight="32.0" prefWidth="200.0" styleClass="button" stylesheets="@style.css" text="Визуализировать" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+                <Button fx:id="visualizeButton" onAction="#onVisualisationButtonClick" prefHeight="32.0" prefWidth="200.0" styleClass="button" stylesheets="@style.css" text="Визуализировать" GridPane.columnIndex="4" GridPane.rowIndex="2" />
 
                 <Button fx:id="commandsButton" onAction="#onCommandsButtonClick" prefHeight="32.0" prefWidth="200.0" styleClass="button" stylesheets="@style.css" text="Команды" GridPane.columnIndex="6" GridPane.rowIndex="2" />
 

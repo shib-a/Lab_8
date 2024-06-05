@@ -3,6 +3,7 @@ package gui.collections;
 import client.ClientMain;
 import client.commands.RuntimeEnv;
 import gui.commands.CommandsWindow;
+import gui.visualization.VisualizationWindow;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
@@ -57,6 +58,12 @@ public class CollectionWindowController {
     private void onCommandsButtonClick(){
         CommandsWindow commandsWindow = new CommandsWindow();
         commandsWindow.show();
+    }
+
+    @FXML
+    private void onVisualisationButtonClick(){
+        VisualizationWindow visualizationWindow = new VisualizationWindow();
+        visualizationWindow.show();
     }
 
 
