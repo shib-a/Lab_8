@@ -77,9 +77,6 @@ public class RegisterWindowController {
         passwordAgainLabel.setText(currentBundle.getString("passwordLabel"));
         passwordAgainField.setPromptText(currentBundle.getString("passwordField"));
         signUpButton.setText(currentBundle.getString("signUpButton"));
-
-
-
     }
     @FXML
     protected void onSignIiLabelClick() {

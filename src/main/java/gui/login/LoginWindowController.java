@@ -87,12 +87,6 @@ public class LoginWindowController {
 
     @FXML
     protected void onSignInButtonClick() throws IOException {
-//        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-//        alert.setTitle("Привет");
-//        alert.setHeaderText(null);
-//        alert.setContentText("Привет!");
-//
-//        alert.showAndWait();
         String username = usernameField.getText().trim();
         String password = passwordField.getText().trim();
         RuntimeEnv re = ClientMain.getRe();
@@ -114,9 +108,6 @@ public class LoginWindowController {
             passwordField.clear();
         }
         logger.info(re.getUser().getName());
-//        Stage stage = (Stage) signInButton.getScene().getWindow();
-//        stage.close();
-
     }
 
     @FXML
