@@ -36,6 +36,7 @@ public class ReadHandler {
                     ObjectInputStream ois = new ObjectInputStream(bis);
                     concRead(sc, ois, bis, key, buf);
                 }
+                logger.info("reading done");
 //        try {
 //            int bytesRead = sc.read(buf);
 //            if(bytesRead == -1){
@@ -59,8 +60,6 @@ public class ReadHandler {
 //            sc.register(selector,SelectionKey.OP_WRITE);
             } catch (SocketException e) {
                 try {
-//                    e.printStackTrace();
-//                    System.out.println(e.getMessage() + e.getCause());
                     logger.info("Client disconnected...");
                     sc.close();
                     key.cancel();
@@ -76,7 +75,7 @@ public class ReadHandler {
             CommandObject co = (CommandObject) ois.readObject();
             logger.info("Data received");
             System.out.println(co.getArgument());
-            Feedbacker result = re.executeCommand(co);
+            Feedbacker result = re.executeCommand(co);logger.info("executed");
             ois.close();
             bis.close();
             key.attach(result);

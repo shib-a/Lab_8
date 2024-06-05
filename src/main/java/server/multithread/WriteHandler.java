@@ -23,13 +23,6 @@ public class WriteHandler {
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             synchronized (bos) {
                 ObjectOutputStream oos = new ObjectOutputStream(bos);
-//            oos.writeObject(key.attachment());
-//            oos.flush();
-//            byte[] answer = bos.toByteArray();
-//            ByteBuffer outputBuf = ByteBuffer.wrap(answer);
-//            sc.write(outputBuf);
-//            bos.close();
-//            oos.close();
                 cocncWrite(oos, key, bos, sc);
             }
             logger.info("Answer sent successfully");
@@ -40,12 +33,12 @@ public class WriteHandler {
     public static void cocncWrite(ObjectOutputStream oos, SelectionKey key, ByteArrayOutputStream bos, SocketChannel sc){
         ex.execute(() -> {
                 try {
+                    logger.info("iwusdftP");
                     oos.writeObject(key.attachment());
                     oos.flush();
                     logger.info(key.attachment().toString());
                     byte[] answer = bos.toByteArray();
                     ByteBuffer outputBuf = ByteBuffer.wrap(answer);
-//                    key.attach(null);
                     sc.write(outputBuf);
                     key.interestOps(SelectionKey.OP_READ);
         } catch (IOException e){e.printStackTrace();try{sc.close();}catch (IOException ex){ex.printStackTrace();}}

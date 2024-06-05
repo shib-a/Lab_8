@@ -72,6 +72,7 @@ public class ClientMain {
 
                 re.mannedMode(selector);
 
+
             }    catch (NullPointerException e){
                 System.out.println("Unexpected error :"+ Arrays.toString(e.getStackTrace()) + e.getMessage() + e.getCause());
             }    // fix error after closing server and inputting a command on client

@@ -1,11 +1,12 @@
 package server.cls.commands;
 
-import common.AbstractCommand;
-import common.Access;
-import common.Feedbacker;
-import common.User;
+import common.*;
 import server.CommandLine;
 import server.managers.CollectionManager;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.stream.Collectors;
 
 /**
  * Class for "" command
@@ -28,9 +29,15 @@ public class Clear extends AbstractCommand {
     @Override
     public Feedbacker execute(String arg, User user) {
         if(!user.isVerified()) return new Feedbacker(false, ">You need to log in first.", user);
-        if(!user.getAccess().equals(Access.FULL_ACCESS)) return new Feedbacker(false, ">You don't have permission for this.", user);
+        if(user.getAccess().equals(Access.RESTRICTED_ACCESS)) return new Feedbacker(false, ">You don't have permission for this.", user);
         if(!arg.isEmpty()) return new Feedbacker(false,">Wrong argument usage. see 'help' for reference.", user);
-        cm.getCollection().clear();
-        return new Feedbacker(">Collection cleared.", user);
+//        Iterator<Human> iterator = cm.getCollection().iterator();
+        var temp = cm.getCollection();
+        for (var el: temp){
+            if (el.getOwner().equals(user.getName())){cm.removeById(el.getId());}
+        }
+//        cm.getCollection().stream().filter(el -> !el.getOwner().equals(user.getName())).collect(Collectors.toCollection(ArrayList::new));
+//        cm.getCollection().clear();
+        return new Feedbacker("Cleared", user);
     }
 }

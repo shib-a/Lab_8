@@ -53,28 +53,9 @@ public class RuntimeEnv {
                 if(inputCommand.length>2){cl.printException(">Too many arguments! Check the amount of whitespaces or arguments.");} else{
                     addToLog(inputCommand[0]+" "+inputCommand[1]);
                     completionFeedback = executeCommand(inputCommand);
-//                    cm.addToHistory(inputCommand[0]+" "+inputCommand[1]);
                     if(completionFeedback.getMessage().equals("exit")){
-//                        System.out.println("\n" +
-//                                "+88_________________+880\n" +
-//                                "_+880_______________++80\n" +
-//                                "_++88______________+880\n" +
-//                                "_++88_____________++88\n" +
-//                                "__+880___________++88\n" +
-//                                "__+888_________++880\n" +
-//                                "__++880_______++880\n" +
-//                                "__++888_____+++880\n" +
-//                                "__++8888__+++8880++88\n" +
-//                                "__+++8888+++8880++8888\n" +
-//                                "___++888++8888+++8888+80\n" +
-//                                "___++88++8888++888888++88\n" +
-//                                "___++++++888888fx888888888\n" +
-//                                "____++++++8888888888888888\n" +
-//                                "____++++++++00088888888888\n" +
-//                                "_____+++++++00008f8888888\n" +
-//                                "______+++++++00088888888\n" +
-//                                "_______+++++++0888f8888\n");
-                        System.out.println("     .\"\".    .\"\",\n" +
+                        System.out.println(
+                                "     .\"\".    .\"\",\n" +
                                 "     |  |   /  /\n" +
                                 "     |  |  /  /\n" +
                                 "     |  | /  /\n" +
@@ -101,41 +82,6 @@ public class RuntimeEnv {
      * @param path
      * @return Feedbacker
      */
-    public Feedbacker autoMode(String path){
-        String[] inputCommand = new String[]{"",""};
-        if (!new File(path.trim()).exists()) return new Feedbacker(false, ">File does not exist.", user);
-        if (!Files.isReadable(Paths.get(path.trim()))) return new Feedbacker(false, ">Not enough rights to read the file.", user);
-        scriptExecutionList.add(path);
-        Feedbacker wtfIsGoingOn;
-        try(Scanner scanner = new Scanner(new BufferedInputStream(new FileInputStream(path.trim())))) {
-            do{
-            if (!scanner.hasNext()) throw new NoSuchElementException();
-            cl.selectFileScanner(scanner);
-            inputCommand = (cl.readln().trim() + " ").split(" ", 2);
-            while (cl.canReadln() && inputCommand.equals("")) {
-                inputCommand = (cl.readln().trim() + " ").split(" ", 2);
-            }
-            boolean temp = true;
-            if (inputCommand[0].trim().equals("execute_script")) {
-                temp = recursiveChecker(inputCommand[1].trim(), scanner);
-            }
-            if (temp) {
-                wtfIsGoingOn = executeCommand(inputCommand);
-            } else {
-                wtfIsGoingOn = new Feedbacker(">Recursion blocked for your own safety.", user);
-            }
-            if (inputCommand[0].equals("execute_script")) {
-                cl.selectFileScanner(scanner);
-            }
-        }while (wtfIsGoingOn.getIsSuccessful() && cl.canReadln() && !wtfIsGoingOn.getMessage().equals("exit"));
-            cl.selectConsoleScanner();
-            if(!(inputCommand[0].equals("execute_script")) && !wtfIsGoingOn.getIsSuccessful()){System.out.println(">Something went wrong. Check script data.");}
-            return new Feedbacker(wtfIsGoingOn.getIsSuccessful(),wtfIsGoingOn.getMessage()+"\n"+">Script completed.", user);
-        } catch (IOException | NoSuchElementException | IllegalStateException e) {return new Feedbacker(false,">Error.", user);}
-        finally {
-            scriptExecutionList.remove(scriptExecutionList.size()-1);
-        }
-    }
 
     /**
      *
@@ -143,28 +89,14 @@ public class RuntimeEnv {
      * @return Feedbacker
      */
     public Feedbacker executeCommand(String[] inputCommand){
-
         if (inputCommand[0].equals("")) return new Feedbacker("", user);
         var command = cm.getCommandList().get(inputCommand[0].trim());
         if (command==null) return new Feedbacker(false,">Command "+inputCommand[0]+" not found. See 'help' for reference.", user);
-        else if (inputCommand[0].equals("execute_script")){
-            Feedbacker fp = cm.getCommandList().get("execute_script").execute(inputCommand[1], user);
-            if(!fp.getIsSuccessful()) return fp;
-            Feedbacker fp2 = autoMode(inputCommand[1].trim());
-            return new Feedbacker(fp2.getIsSuccessful(),fp2.getMessage(), fp2.getUser());
-        } else {
             HumanData hd = null;
             CommandObject co = new CommandObject(command,inputCommand[1], hd, getUser());
-//            if (co.getCommand().getIsNeedData()){
-//                try{
-//                    hd = AskHumanData.askHuman(cl);
-//                } catch (AskHumanData.AskBreaker a){}
-//            }
             try{
-//                if (hd!=null){
-//                co.setHd(hd);}
                 Feedbacker temp = null;
-                Selector tempSel = selector;
+//                Selector tempSel = selector;
                 while(true) {
                     selector.select();
                     Set<SelectionKey> keys = selector.selectedKeys();
@@ -179,6 +111,7 @@ public class RuntimeEnv {
 //                            sc.register(selector,SelectionKey.OP_READ);
                             key.interestOps(SelectionKey.OP_READ);
                         }
+//                        sleep(2000);
                         if (key.isReadable()){
                             sleep(1000);
                             var sc = (SocketChannel) key.channel();
@@ -198,7 +131,6 @@ public class RuntimeEnv {
             }
 //            return command.execute(inputCommand);
             return null;
-        }
     }
 
     /**

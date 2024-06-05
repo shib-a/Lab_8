@@ -39,19 +39,19 @@ public class Add extends AbstractCommand {
             if(!arg.isEmpty()) return new Feedbacker(false,">Wrong argument usage. see 'help' for reference.", user);
 //            if(!bl.containsKey(arg.trim())){return new Feedbacker(false, "no such banner", user);}
             AbstractBanner banner = re.getBanner();
-            logger.info(banner.toString() + banner.getLootPool().size());
+//            logger.info(banner.toString() + banner.getLootPool().size());
             if (user.getRollAmount()<warrantConst){
                 Human loot = banner.roll();
                 loot.setOwner(user.getName());
                 loot.setRandomCords();
-                cm.add(loot, user);
-                return new Feedbacker(loot.toCsvStr(), user);
+                boolean temp = cm.add(loot, user);
+                return new Feedbacker(temp, loot.toCsvStr(), user);
             } else {
                 Human loot = banner.rollWarrant();
                 loot.setOwner(user.getName());
                 loot.setRandomCords();
-                cm.add(loot, user);
-                return new Feedbacker(loot.toCsvStr(), user);
+                var temp = cm.add(loot, user);
+                return new Feedbacker(temp,loot.toCsvStr(), user);
             }
         } catch (NullPointerException e) {
             return new Feedbacker(false,">Error occurred:"+ e.getMessage() + Arrays.toString(e.getStackTrace()), user);

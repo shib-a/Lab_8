@@ -4,6 +4,7 @@ import client.ClientMain;
 import client.commands.RuntimeEnv;
 import common.Feedbacker;
 import common.Human;
+import gui.AlertUtility;
 import gui.commands.CommandsWindow;
 import gui.visualization.VisualizationWindow;
 import javafx.collections.FXCollections;
@@ -17,6 +18,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.logging.Logger;
+
+import static gui.AlertUtility.errorAlert;
 
 public class CollectionWindowController {
     Logger logger = Logger.getLogger("cwc");
@@ -53,7 +56,7 @@ public class CollectionWindowController {
     private ObservableList<Human> data;
     @FXML
     private PasswordField passwordField;
-
+    RuntimeEnv re = ClientMain.getRe();
     private final List<Locale> supportedLocales = Arrays.asList(
             new Locale("is"),
             new Locale("ru"),
@@ -75,39 +78,32 @@ public class CollectionWindowController {
         coordXColumn.setCellValueFactory(new PropertyValueFactory<>("coordX"));
         coordYColumn.setCellValueFactory(new PropertyValueFactory<>("coordY"));
         table.setItems(data);
+//        handle(re.executeCommand(new String[]{"show",""}).getMessage());
+        logger.info(re.getUser().getName());
     }
     @FXML
     private void onCreateButtonClick(){
         logger.info("clicked");
         try {
-            RuntimeEnv re = ClientMain.getRe();
+//            RuntimeEnv re = ClientMain.getRe();
+            logger.info(re.getUser().getName());
             Feedbacker fb = re.executeCommand(new String[]{"add",""});
             logger.info(fb.getMessage());
             if(fb!=null) {
                 try {
                     Human h = Human.fromCsvStr(fb.getMessage());
-                    logger.info(h.getName());
-            data.add(h);
+                    if (fb.getIsSuccessful()) {
+//                        logger.info(h.getName());
+                        data.add(h);
+                    } else {
+//                        AlertUtility.infoAlert("Duplicate object pulled: "+ h.getName());
+                        logger.info("already in col");}
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             } else logger.info("fb is null");
-//            AuthRequestSender rqSender = new AuthRequestSender();
-//            AuthResponse response = rqSender.sendAuthData(username, password, ServerConnectionHandler.getCurrentConnection());
-//
-//            if (response.isAuth()) {
-//                Client.getInstance(username, password);
-//                Stage stage = (Stage) signInButton.getScene().getWindow();
-//                stage.close();
-
-
-//                CollectionsWindow collectionsWindow = new CollectionsWindow(currentLocaleIndex);
-//                collectionsWindow.show();
-//            } else {
-//                AlertUtility.errorAlert("There is no user with this name, or password is incorrect");
-//            }
         } catch (Exception e) {
-            //errorAlert("Server is dead :(");
+//            errorAlert("Server is dead :(");
         }
     }
     @FXML
@@ -121,7 +117,26 @@ public class CollectionWindowController {
         VisualizationWindow visualizationWindow = new VisualizationWindow();
         visualizationWindow.show();
     }
+    @FXML
+    private void onClearButtonClick(){
+//        RuntimeEnv re = ClientMain.getRe();
+//        try{
+        re.executeCommand(new String[]{"clear",""});
+//        wait(500);
+//        Feedbacker fb = re.executeCommand(new String[]{"show",""});
+//        data.removeAll();
+//        handle(fb.getMessage());
+//    }
+//        catch (InterruptedException e){e.printStackTrace();}
+    }
+    public void handle(String str){
+        String[] strings = str.split("\n");
+        for(String el : strings){
+            Human h = Human.fromCsvStr(el);
+            data.add(h);
+        }
 
+    }
 
 
 }

@@ -21,6 +21,7 @@ public class InteraciveServerConsole implements Runnable {
         while(true) {
             try {
                 Feedbacker completionFeedback = null;
+                cl.printLine();
                 if (scanner.hasNext()) {
                     String[] inputCommand = new String[]{"", ""};
                     inputCommand = (cl.readln().trim() + " ").split(" ", 2);

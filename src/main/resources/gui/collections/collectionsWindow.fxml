@@ -69,7 +69,7 @@
             <children>
                 <Button onAction="#onCreateButtonClick" fx:id="createButton"  prefHeight="32.0" prefWidth="150.0" styleClass="button" stylesheets="@style.css" text="Добавить" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
 
-                <Button fx:id="clearButton"  prefHeight="32.0" prefWidth="150.0" styleClass="button" stylesheets="@style.css" text="Удалить" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                <Button onAction="#onClearButtonClick" fx:id="clearButton"  prefHeight="32.0" prefWidth="150.0" styleClass="button" stylesheets="@style.css" text="Удалить" GridPane.columnIndex="2" GridPane.rowIndex="2" />
 
                 <Button fx:id="visualizeButton" onAction="#onVisualisationButtonClick" prefHeight="32.0" prefWidth="200.0" styleClass="button" stylesheets="@style.css" text="Визуализировать" GridPane.columnIndex="4" GridPane.rowIndex="2" />
 

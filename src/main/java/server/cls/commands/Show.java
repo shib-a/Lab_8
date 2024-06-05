@@ -2,6 +2,7 @@ package server.cls.commands;
 
 import common.AbstractCommand;
 import common.Feedbacker;
+import common.Human;
 import common.User;
 import server.*;
 import server.managers.CollectionManager;
@@ -31,7 +32,7 @@ public class Show extends AbstractCommand {
         if (!arg.isEmpty()) return new Feedbacker(false, ">Wrong argument usage. See 'help' for reference.", user);
         if (cm.getCollection().isEmpty()) return new Feedbacker(">Collection is empty.", user);
         StringBuilder str = new StringBuilder();
-        str.append(cm.getCollection().stream().map(Objects::toString).reduce((a,b)-> a+"\n"+b).get());
-        return new Feedbacker(str.append(">Elements shown.").toString(), user);
+        str.append(cm.getCollection().stream().map(Human::toCsvStr).reduce((a, b)-> a+"\n"+b).get());
+        return new Feedbacker(str.toString(), user);
     }
 }

@@ -68,22 +68,20 @@ public class CollectionManager implements Serializable {
      * Adds a Human instance to the collection
      * @param h
      */
-    public void add (Human h, User user){
+    public boolean add (Human h, User user){
         lock.lock();
 //        if(!isInCol(h)){
             if(h.getOwner()!=null) {
-                if(checkByNameAndOwner(h, user)){return;}
+                if(checkByNameAndOwner(h, user)){return false;}
                 h.setOwner(user.getName());
                 h.setId(DataConnector.getLatestId());
                 DataConnector.addHumanInfo(h.getId(),h.getName(),h.getStatus(),h.getColor(),h.statsToString(), h.getIsAlive(), h.getRarity(),h.getOwner(),h.getCoordinates());
                 collection.add(h);
-//                String[] arr = h.toCsvStr().split(",");
-//            }
-//            System.out.println("Added");
-        } else {
-//            System.out.println("Not added: object is already in the collection");
+                return true;
+        } else {lock.unlock();
+                return false;
         }
-        lock.unlock();
+
     }
     /**
      * Inserts a Human instance into the entered index
