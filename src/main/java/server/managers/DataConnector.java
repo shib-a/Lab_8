@@ -17,7 +17,7 @@ public class DataConnector {
 
     static {
         try {
-            conn = DriverManager.getConnection(jdbcUrl,"postgres","NUTd/6706");
+            conn = DriverManager.getConnection(jdbcUrl,"postgres","1234");
 //            conn = DriverManager.getConnection(jdbcUrl,"s409091","0QdjvOPZ6gsasXOL");
         } catch (SQLException e) {
             throw new RuntimeException(e);
