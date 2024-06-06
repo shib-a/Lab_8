@@ -12,6 +12,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.util.Arrays;
@@ -55,6 +56,10 @@ public class CollectionWindowController {
     private TableColumn<Human,String> coordXColumn;
     @FXML
     private TableColumn<Human,String> coordYColumn;
+    @FXML
+    private Label catNumberLabel;
+    @FXML
+    private Text usernameText;
     private ObservableList<Human> data;
     @FXML
     private ComboBox<String> comboBox;
@@ -84,6 +89,7 @@ public class CollectionWindowController {
         coordXColumn.setCellValueFactory(new PropertyValueFactory<>("coordX"));
         coordYColumn.setCellValueFactory(new PropertyValueFactory<>("coordY"));
         table.setItems(data);
+        usernameText.setText(re.getUser().getName());
         handle(re.executeCommand(new String[]{"show",""}).getMessage());
         logger.info(re.getUser().getName());
 
@@ -113,8 +119,9 @@ public class CollectionWindowController {
                     if (fb.getIsSuccessful()) {
 //                        logger.info(h.getName());
                         data.add(h);
+                        catNumberLabel.setText(String.valueOf(Integer.parseInt(catNumberLabel.getText())+1));
                     } else {
-//                        AlertUtility.infoAlert("Duplicate object pulled: "+ h.getName());
+                        AlertUtility.infoAlert("Duplicate object pulled: "+ h.getName());
                         logger.info("already in col");}
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -152,11 +159,13 @@ public class CollectionWindowController {
     }
     public void handle(String str){
         String[] strings = str.split("\n");
+        int count = 0;
         for(String el : strings){
             Human h = Human.fromCsvStr(el);
             data.add(h);
+            count++;
         }
-
+        catNumberLabel.setText(String.valueOf(count));
     }
 
 
