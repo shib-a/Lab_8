@@ -1,5 +1,7 @@
 package gui.collections;
 
+import gui.commands.CommandsWindowController;
+import gui.register.RegisterWindowController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -14,6 +16,7 @@ public class CollectionsWindow {
 //    private CollectionsWindowController controller;
     private int localeIndex;
 
+    private CollectionWindowController controller;
     public CollectionsWindow(int localeIndex) {
         this.localeIndex = localeIndex;
         try {
@@ -23,7 +26,7 @@ public class CollectionsWindow {
             FXMLLoader loader = new FXMLLoader(fxmlLocation);
             Parent root = loader.load();
 
-//            controller = loader.getController();
+           controller = loader.getController();
             setup();
 
             Scene scene = new Scene(root);
@@ -35,7 +38,7 @@ public class CollectionsWindow {
 
     private void setup() {
         stage.setResizable(false);
-//        controller.setLocale(localeIndex);
+        controller.setLocale(localeIndex);
 //        controller.setStage(stage);
     }
 

@@ -17,6 +17,7 @@ import javafx.stage.Stage;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.ResourceBundle;
 import java.util.logging.Logger;
 
 import static gui.AlertUtility.errorAlert;
@@ -31,6 +32,12 @@ public class CollectionWindowController {
     private Button visualizeButton;
     @FXML
     private Button commandsButton;
+    @FXML
+    private Button refreshButton;
+    @FXML
+    private Label filterByLabel;
+    @FXML
+    private Label catsLabel;
     @FXML
     private TableView<Human> table;
     @FXML
@@ -56,16 +63,67 @@ public class CollectionWindowController {
     private ObservableList<Human> data;
     @FXML
     private ComboBox<String> comboBox;
-    @FXML
-    private PasswordField passwordField;
+    private ResourceBundle currentBundle;
     RuntimeEnv re = ClientMain.getRe();
     private final List<Locale> supportedLocales = Arrays.asList(
-            new Locale("is"),
             new Locale("ru"),
+            new Locale("is"),
             new Locale("da"),
             new Locale("es","GT")
     );
     private int currentLocaleIndex = 0;
+
+    public void setLocale(int index) {
+        this.currentLocaleIndex = index;
+        currentBundle = ResourceBundle.getBundle("MessagesBundle", supportedLocales.get(currentLocaleIndex));
+        updateUI();
+    }
+
+//    @FXML
+//    protected void onGeoIconClick() {
+//        currentLocaleIndex = (currentLocaleIndex + 1) % supportedLocales.size();
+//        currentBundle = ResourceBundle.getBundle("MessagesBundle", supportedLocales.get(currentLocaleIndex));
+//        updateUI();
+//    }
+
+    /**
+     * Update LoginWindow UI
+     */
+    private void updateUI() {
+        idColumn.setText(currentBundle.getString("id"));
+        nameColumn.setText(currentBundle.getString("name"));
+        coordXColumn.setText(currentBundle.getString("coordX"));
+        coordYColumn.setText(currentBundle.getString("coordY"));
+        statusColumn.setText(currentBundle.getString("status"));
+        colorColumn.setText(currentBundle.getString("color"));
+        isAliveColumn.setText(currentBundle.getString("isAlive"));
+        statsColumn.setText(currentBundle.getString("stats"));
+        ownerColumn.setText(currentBundle.getString("owner"));
+        rarityColumn.setText(currentBundle.getString("rarity"));
+
+        catsLabel.setText(currentBundle.getString("catsLabel"));
+        filterByLabel.setText(currentBundle.getString("filterByLabel"));
+        ObservableList<String> localizedItems = FXCollections.observableArrayList(
+                currentBundle.getString("id"),
+                currentBundle.getString("name"),
+                currentBundle.getString("coordX"),
+                currentBundle.getString("coordY"),
+                currentBundle.getString("status"),
+                currentBundle.getString("color"),
+                currentBundle.getString("isAlive"),
+                currentBundle.getString("stats"),
+                currentBundle.getString("owner"),
+                currentBundle.getString("rarity")
+        );
+        comboBox.getItems().setAll(localizedItems);
+        commandsButton.setText(currentBundle.getString("commandsButton"));
+        clearButton.setText(currentBundle.getString("clearButton"));
+        refreshButton.setText(currentBundle.getString("refreshButton"));
+        createButton.setText(currentBundle.getString("createButton"));
+        visualizeButton.setText(currentBundle.getString("visualizeButton"));
+
+    }
+
     @FXML
     private void initialize(){
         comboBox.getItems().addAll("id", "name", "status", "color", "isAlive", "stats", "owner", "rarity", "coord X", "coord Y");
@@ -148,6 +206,13 @@ public class CollectionWindowController {
             data.add(h);
         }
 
+    }
+
+    @FXML
+    protected void onGeoIconOneClick() {
+        currentLocaleIndex = (currentLocaleIndex + 1) % supportedLocales.size();
+        currentBundle = ResourceBundle.getBundle("MessagesBundle", supportedLocales.get(currentLocaleIndex));
+        updateUI();
     }
 
 
