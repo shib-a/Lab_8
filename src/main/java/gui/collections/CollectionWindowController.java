@@ -249,7 +249,7 @@ public class CollectionWindowController {
 
     @FXML
     private void onVisualisationButtonClick(){
-        VisualizationWindow visualizationWindow = new VisualizationWindow();
+        VisualizationWindow visualizationWindow = new VisualizationWindow(data);
         visualizationWindow.show();
     }
     @FXML
