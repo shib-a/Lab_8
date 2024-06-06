@@ -45,8 +45,8 @@ public class RegisterWindowController {
     private Label welcomeRegLabel;
 
     private final List<Locale> supportedLocales = Arrays.asList(
-            new Locale("is"),
             new Locale("ru"),
+            new Locale("is"),
             new Locale("da"),
             new Locale("es","GT")
     );

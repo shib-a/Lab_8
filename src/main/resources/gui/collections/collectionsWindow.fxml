@@ -55,10 +55,11 @@
                 <ColumnConstraints hgrow="SOMETIMES" prefWidth="100" />
                 <ColumnConstraints hgrow="SOMETIMES" prefWidth="150" />
                 <ColumnConstraints hgrow="SOMETIMES" prefWidth="150" />
-                <ColumnConstraints hgrow="SOMETIMES" prefWidth="50" />
-                <ColumnConstraints hgrow="SOMETIMES" prefWidth="200" />
-                <ColumnConstraints hgrow="SOMETIMES" prefWidth="50" />
-                <ColumnConstraints hgrow="SOMETIMES" prefWidth="200" />
+                <ColumnConstraints hgrow="SOMETIMES" prefWidth="25" />
+                <ColumnConstraints hgrow="SOMETIMES" prefWidth="150" />
+                <ColumnConstraints hgrow="SOMETIMES" prefWidth="25" />
+                <ColumnConstraints hgrow="SOMETIMES" prefWidth="150" />
+                <ColumnConstraints hgrow="SOMETIMES" prefWidth="150" />
                 <ColumnConstraints hgrow="SOMETIMES" prefWidth="100" />
             </columnConstraints>
             <rowConstraints>
@@ -71,9 +72,11 @@
 
                 <Button onAction="#onClearButtonClick" fx:id="clearButton"  prefHeight="32.0" prefWidth="150.0" styleClass="button" stylesheets="@style.css" text="Удалить" GridPane.columnIndex="2" GridPane.rowIndex="2" />
 
-                <Button fx:id="visualizeButton" onAction="#onVisualisationButtonClick" prefHeight="32.0" prefWidth="200.0" styleClass="button" stylesheets="@style.css" text="Визуализировать" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+                <Button fx:id="refreshButton" prefHeight="32.0" prefWidth="150.0" styleClass="button" stylesheets="@style.css" text="Обновить" GridPane.columnIndex="4" GridPane.rowIndex="2" />
 
-                <Button fx:id="commandsButton" onAction="#onCommandsButtonClick" prefHeight="32.0" prefWidth="200.0" styleClass="button" stylesheets="@style.css" text="Команды" GridPane.columnIndex="6" GridPane.rowIndex="2" />
+                <Button fx:id="visualizeButton" onAction="#onVisualisationButtonClick" prefHeight="32.0" prefWidth="150.0" styleClass="button" stylesheets="@style.css" text="Визуализировать" GridPane.columnIndex="6" GridPane.rowIndex="2" />
+
+                <Button fx:id="commandsButton" onAction="#onCommandsButtonClick" prefHeight="32.0" prefWidth="150.0" styleClass="button" stylesheets="@style.css" text="Команды" GridPane.columnIndex="7" GridPane.rowIndex="2" />
 
             </children>
         </GridPane>
