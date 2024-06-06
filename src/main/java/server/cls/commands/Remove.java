@@ -25,7 +25,7 @@ public class Remove extends AbstractCommand {
     @Override
     public Feedbacker execute(String arg, User user) {
         if(!user.isVerified()) return new Feedbacker(false, ">You need to log in first.", user);
-        if(user.getAccess().equals(Access.RESTRICTED_ACCESS)) return new Feedbacker(false, ">You don't have permission for this.", user);
+        if(user.getAccess().equals(Access.RESTRICTED_ACCESS)) return new Feedbacker(false, "No permission", user);
         if(arg.isEmpty()) return new Feedbacker(false,">Wrong argument usage. See 'help' for reference.", user);
         try{
             var id = Integer.parseInt(arg.trim());
@@ -40,7 +40,7 @@ public class Remove extends AbstractCommand {
                     e.printStackTrace();
                     return new Feedbacker(false, "you're wr0ng.", user);
                 }
-            } else return new Feedbacker(false,"You don't have enough rights", user);
+            } else return new Feedbacker(false,"No permission", user);
         } catch(NumberFormatException e){ return new Feedbacker(false,">Wrong argument.", user);}
     }
 }

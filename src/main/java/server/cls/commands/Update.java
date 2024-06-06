@@ -31,7 +31,7 @@ public class Update extends AbstractCommand {
     @Override
     public Feedbacker execute(String arg, User user) {
         if(!user.isVerified()) return new Feedbacker(false, ">You need to log in first.", user);
-        if(!user.getAccess().equals(Access.FULL_ACCESS)) return new Feedbacker(false, ">You don't have permission for this.", user);
+        if(!user.getAccess().equals(Access.FULL_ACCESS)) return new Feedbacker(false, "No permission", user);
         if(arg.isEmpty()) return new Feedbacker(false,">Wrong argument usage. See 'help' for reference", user);
         try {
             int id = Integer.parseInt(arg.trim());

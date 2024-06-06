@@ -49,7 +49,7 @@
         <Line endX="100.0" endY="2" layoutX="800.0" layoutY="107.0" startX="-300" startY="2" />
         <Line endX="100" endY="2" layoutX="200.0" layoutY="107.0" startX="-100.0" />
         <Label fx:id="catsLabel" layoutX="100.0" layoutY="80.0" prefHeight="25.0" prefWidth="70.0" styleClass="collections-text" stylesheets="@style.css" text="Коты" textAlignment="CENTER" />
-
+        <Label fx:id="catNumberLabel" layoutX="180" layoutY="80" prefHeight="25.0" prefWidth="50.0" styleClass="collections-text" stylesheets="style.css" text="0" textAlignment="CENTER"/>
         <GridPane layoutY="570.0" prefHeight="16.0" prefWidth="1000.0">
             <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" prefWidth="100" />
@@ -105,13 +105,13 @@
                 <Button onAction="#onUpdateButtonClick" fx:id="updateButton"  styleClass="button" stylesheets="@style.css" text="Обновить" />
                 <TextField fx:id="updateField" alignment="CENTER"  promptText="айди" prefWidth="50"/>
 
-                <Button fx:id="removeButton" styleClass="button" stylesheets="@style.css" text="Удалить" />
+                <Button onAction="#onRemoveButtonClick" fx:id="removeButton" styleClass="button" stylesheets="@style.css" text="Удалить" />
                 <TextField fx:id="removeField" alignment="CENTER"  promptText="айди" prefWidth="50" />
 
-                <Button fx:id="removeLowerButton"  styleClass="button" stylesheets="@style.css" text="Удалить минимальный" />
+                <Button onAction="#onRemoveLowerButtonClick" fx:id="removeLowerButton"  styleClass="button" stylesheets="@style.css" text="Удалить минимальный" />
 
-                <Button fx:id="countRarityButton"  styleClass="button" stylesheets="@style.css" text="Кол-во по редкости" />
-                <ComboBox fx:id="RarityBox" prefWidth="100"/>
+                <Button onAction="#onCountRarityButtonClick" fx:id="countRarityButton"  styleClass="button" stylesheets="@style.css" text="Кол-во по редкости" />
+                <ComboBox fx:id="rarityBox" prefWidth="100"/>
             </items>
         </ToolBar>
     </children>
