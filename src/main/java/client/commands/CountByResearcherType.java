@@ -7,7 +7,7 @@ import common.User;
 
 public class CountByResearcherType extends AbstractCommand{
     public CountByResearcherType() {
-        super("count_by_researcher_type (EXPEDITIONIST/FOLK_RESEARCHER)", "Shows amount of elements with entered RESEARCHER_TYPE value.");
+        super("count_by_rarity {THREE_STAR/FOUR_STAR/FIVE_STAR}", "Shows amount of elements with entered RESEARCHER_TYPE value.");
     }
 
     @Override

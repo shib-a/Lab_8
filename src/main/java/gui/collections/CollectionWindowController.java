@@ -87,6 +87,9 @@ public class CollectionWindowController {
     private ObservableList<Human> data;
     @FXML
     private ComboBox<String> comboBox;
+    @FXML
+    private ComboBox<String> rarityBox;
+
     RuntimeEnv re = ClientMain.getRe();
     private final List<Locale> supportedLocales = Arrays.asList(
             new Locale("ru"),
@@ -172,9 +175,11 @@ public class CollectionWindowController {
         coordYColumn.setCellValueFactory(new PropertyValueFactory<>("coordY"));
         table.setItems(data);
         handle(re.executeCommand(new String[]{"show",""}).getMessage());
-        logger.info(re.getUser().getName());
-
-
+//        logger.info(re.getUser().getName());
+        usernameText.setText(re.getUser().getName());
+        rarityBox.getItems().add("THREE_STAR");
+        rarityBox.getItems().add("FOUR_STAR");
+        rarityBox.getItems().add("FIVE_STAR");
         idColumn.setPrefWidth(50);
         nameColumn.setPrefWidth(80);
         statusColumn.setPrefWidth(105);
@@ -190,7 +195,6 @@ public class CollectionWindowController {
     private void onCreateButtonClick(){
         logger.info("clicked");
         try {
-//            RuntimeEnv re = ClientMain.getRe();
             logger.info(re.getUser().getName());
             Feedbacker fb = re.executeCommand(new String[]{"add",""});
             logger.info(fb.getMessage());
@@ -198,7 +202,6 @@ public class CollectionWindowController {
                 try {
                     Human h = Human.fromCsvStr(fb.getMessage());
                     if (fb.getIsSuccessful()) {
-//                        logger.info(h.getName());
                         data.add(h);
                         catNumberLabel.setText(String.valueOf(Integer.parseInt(catNumberLabel.getText())+1));
                     } else {
@@ -222,7 +225,6 @@ public class CollectionWindowController {
     @FXML
     protected void onCommandsButtonClick() {
         commandsToolBar.setVisible(!commandsToolBar.isVisible());
-
     }
 
     @FXML
@@ -258,16 +260,70 @@ public class CollectionWindowController {
 
     @FXML
     private void onUpdateButtonClick(){
-        RuntimeEnv re = ClientMain.getRe();
+//        RuntimeEnv re = ClientMain.getRe();
         String arg = updateField.getText();
         Feedbacker fb = re.executeCommand(new String[]{"update",arg});
         if (fb==null){
-
             return;
         }
         if (fb.getIsSuccessful()){
-
+            Feedbacker fbc = re.executeCommand(new String[]{"show", ""});
+            handle(fbc.getMessage());
+        } else if (fb.getMessage().equals("No permission")){
+            AlertUtility.errorAlert("Not enough rights for command execution");
+        } else {
+            AlertUtility.errorAlert("No element with such id");
         }
     }
-
+    @FXML
+    private void onRemoveButtonClick(){
+        String arg = removeField.getText();
+        Feedbacker fb = re.executeCommand(new String[]{"remove_by_id",arg});
+        if (fb==null){
+            return;
+        }
+        if (fb.getIsSuccessful()){
+            Feedbacker fbc = re.executeCommand(new String[]{"show", ""});
+            var temp = data;
+            data.removeAll(temp);
+            handle(fbc.getMessage());
+        } else if (fb.getMessage().equals("No permission")){
+            AlertUtility.errorAlert("Not enough rights for command execution");
+        } else {
+            AlertUtility.errorAlert("No element with such id");
+        }
+    }
+    @FXML
+    private void onRemoveLowerButtonClick(){
+        Feedbacker fb = re.executeCommand(new String[]{"remove_lower","0"});
+        if (fb==null){
+            return;
+        }
+        if (fb.getIsSuccessful()){
+            Feedbacker fbc = re.executeCommand(new String[]{"show", ""});
+            var temp = data;
+            data.removeAll(temp);
+            handle(fbc.getMessage());
+        } else if (fb.getMessage().equals("No permission")){
+            AlertUtility.errorAlert("Not enough rights for command execution");
+        } else {
+            AlertUtility.errorAlert("No such element.");
+        }
+    }
+    @FXML
+    private void onCountRarityButtonClick(){
+        String arg = rarityBox.getValue();
+        Feedbacker fb = re.executeCommand(new String[]{"count_by_rarity",arg});
+        if (fb==null){
+            return;
+        }
+        if (fb.getIsSuccessful()){
+//            Feedbacker fbc = re.executeCommand(new String[]{"show", ""});
+            AlertUtility.infoAlert(fb.getMessage());
+        } else if (fb.getMessage().equals("No permission")){
+            AlertUtility.errorAlert("Not enough rights for command execution");
+        } else {
+            AlertUtility.errorAlert("No element with such rarity");
+        }
+    }
 }

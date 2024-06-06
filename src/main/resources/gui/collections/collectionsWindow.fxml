@@ -105,13 +105,13 @@
                 <Button onAction="#onUpdateButtonClick" fx:id="updateButton"  styleClass="button" stylesheets="@style.css" text="Обновить" />
                 <TextField fx:id="updateField" alignment="CENTER"  promptText="айди" prefWidth="50"/>
 
-                <Button fx:id="removeButton" styleClass="button" stylesheets="@style.css" text="Удалить" />
+                <Button onAction="#onRemoveButtonClick" fx:id="removeButton" styleClass="button" stylesheets="@style.css" text="Удалить" />
                 <TextField fx:id="removeField" alignment="CENTER"  promptText="айди" prefWidth="50" />
 
-                <Button fx:id="removeLowerButton"  styleClass="button" stylesheets="@style.css" text="Удалить минимальный" />
+                <Button onAction="#onRemoveLowerButtonClick" fx:id="removeLowerButton"  styleClass="button" stylesheets="@style.css" text="Удалить минимальный" />
 
-                <Button fx:id="countRarityButton"  styleClass="button" stylesheets="@style.css" text="Кол-во по редкости" />
-                <ComboBox fx:id="RarityBox" prefWidth="100"/>
+                <Button onAction="#onCountRarityButtonClick" fx:id="countRarityButton"  styleClass="button" stylesheets="@style.css" text="Кол-во по редкости" />
+                <ComboBox fx:id="rarityBox" prefWidth="100"/>
             </items>
         </ToolBar>
     </children>

@@ -69,7 +69,7 @@ public class ServerMain {
         com.getCommandList().put("filter_by_is_alive (true/false)", new FilterByIsAlive(cl,cm));
         com.getCommandList().put("save", new Save(cl,cm)); //remove and bind to exit
         com.getCommandList().put("filter_by_less_than_number_of_dug_counter (integer_value)", new FilterLessDC(cl,cm));
-        com.getCommandList().put("count_by_researcher_type (EXPEDITIONIST/FOLK_RESEARCHER)", new CountByRarity(cl,cm));
+        com.getCommandList().put("count_by_rarity {THREE_STAR/FOUR_STAR/FIVE_STAR}", new CountByRarity(cl,cm));
         com.getCommandList().put("remove_lower (double_value)", new RemoveLower(cl,cm));
 //        com.getCommandList().put("insert (positive_integer_value)", new Insert(cl,cm,re));
         com.getCommandList().put("execute_script (file_name)", new ExecuteScript(cl,cm));
@@ -79,8 +79,8 @@ public class ServerMain {
 
         logger.info("Ready for IO");
         Human h = new Human("cock", Status.SCIENTIST, Color.EXPEDITIONIST, true,1,1,1,1,1, Rarity.THREE_STAR);
-        Human h1 = new Human("balls", Status.SCIENTIST, Color.EXPEDITIONIST, true,1,1,1,1,0, Rarity.FOUR_STAR);
-        Human h2 = new Human("cum", Status.SCIENTIST, Color.EXPEDITIONIST, true,1,1,1,1,1, Rarity.FIVE_STAR);
+        Human h1 = new Human("balls", Status.SCIENTIST, Color.EXPEDITIONIST, true,2,1,1,1,0, Rarity.FOUR_STAR);
+        Human h2 = new Human("cum", Status.SCIENTIST, Color.EXPEDITIONIST, true,3,1,1,1,1, Rarity.FIVE_STAR);
 
         ArrayList<Human> lp = new ArrayList<>();
         lp.add(h);
