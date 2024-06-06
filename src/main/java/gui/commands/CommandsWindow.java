@@ -1,5 +1,6 @@
 package gui.commands;
 
+import gui.collections.CollectionWindowController;
 import gui.collections.CollectionsWindow;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -22,7 +23,6 @@ public class CommandsWindow {
             URL fxmlLocation = CommandsWindow.class.getResource("commandsWindow.fxml");
             FXMLLoader loader = new FXMLLoader(fxmlLocation);
             Parent root = loader.load();
-
 //            controller = loader.getController();
             setup();
 
