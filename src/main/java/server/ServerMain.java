@@ -36,9 +36,10 @@ public class ServerMain {
             try{
                 System.out.println("enter the port: ");
                 port = Integer.parseInt(scan.nextLine());
+//                port = 6969;
                 ssc.socket().bind(new InetSocketAddress("localhost", port));
                 ssc.register(selector, SelectionKey.OP_ACCEPT);
-                logger.info("Server started on port "+port);
+                logger.info("Server started on port " + port);
                 break;
             } catch (NumberFormatException e){
                 System.out.println("Enter a proper integer value.");

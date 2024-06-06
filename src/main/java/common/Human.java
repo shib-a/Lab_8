@@ -259,7 +259,7 @@ public class Human implements Comparable<Human> {
 
     public Status getStatus() {
         return status;
-    }
+    }  
     public void setRandomCords(){
         this.coordinates.x = new Random().nextDouble(500);
         this.coordinates.y = new Random().nextDouble(500);

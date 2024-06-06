@@ -181,6 +181,13 @@ public class CollectionWindowController {
         }
     }
     @FXML
+    private void onRefreshButtonClick(){
+        Feedbacker fb = re.executeCommand(new String[]{"show",""});
+        var temp = data;
+        data.removeAll(temp);
+        handle(fb.getMessage());
+    }
+    @FXML
     private void onCommandsButtonClick(){
         CommandsWindow commandsWindow = new CommandsWindow();
         commandsWindow.show();
