@@ -53,7 +53,6 @@ public class RegisterWindowController {
     private int currentLocaleIndex;
     public void setLocale(int index) {
         this.currentLocaleIndex = index;
-        AlertUtility.infoAlert(String.valueOf(currentLocaleIndex));
         currentBundle = ResourceBundle.getBundle("MessagesBundle", supportedLocales.get(currentLocaleIndex));
         updateUI();
     }
@@ -85,7 +84,7 @@ public class RegisterWindowController {
         String password1 = passwordField.getText();
         String password2 = passwordAgainField.getText();
         if(!password1.equals(password2)){
-            AlertUtility.infoAlert("Passwords don't match. Try entering password again.");
+            AlertUtility.errorAlert("Passwords don't match. Try entering password again.");
             passwordField.clear();
             passwordAgainField.clear();
             return;
@@ -97,7 +96,7 @@ public class RegisterWindowController {
             stage.close();
             collectionsWindow.show();
         } else {
-            AlertUtility.infoAlert("Account with this username already exists.");
+            AlertUtility.errorAlert("Account with this username already exists.");
             passwordField.clear();
             passwordAgainField.clear();
         }

@@ -9,6 +9,8 @@ import gui.collections.CollectionsWindow;
 import gui.register.RegisterWindow;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
 
@@ -100,10 +102,10 @@ public class LoginWindowController {
             CollectionsWindow collectionsWindow = new CollectionsWindow(currentLocaleIndex);
             collectionsWindow.show();
         } else if (fb.getMessage().equals("Wrong password. Try again.")){
-            AlertUtility.infoAlert("Wrong password.");
+            AlertUtility.errorAlert("Wrong password.");
             passwordField.clear();
         } else {
-            AlertUtility.infoAlert("No such user.");
+            AlertUtility.errorAlert("No such user.");
             usernameField.clear();
             passwordField.clear();
         }

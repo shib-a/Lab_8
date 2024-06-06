@@ -55,6 +55,8 @@ public class CollectionWindowController {
     private TableColumn<Human,String> coordYColumn;
     private ObservableList<Human> data;
     @FXML
+    private ComboBox<String> comboBox;
+    @FXML
     private PasswordField passwordField;
     RuntimeEnv re = ClientMain.getRe();
     private final List<Locale> supportedLocales = Arrays.asList(
@@ -66,6 +68,8 @@ public class CollectionWindowController {
     private int currentLocaleIndex = 0;
     @FXML
     private void initialize(){
+        comboBox.getItems().addAll("id", "name", "status", "color", "isAlive", "stats", "owner", "rarity", "coord X", "coord Y");
+
         data = FXCollections.observableArrayList();
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -80,6 +84,18 @@ public class CollectionWindowController {
         table.setItems(data);
         handle(re.executeCommand(new String[]{"show",""}).getMessage());
         logger.info(re.getUser().getName());
+
+
+        idColumn.setPrefWidth(50);
+        nameColumn.setPrefWidth(80);
+        statusColumn.setPrefWidth(105);
+        colorColumn.setPrefWidth(95);
+        isAliveColumn.setPrefWidth(70);
+        statsColumn.setPrefWidth(100);
+        ownerColumn.setPrefWidth(90);
+        rarityColumn.setPrefWidth(80);
+        coordXColumn.setPrefWidth(80);
+        coordYColumn.setPrefWidth(80);
     }
     @FXML
     private void onCreateButtonClick(){
