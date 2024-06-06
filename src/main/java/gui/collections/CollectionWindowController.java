@@ -11,6 +11,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -19,8 +20,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.logging.Logger;
-
-import static gui.AlertUtility.errorAlert;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class CollectionWindowController {
     Logger logger = Logger.getLogger("cwc");
@@ -38,6 +39,8 @@ public class CollectionWindowController {
     private Label filterByLabel;
     @FXML
     private Label catsLabel;
+    @FXML
+    private TextField filterByText;
     @FXML
     private TableView<Human> table;
     @FXML
@@ -190,6 +193,18 @@ public class CollectionWindowController {
         rarityColumn.setPrefWidth(80);
         coordXColumn.setPrefWidth(80);
         coordYColumn.setPrefWidth(80);
+
+        filterByText.setOnKeyPressed( event -> {
+            if( event.getCode() == KeyCode.ENTER ) {
+                logger.info("pressed");
+                var arg = filterByText.getText();
+                var how = comboBox.getValue();
+                if(arg!=null && !arg.isEmpty() && how!=null) {
+                    logger.info(arg);
+                    filter(how, arg);
+                }
+            }
+        } );
     }
     @FXML
     private void onCreateButtonClick(){
@@ -318,12 +333,25 @@ public class CollectionWindowController {
             return;
         }
         if (fb.getIsSuccessful()){
-//            Feedbacker fbc = re.executeCommand(new String[]{"show", ""});
             AlertUtility.infoAlert(fb.getMessage());
         } else if (fb.getMessage().equals("No permission")){
             AlertUtility.errorAlert("Not enough rights for command execution");
         } else {
             AlertUtility.errorAlert("No element with such rarity");
         }
+    }
+    public void filter(String how, String arg){
+        Stream<Human> s = data.stream();
+        switch (how){
+            case "id": {
+                try {
+                    int parg = Integer.parseInt(arg);
+                    s = s.filter(el -> el.getId() == parg);
+                    break;
+                } catch (NumberFormatException e){AlertUtility.errorAlert("Wrong argument usage");}
+            }
+//            case ""
+        }
+        table.setItems(FXCollections.observableArrayList(s.collect(Collectors.toList())));
     }
 }
