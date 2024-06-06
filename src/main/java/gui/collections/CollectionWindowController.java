@@ -231,5 +231,18 @@ public class CollectionWindowController {
         updateUI();
     }
 
+//    private static void onUpdateButtonClick(){
+//        RuntimeEnv re = ClientMain.getRe();
+////        logger.info("clicked");
+//        String arg = updateField.getText();
+//        Feedbacker fb = re.executeCommand(new String[]{"update",arg});
+//        if (fb==null){
+//
+//            return;
+//        }
+//        if (fb.getIsSuccessful()){
+//
+//        }
+//    }
 
 }
