@@ -1,7 +1,5 @@
 package gui.collections;
 
-import gui.commands.CommandsWindowController;
-import gui.register.RegisterWindowController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;

@@ -12,8 +12,6 @@ import java.lang.module.InvalidModuleDescriptorException;
 public class Main extends Application {
     @Override
     public void start(Stage stage) {
-//            CollectionsWindow collectionsWindow = new CollectionsWindow();
-//            collectionsWindow.show();
         startBackgroundProcess();
         LoginWindow loginWindow = new LoginWindow(stage);
         loginWindow.show();

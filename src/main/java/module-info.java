@@ -12,11 +12,9 @@ module main.gui {
     opens gui to javafx.fxml;
     opens gui.login to javafx.fxml;
     opens gui.collections to javafx.fxml;
-    opens gui.commands to javafx.fxml;
     opens gui.register to javafx.fxml;
     opens gui.visualization to javafx.fxml;
 
-    exports gui.commands;
     exports gui;
     exports gui.collections;
     exports gui.login;
