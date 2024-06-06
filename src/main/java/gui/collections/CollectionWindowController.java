@@ -10,12 +10,10 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.logging.Logger;
 
 public class CollectionWindowController {
@@ -79,6 +77,8 @@ public class CollectionWindowController {
     private ObservableList<Human> data;
     @FXML
     private ComboBox<String> comboBox;
+    private Map<String, Color> clientColorMap = new HashMap<>();
+    private Map<Long, String> ownershipMap;
     RuntimeEnv re = ClientMain.getRe();
     private final List<Locale> supportedLocales = Arrays.asList(
             new Locale("ru"),
@@ -177,7 +177,27 @@ public class CollectionWindowController {
         rarityColumn.setPrefWidth(80);
         coordXColumn.setPrefWidth(80);
         coordYColumn.setPrefWidth(80);
+
+//        loadOwnershipMap();
+//        table.setRowFactory(tv -> new TableRow<Human>() {
+//            @Override
+//            public void updateItem(Human cat, boolean empty) {
+//                super.updateItem(cat, empty);
+//                if (cat == null) {
+//                    setStyle("");
+//                } else {
+//                    Color color = clientColorMap.get(ownershipMap.get(cat.getId()));
+//                    String rgb = String.format("#%02X%02X%02X",
+//                            (int)(color.getRed() * 255),
+//                            (int)(color.getGreen() * 255),
+//                            (int)(color.getBlue() * 255));
+//                    setStyle("-fx-border-color: " + rgb + ";");
+//                }
+//            }
+//        });
+//
     }
+
     @FXML
     private void onCreateButtonClick(){
         logger.info("clicked");
@@ -218,8 +238,9 @@ public class CollectionWindowController {
 
     @FXML
     private void onVisualisationButtonClick(){
-        VisualizationWindow visualizationWindow = new VisualizationWindow();
+        VisualizationWindow visualizationWindow = new VisualizationWindow(data);
         visualizationWindow.show();
+//        visualizationWindow.loadColorMap(clientColorMap, ownershipMap);
     }
     @FXML
     private void onClearButtonClick(){

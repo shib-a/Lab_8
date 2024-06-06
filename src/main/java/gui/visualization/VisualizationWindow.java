@@ -1,5 +1,7 @@
 package gui.visualization;
 
+import common.Human;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -14,12 +16,12 @@ public class VisualizationWindow {
     private Stage stage;
     private VisualizationWindowController controller;
 
-    public VisualizationWindow() {
+    public VisualizationWindow(ObservableList<Human> cats) {
         try {
             stage = new Stage();
             URL fxmlLocation = VisualizationWindow.class.getResource("visualizationWindow.fxml");
             FXMLLoader loader = new FXMLLoader(fxmlLocation);
-            loader.setController(new VisualizationWindowController());
+            loader.setController(new VisualizationWindowController(cats));
             Parent root = loader.load();
 
             controller = loader.getController();
