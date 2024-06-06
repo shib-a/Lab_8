@@ -32,6 +32,8 @@ public class CollectionWindowController {
     @FXML
     private Button commandsButton;
     @FXML
+    private Button refreshButton;
+    @FXML
     private TableView<Human> table;
     @FXML
     private TableColumn<Human,String> idColumn;
@@ -121,6 +123,13 @@ public class CollectionWindowController {
         } catch (Exception e) {
 //            errorAlert("Server is dead :(");
         }
+    }
+    @FXML
+    private void onRefreshButtonClick(){
+        Feedbacker fb = re.executeCommand(new String[]{"show",""});
+        var temp = data;
+        data.removeAll(temp);
+        handle(fb.getMessage());
     }
     @FXML
     private void onCommandsButtonClick(){

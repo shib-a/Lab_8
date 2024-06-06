@@ -31,10 +31,11 @@ public class ClientMain {
             try {
                 while (true){
                     try{
-                        System.out.println("enter the server port: ");
-                        var str = scan.nextLine();
-                        if (str.equals("exit")){System.exit(0);}
-                        Connector.port = Integer.parseInt(str);
+//                        System.out.println("enter the server port: ");
+//                        var str = scan.nextLine();
+//                        if (str.equals("exit")){System.exit(0);}
+//                        Connector.port = Integer.parseInt(str);
+                        Connector.port = 6969;
                         Connector.adr =  new InetSocketAddress("localhost",Connector.port);
                         socketChannel = Connector.getSC();
                         socketChannel.connect(Connector.adr);
