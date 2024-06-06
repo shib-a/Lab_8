@@ -4,8 +4,6 @@ import client.ClientMain;
 import client.commands.RuntimeEnv;
 import common.Feedbacker;
 import common.Human;
-import gui.AlertUtility;
-import gui.commands.CommandsWindow;
 import gui.visualization.VisualizationWindow;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -19,8 +17,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.logging.Logger;
-
-import static gui.AlertUtility.errorAlert;
 
 public class CollectionWindowController {
     Logger logger = Logger.getLogger("cwc");
@@ -60,10 +56,29 @@ public class CollectionWindowController {
     private TableColumn<Human,String> coordXColumn;
     @FXML
     private TableColumn<Human,String> coordYColumn;
+    private ResourceBundle currentBundle;
+    @FXML
+    private Button updateButton;
+    @FXML
+    private Button removeButton;
+    @FXML
+    private Button removeLowerButton;
+    @FXML
+    private Button countRarityButton;
+    @FXML
+    private Label comsLabel;
+    @FXML
+    private ToolBar commandsToolBar;
+
+    private Stage stage;
+
+    @FXML
+    private TextField updateField;
+    @FXML
+    private TextField removeField;
     private ObservableList<Human> data;
     @FXML
     private ComboBox<String> comboBox;
-    private ResourceBundle currentBundle;
     RuntimeEnv re = ClientMain.getRe();
     private final List<Locale> supportedLocales = Arrays.asList(
             new Locale("ru"),
@@ -122,11 +137,19 @@ public class CollectionWindowController {
         createButton.setText(currentBundle.getString("createButton"));
         visualizeButton.setText(currentBundle.getString("visualizeButton"));
 
+        updateButton.setText(currentBundle.getString("updateButton"));
+        removeLowerButton.setText(currentBundle.getString("removeLowerButton"));
+        removeButton.setText(currentBundle.getString("removeButton"));
+        countRarityButton.setText(currentBundle.getString("countRarityButton"));
+        updateField.setPromptText(currentBundle.getString("id"));
+        removeField.setPromptText(currentBundle.getString("id"));
+
     }
 
     @FXML
     private void initialize(){
         comboBox.getItems().addAll("id", "name", "status", "color", "isAlive", "stats", "owner", "rarity", "coord X", "coord Y");
+        commandsToolBar.setVisible(false);
 
         data = FXCollections.observableArrayList();
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -188,9 +211,9 @@ public class CollectionWindowController {
         handle(fb.getMessage());
     }
     @FXML
-    private void onCommandsButtonClick(){
-        CommandsWindow commandsWindow = new CommandsWindow();
-        commandsWindow.show();
+    protected void onCommandsButtonClick() {
+        commandsToolBar.setVisible(!commandsToolBar.isVisible());
+
     }
 
     @FXML
@@ -222,5 +245,18 @@ public class CollectionWindowController {
         updateUI();
     }
 
+    @FXML
+    private void onUpdateButtonClick(){
+        RuntimeEnv re = ClientMain.getRe();
+        String arg = updateField.getText();
+        Feedbacker fb = re.executeCommand(new String[]{"update",arg});
+        if (fb==null){
+
+            return;
+        }
+        if (fb.getIsSuccessful()){
+
+        }
+    }
 
 }
