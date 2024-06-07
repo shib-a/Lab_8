@@ -5,6 +5,8 @@ import client.commands.RuntimeEnv;
 import common.Feedbacker;
 import common.Human;
 import gui.info.InfoWindow;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.scene.SnapshotParameters;
@@ -97,8 +99,6 @@ public class VisualizationWindowController {
 
         for (Human human : cats) {
             Color color = ownershipMap.get(human.getId());
-//            Color color = colorMap.get(Color.BLUE);
-//            Color color = new Color(0,0,0,1);
             double size = 60;
 
 
@@ -107,21 +107,21 @@ public class VisualizationWindowController {
 
             gc.setStroke(color);
             gc.setLineWidth(2); // Adjust this to make your circle's border thicker or thinner
-            Image cityIcon = getCityIcon();
+//            Image сatIcon = getCatIcon();
 
-            ImageView imageView = new ImageView(cityIcon);
+            ImageView imageView = new ImageView(getCatIcon());
             imageView.setPreserveRatio(true);
             imageView.setFitWidth(size);
             imageView.setFitHeight(size);
             SnapshotParameters sp = new SnapshotParameters();
             sp.setFill(Color.TRANSPARENT);
-            Image scaledCityIcon = imageView.snapshot(sp, null);
+            Image scaledCatIcon = imageView.snapshot(sp, null);
 
-            PixelReader pr = scaledCityIcon.getPixelReader();
+            PixelReader pr = scaledCatIcon.getPixelReader();
             WritableImage coloredIcon = new WritableImage((int) size, (int) size);
             PixelWriter pw = coloredIcon.getPixelWriter();
-            for (int y = 0; y < scaledCityIcon.getHeight(); y++) {
-                for (int x = 0; x < scaledCityIcon.getWidth(); x++) {
+            for (int y = 0; y < scaledCatIcon.getHeight(); y++) {
+                for (int x = 0; x < scaledCatIcon.getWidth(); x++) {
                     Color pixelColor = pr.getColor(x, y);
                     if (pixelColor.getOpacity() > 0) {
                         pw.setColor(x, y, color);
@@ -130,6 +130,28 @@ public class VisualizationWindowController {
                     }
                 }
             }
+
+//            Image image = new Image("your_image_path.png"); // Укажите путь к вашему изображению
+//
+//             Создание представления изображения
+//            ImageView imageView = new ImageView(image);
+
+            // Создание таймлайна для мигания
+            Timeline timeline = new Timeline(
+                    new KeyFrame(Duration.seconds(0.5), e -> imageView.setImage(null)),
+                    new KeyFrame(Duration.seconds(1), e -> imageView.setImage(getCatIcon()))
+            );
+            timeline.setCycleCount(Timeline.INDEFINITE);
+            timeline.play();
+//
+//            // Размещение изображения на макете
+//            StackPane root = new StackPane();
+            root.getChildren().add(imageView);
+
+//            // Создание сцены и добавление на неё макета
+//            Scene scene = new Scene(root, 400, 400, Color.WHITE);
+
+
             gc.drawImage(coloredIcon, canvasX - size / 2, canvasY - size / 2);
 //            gc.drawImage(coloredIcon, 0, 0);
 //            Button ct = new Button();
@@ -147,7 +169,7 @@ public class VisualizationWindowController {
 //            transition.play();
         }
     }
-    private Image getCityIcon() {
+    private Image getCatIcon() {
         return new Image(Objects.requireNonNull(VisualizationWindowController.class.getResource("cat.png")).toExternalForm());
     }
 

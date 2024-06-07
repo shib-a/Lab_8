@@ -35,14 +35,6 @@ public class VisualizationWindow {
         }
     }
 
-//    public void loadCollection(TreeSet<City> cities) {
-//        controller.setCities(cities);
-//    }
-//
-//    public void loadColorMap(Map<String, Color> colorMap, Map<Long, String> ownershipMap) {
-//        controller.loadColorMap(colorMap, ownershipMap);
-//    }
-
     public void show() {
         stage.show();
     }
