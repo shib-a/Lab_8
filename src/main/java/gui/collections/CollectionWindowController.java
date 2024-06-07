@@ -61,7 +61,7 @@ public class CollectionWindowController {
     private TableColumn<Human,String> coordXColumn;
     @FXML
     private TableColumn<Human,String> coordYColumn;
-    private ResourceBundle currentBundle;
+    public ResourceBundle currentBundle;
     @FXML
     private Button updateButton;
     @FXML
@@ -74,8 +74,6 @@ public class CollectionWindowController {
     private Label comsLabel;
     @FXML
     private ToolBar commandsToolBar;
-
-    private Stage stage;
 
     @FXML
     private TextField updateField;
@@ -91,8 +89,6 @@ public class CollectionWindowController {
     @FXML
     private ComboBox<String> rarityBox;
 
-    private Map<String, Color> clientColorMap = new HashMap<>();
-    private Map<Long, String> ownershipMap;
     RuntimeEnv re = ClientMain.getRe();
     private final List<Locale> supportedLocales = Arrays.asList(
             new Locale("ru"),
@@ -217,7 +213,8 @@ public class CollectionWindowController {
             if( event.getCode() == KeyCode.ENTER ) {
                 logger.info("pressed");
                 var arg = filterByText.getText();
-                var how = comboBox.getValue();
+                var how = comboBox.getSelectionModel().getSelectedItem();
+//                how.stream().forEach(e->logger.info(e));
                 if(arg!=null && !arg.isEmpty() && how!=null) {
                     logger.info(arg);
                     filter(how, arg);
@@ -264,7 +261,7 @@ public class CollectionWindowController {
 
     @FXML
     private void onVisualisationButtonClick(){
-        VisualizationWindow visualizationWindow = new VisualizationWindow(data);
+        VisualizationWindow visualizationWindow = new VisualizationWindow();
         visualizationWindow.show();
     }
     @FXML
@@ -360,19 +357,57 @@ public class CollectionWindowController {
         } else {
             AlertUtility.errorAlert("No element with such rarity");
         }
+
     }
     public void filter(String how, String arg){
         Stream<Human> s = data.stream();
-        switch (how){
-            case "id": {
-                try {
-                    int parg = Integer.parseInt(arg);
-                    s = s.filter(el -> el.getId() == parg);
-                    break;
-                } catch (NumberFormatException e){AlertUtility.errorAlert("Wrong argument usage");}
+        String id = currentBundle.getString("id");
+        String name = currentBundle.getString("name");
+        String coordX = currentBundle.getString("coordX");
+        String coordY = currentBundle.getString("coordY");
+        String status = currentBundle.getString("status");
+        String color = currentBundle.getString("color");
+        String isAlive = currentBundle.getString("isAlive");
+        String stats = currentBundle.getString("stats");
+        String owner = currentBundle.getString("owner");
+        String rarity = currentBundle.getString("rarity");
+        logger.info(how);
+        if(how.equals(id)) {
+            try {
+                int parg = Integer.parseInt(arg);
+                s = s.filter(el -> el.getId() == parg);
+            } catch (NumberFormatException e) {
+                AlertUtility.errorAlert("Wrong argument usage");
             }
-//            case ""
+        } else if(how.equals(name)){
+            s = s.filter(el -> el.getName().equals(name));
+        } else if (how.equals(coordX)){
+            try {
+                double parg = Double.parseDouble(arg);
+                s = s.filter(el -> el.getCoordX() == parg);
+            }catch (NumberFormatException e){AlertUtility.errorAlert("Wrong argument usage");}
+        }else if (how.equals(coordY)){
+            try {
+                double parg = Double.parseDouble(arg);
+                s = s.filter(el -> el.getCoordY() == parg);
+            }catch (NumberFormatException e){AlertUtility.errorAlert("Wrong argument usage");}
+        }else if (how.equals(status)){
+            s = s.filter(el -> el.getStatus().name().equals(arg));
+        }else if(how.equals(color)){
+            s = s.filter(el -> el.getColor().equals(arg));
+        }else if (how.equals(isAlive)){
+            try{
+                boolean parg = Boolean.parseBoolean(arg);
+                s = s.filter(el -> el.getIsAlive()==parg);
+            }catch (IllegalArgumentException e){AlertUtility.errorAlert("Wrong argument usage");}
+        }else if (how.equals(stats)){
+            s = s.filter(el -> el.getStats().equals(arg));
+        }else if (how.equals(owner)){
+            s=s.filter(el -> el.getOwner().equals(arg));
+        }else if (how.equals(rarity)){
+            s = s.filter(el -> el.getRarity().name().equals(arg));
         }
         table.setItems(FXCollections.observableArrayList(s.collect(Collectors.toList())));
+        table.refresh();
     }
 }

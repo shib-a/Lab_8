@@ -25,7 +25,7 @@ public class CollectionsWindow {
             Parent root = loader.load();
 
            controller = loader.getController();
-            setup();
+           setup();
 
             Scene scene = new Scene(root);
             stage.setScene(scene);

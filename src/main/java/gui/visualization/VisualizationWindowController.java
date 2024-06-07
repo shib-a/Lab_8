@@ -1,7 +1,9 @@
 package gui.visualization;
 
+import client.ClientMain;
+import client.commands.RuntimeEnv;
+import common.Feedbacker;
 import common.Human;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
@@ -10,25 +12,42 @@ import javafx.scene.image.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.logging.Logger;
 
 
 public class VisualizationWindowController {
     @FXML
     private Canvas canvas;
-    private ObservableList<Human> cats;
+//    private ObservableList<Human> cats;
     private Map<String, Color> colorMap = new HashMap<>();
-    private Map<Long, String> ownershipMap;
+    private Map<Integer, Color> ownershipMap;
+    private ArrayList<Human> cats;
+    private Logger logger = Logger.getLogger("vwc");
 
-    public VisualizationWindowController(ObservableList<Human> cats) {
+    public VisualizationWindowController() {
+        RuntimeEnv re = ClientMain.getRe();
+        Feedbacker fb = re.executeCommand(new String[]{"show",""});
+        ArrayList<Human> cats = new ArrayList<>();
+        Map<Integer, Color> map = new HashMap<>();
+        String[] hs = fb.getMessage().split("\n");
+        for (var el: hs){
+            Human h = Human.fromCsvStr(el);
+            cats.add(h);
+            map.put(h.getId(), h.getColor());
+        }
         this.cats = cats;
+        this.ownershipMap=map;
+//        cats.stream().forEach(e -> logger.info(e.getName()));
     }
     @FXML
     public void initialize() {
         canvas.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> catClicked(event.getX(), event.getY()));
         drawMesh();
+        drawCats();
     }
     private void drawMesh() {
         GraphicsContext gc = canvas.getGraphicsContext2D();
@@ -44,6 +63,7 @@ public class VisualizationWindowController {
             gc.strokeLine(0, height - y, width, height - y);
         }
     }
+    public void setCollection(ArrayList<Human> col){this.cats=col;}
 
     private void catClicked(double x, double y) {
         Human clickedCat = null;
@@ -60,19 +80,22 @@ public class VisualizationWindowController {
         }
     }
 
-    private void drawCities() {
+    private void drawCats() {
         GraphicsContext gc = canvas.getGraphicsContext2D();
 
         for (Human human : cats) {
-            Color color = colorMap.getOrDefault(ownershipMap.get(human.getId()), Color.BLACK);
-            double size =20;
+            Color color = ownershipMap.get(human.getId());
+//            Color color = colorMap.get(Color.BLUE);
+//            Color color = new Color(0,0,0,1);
+            double size = 60;
+
 
             double canvasX = (double) human.getCoordinates().getX() / 1000 * canvas.getWidth();
             double canvasY = (1 - human.getCoordinates().getY() / 1000) * canvas.getHeight();
 
             gc.setStroke(color);
             gc.setLineWidth(2); // Adjust this to make your circle's border thicker or thinner
-            gc.strokeOval(canvasX - size / 2, canvasY - size / 2, size, size);
+//            gc.strokeOval(canvasX - size / 2, canvasY - size / 2, size, size);
 
             // Draw the icon inside the circle. This assumes that you have a method getCityIcon() that returns an Image object representing the city icon.
             // You'll need to adjust this code to fit your actual method for getting the city icon.
@@ -107,6 +130,7 @@ public class VisualizationWindowController {
         }
     }
     private Image getCityIcon() {
-        return new Image(Objects.requireNonNull(getClass().getResource("/icons/language_cat.png")).toExternalForm());
+        return new Image(Objects.requireNonNull(VisualizationWindowController.class.getResource("cat.png")).toExternalForm());
     }
+
 }

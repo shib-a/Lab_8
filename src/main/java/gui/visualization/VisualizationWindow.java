@@ -16,12 +16,12 @@ public class VisualizationWindow {
     private Stage stage;
     private VisualizationWindowController controller;
 
-    public VisualizationWindow(ObservableList<Human> cats) {
+    public VisualizationWindow() {
         try {
             stage = new Stage();
             URL fxmlLocation = VisualizationWindow.class.getResource("visualizationWindow.fxml");
             FXMLLoader loader = new FXMLLoader(fxmlLocation);
-            loader.setController(new VisualizationWindowController(cats));
+//            loader.setController(new VisualizationWindowController());
             Parent root = loader.load();
 
             controller = loader.getController();

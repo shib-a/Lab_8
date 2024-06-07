@@ -1,6 +1,7 @@
 package server;
 
 import common.*;
+import javafx.scene.paint.Color;
 import server.cls.commands.*;
 import server.managers.CollectionLoaderSaver;
 import server.managers.CollectionManager;
@@ -78,9 +79,9 @@ public class ServerMain {
         com.getCommandList().put("register {user} {password}", new Register());
 
         logger.info("Ready for IO");
-        Human h = new Human("cock", Status.SCIENTIST, Color.EXPEDITIONIST, true,1,1,1,1,1, Rarity.THREE_STAR);
-        Human h1 = new Human("balls", Status.SCIENTIST, Color.EXPEDITIONIST, true,2,1,1,1,0, Rarity.FOUR_STAR);
-        Human h2 = new Human("cum", Status.SCIENTIST, Color.EXPEDITIONIST, true,3,1,1,1,1, Rarity.FIVE_STAR);
+        Human h = new Human("cock", Status.SCIENTIST, javafx.scene.paint.Color.ORANGE, true,1,1,1,1,1, Rarity.THREE_STAR);
+        Human h1 = new Human("balls", Status.SCIENTIST, javafx.scene.paint.Color.GREY, true,2,1,1,1,0, Rarity.FOUR_STAR);
+        Human h2 = new Human("cum", Status.SCIENTIST, Color.WHITE, true,3,1,1,1,1, Rarity.FIVE_STAR);
 
         ArrayList<Human> lp = new ArrayList<>();
         lp.add(h);

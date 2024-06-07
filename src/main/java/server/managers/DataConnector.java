@@ -1,6 +1,7 @@
 package server.managers;
 
 import common.*;
+import javafx.scene.paint.Color;
 import server.CustomException;
 
 import java.sql.*;
@@ -62,7 +63,7 @@ public class DataConnector {
             ps.setInt(1,id);
             ps.setString(2,name);
             ps.setString(3,ptt.name());
-            ps.setString(4, rt.name());
+            ps.setString(4, rt.toString());
             ps.setString(5,stats);
             ps.setString(6, String.valueOf(isAlive));
             ps.setString(7,rarity.name());

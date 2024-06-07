@@ -1,6 +1,7 @@
 package common;
 import client.exceptions.EmptyInventoryException;
 import client.interfaces.ReadMarkedField;
+import javafx.scene.paint.Color;
 
 import java.util.Arrays;
 import java.util.Random;
@@ -14,9 +15,12 @@ public class Human implements Comparable<Human> {
     @ReadMarkedField
     public final String name;
     protected final Status status;
-    @ReadMarkedField
-    protected final Color color;
+//    @ReadMarkedField
+//    protected final Color color;
+
+    protected final javafx.scene.paint.Color color;
     public boolean isAlive;
+//    public javafx.scene.paint.Color c;
     @ReadMarkedField
     public Item[] inventory = new Item[]{null, null, null, null};
     private double[] mas = new double[5];
@@ -25,13 +29,13 @@ public class Human implements Comparable<Human> {
     public Coordinates coordinates = new Coordinates((double) 0, (double) 0); //разделить в два столбца
     @ReadMarkedField
     private int dugCounter = 0;
-    public Human(String name, Status status, Color color, boolean isAlive){
-        this.name = name;
-        this.status = status;
-        this.color = color;
-        this.isAlive = isAlive;
-    }
-    public Human(int id, String name, Status status, Color color, boolean isAlive, double hp, double intel, double lck, double dmg, double san, Coordinates cords, String owner, Rarity rarity){
+//    public Human(String name, Status status, Color color, boolean isAlive){
+//        this.name = name;
+//        this.status = status;
+//        this.color = color;
+//        this.isAlive = isAlive;
+//    }
+    public Human(int id, String name, Status status, javafx.scene.paint.Color color, boolean isAlive, double hp, double intel, double lck, double dmg, double san, Coordinates cords, String owner, Rarity rarity){
         this.id=id;
         this.name = name;
         this.status = status;
@@ -47,7 +51,7 @@ public class Human implements Comparable<Human> {
         this.rarity=rarity;
         if(this.getStat(Stat.HP)<=0){isAlive=false;} else{isAlive=true;}
     }
-    public Human(String name, Status status, Color color, boolean isAlive, double hp, double intel, double lck, double dmg, double san, Rarity rarity){
+    public Human(String name, Status status, javafx.scene.paint.Color color, boolean isAlive, double hp, double intel, double lck, double dmg, double san, Rarity rarity){
         this.name = name;
         this.status = status;
         this.color = color;
@@ -60,7 +64,7 @@ public class Human implements Comparable<Human> {
         this.rarity=rarity;
         if(this.getStat(Stat.HP)<=0){isAlive=false;} else{isAlive=true;}
     }
-    public Human(int id, String name, Status status, Color color, boolean isAlive, double hp, double intel, double lck, double dmg, double san, int dc, String owner, Item[] inv){
+    public Human(int id, String name, Status status, javafx.scene.paint.Color color, boolean isAlive, double hp, double intel, double lck, double dmg, double san, int dc, String owner, Item[] inv){
         this.id=id;
         this.name = name;
         this.status = status;
@@ -106,7 +110,7 @@ public class Human implements Comparable<Human> {
     public String getName(){
         return name;
     }
-    public Color getColor() {
+    public javafx.scene.paint.Color getColor() {
         return color;
     }
     public boolean getIsAlive(){
@@ -219,7 +223,7 @@ public class Human implements Comparable<Human> {
             try{
                 if (splitStr[3].equals("null")){
                     color = null;
-                } else {color = Color.valueOf(splitStr[3]);}
+                } else {color = javafx.scene.paint.Color.valueOf(splitStr[3]);}
             } catch (IllegalArgumentException e){color = null;}
             try{
                 if (!splitStr[4].equals(null)){isal = Boolean.valueOf(splitStr[4]);} else {isal = null;}
@@ -273,4 +277,8 @@ public class Human implements Comparable<Human> {
     public Double getCoordY(){
         return coordinates.y;
     }
+
+//    public javafx.scene.paint.Color getC() {
+//        return c;
+//    }
 }
