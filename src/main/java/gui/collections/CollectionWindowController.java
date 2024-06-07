@@ -215,7 +215,7 @@ public class CollectionWindowController {
                 var arg = filterByText.getText();
                 var how = comboBox.getSelectionModel().getSelectedItem();
 //                how.stream().forEach(e->logger.info(e));
-                if(arg!=null && !arg.isEmpty() && how!=null) {
+                if(how!=null) {
                     logger.info(arg);
                     filter(how, arg);
                 }
@@ -372,6 +372,7 @@ public class CollectionWindowController {
         String owner = currentBundle.getString("owner");
         String rarity = currentBundle.getString("rarity");
         logger.info(how);
+        if(arg.isEmpty() || arg.isBlank() || arg==null){table.setItems(data);table.refresh();return;}
         if(how.equals(id)) {
             try {
                 int parg = Integer.parseInt(arg);
@@ -380,7 +381,7 @@ public class CollectionWindowController {
                 AlertUtility.errorAlert("Wrong argument usage");
             }
         } else if(how.equals(name)){
-            s = s.filter(el -> el.getName().equals(name));
+            s = s.filter(el -> el.getName().equals(arg));
         } else if (how.equals(coordX)){
             try {
                 double parg = Double.parseDouble(arg);
@@ -394,7 +395,7 @@ public class CollectionWindowController {
         }else if (how.equals(status)){
             s = s.filter(el -> el.getStatus().name().equals(arg));
         }else if(how.equals(color)){
-            s = s.filter(el -> el.getColor().equals(arg));
+            s = s.filter(el -> el.getColor().toString().equals(arg));
         }else if (how.equals(isAlive)){
             try{
                 boolean parg = Boolean.parseBoolean(arg);

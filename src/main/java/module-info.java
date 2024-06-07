@@ -14,10 +14,12 @@ module main.gui {
     opens gui.collections to javafx.fxml;
     opens gui.register to javafx.fxml;
     opens gui.visualization to javafx.fxml;
+    opens gui.info to javafx.fxml;
 
     exports gui;
     exports gui.collections;
     exports gui.login;
     exports gui.register;
     exports gui.visualization;
+    exports gui.info;
 }

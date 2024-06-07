@@ -4,13 +4,19 @@ import client.ClientMain;
 import client.commands.RuntimeEnv;
 import common.Feedbacker;
 import common.Human;
+import gui.info.InfoWindow;
+import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
 import javafx.scene.image.*;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Shape;
+import javafx.util.Duration;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,6 +31,7 @@ public class VisualizationWindowController {
 //    private ObservableList<Human> cats;
     private Map<String, Color> colorMap = new HashMap<>();
     private Map<Integer, Color> ownershipMap;
+    private StackPane root = new StackPane();
     private ArrayList<Human> cats;
     private Logger logger = Logger.getLogger("vwc");
 
@@ -78,6 +85,11 @@ public class VisualizationWindowController {
                 break;
             }
         }
+        if (clickedCat!=null){
+            InfoWindow infoWindow = new InfoWindow();
+            infoWindow.show();
+            infoWindow.getController().setCat(clickedCat);
+        }
     }
 
     private void drawCats() {
@@ -95,26 +107,18 @@ public class VisualizationWindowController {
 
             gc.setStroke(color);
             gc.setLineWidth(2); // Adjust this to make your circle's border thicker or thinner
-//            gc.strokeOval(canvasX - size / 2, canvasY - size / 2, size, size);
-
-            // Draw the icon inside the circle. This assumes that you have a method getCityIcon() that returns an Image object representing the city icon.
-            // You'll need to adjust this code to fit your actual method for getting the city icon.
             Image cityIcon = getCityIcon();
-            int iconSize = (int) Math.round(size - 4); // Subtracting 4 to give some padding around the icon.
-            if (iconSize <= 0) {
-                iconSize = 1;
-            }
 
             ImageView imageView = new ImageView(cityIcon);
             imageView.setPreserveRatio(true);
-            imageView.setFitWidth(iconSize);
-            imageView.setFitHeight(iconSize);
+            imageView.setFitWidth(size);
+            imageView.setFitHeight(size);
             SnapshotParameters sp = new SnapshotParameters();
             sp.setFill(Color.TRANSPARENT);
             Image scaledCityIcon = imageView.snapshot(sp, null);
 
             PixelReader pr = scaledCityIcon.getPixelReader();
-            WritableImage coloredIcon = new WritableImage((int) iconSize, (int) iconSize);
+            WritableImage coloredIcon = new WritableImage((int) size, (int) size);
             PixelWriter pw = coloredIcon.getPixelWriter();
             for (int y = 0; y < scaledCityIcon.getHeight(); y++) {
                 for (int x = 0; x < scaledCityIcon.getWidth(); x++) {
@@ -126,7 +130,21 @@ public class VisualizationWindowController {
                     }
                 }
             }
-            gc.drawImage(coloredIcon, canvasX - iconSize / 2, canvasY - iconSize / 2);
+            gc.drawImage(coloredIcon, canvasX - size / 2, canvasY - size / 2);
+//            gc.drawImage(coloredIcon, 0, 0);
+//            Button ct = new Button();
+//            ct.setGraphic(new ImageView(getCityIcon()));
+//            ct.setLayoutX(0);
+//            ct.setLayoutY(0);
+//            VisualizationWindow.getStage().getScene().getCh
+//            Duration duration = Duration.millis(2500);
+//            //Create new translate transition
+//            TranslateTransition transition = new TranslateTransition(duration, ct);
+//            //Move in X axis by +200
+//            transition.setByX(200);
+//            //Move in Y axis by +100
+//            transition.setByY(100);
+//            transition.play();
         }
     }
     private Image getCityIcon() {
