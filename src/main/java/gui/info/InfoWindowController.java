@@ -47,7 +47,7 @@ public class InfoWindowController {
                 if (cat != null) {
                     idLabel.setText(String.valueOf(cat.getId()));
                     nameLabel.setText(cat.getName());
-                    statsLabel.setText(cat.getStatus().name());
+                    statusLabel.setText(cat.getStatus().name());
                     colorLabel.setText(cat.getColor().toString());
                     isAliveLabel.setText(String.valueOf(cat.getIsAlive()));
                     statsLabel.setText(cat.getStats());

@@ -38,7 +38,7 @@ public class CollectionManager implements Serializable {
     public boolean checkByNameAndOwner(Human human, User user){
         lock.lock();
         for (Human el: collection){
-            if (el.getName().equals(human.name) && el.getOwner().equals(user.getName())){
+            if (el.getName().equals(human.getName()) && el.getOwner().equals(user.getName())){
                 return true;
             }
         }
@@ -70,7 +70,6 @@ public class CollectionManager implements Serializable {
      */
     public boolean add (Human h, User user){
         lock.lock();
-//        if(!isInCol(h)){
             if(h.getOwner()!=null) {
                 if(checkByNameAndOwner(h, user)){return false;}
                 h.setOwner(user.getName());
