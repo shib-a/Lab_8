@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="456.0" prefWidth="287.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.info.InfoWindowController">
+<AnchorPane prefHeight="456.0" prefWidth="287.0" style="-fx-background-color: #f9f6f3;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.info.InfoWindowController">
     <children>
         <Label fx:id="actionLabel" layoutX="86.0" layoutY="14.0" prefHeight="30.0" prefWidth="115.0" text="Cat info">
             <font>

@@ -29,7 +29,7 @@ public class VisualizationWindow {
 
             controller = loader.getController();
 
-            this.stage.setScene(new Scene(root, 1020, 1012));
+            this.stage.setScene(new Scene(root, 1020, 800));
         } catch (IOException e) {
             e.printStackTrace();
         }
