@@ -79,18 +79,48 @@ public class ServerMain {
         com.getCommandList().put("register {user} {password}", new Register());
 
         logger.info("Ready for IO");
-        Human h = new Human("cock", Status.SCIENTIST, javafx.scene.paint.Color.ORANGE, true,1,1,1,1,1, Rarity.THREE_STAR);
-        Human h1 = new Human("balls", Status.SCIENTIST, javafx.scene.paint.Color.GREY, true,2,1,1,1,0, Rarity.FOUR_STAR);
-        Human h2 = new Human("cum", Status.SCIENTIST, Color.WHITE, true,3,1,1,1,1, Rarity.FIVE_STAR);
+        Human h0 = new Human("Chixia", Status.WARRIOR, Color.ORANGERED, true,275,200,100,250,1, Rarity.THREE_STAR);
+        Human h1 = new Human("Ningguang", Status.RULER, Color.LIGHTGOLDENRODYELLOW, true,250,270,80,190,100, Rarity.THREE_STAR);
+        Human h2 = new Human("Yaoyao", Status.FARMER, Color.YELLOWGREEN, true,210,160,200,210,100, Rarity.THREE_STAR);
+        Human h3 = new Human("Verina", Status.FARMER, Color.LIMEGREEN, true,230,160,220,200,100, Rarity.THREE_STAR);
+        Human h4 = new Human("Rosaria", Status.SIMPLETON, Color.DEEPPINK, true,250,160,400,190,100, Rarity.THREE_STAR);
+        Human h5 = new Human("Arlecchino", Status.WARRIOR, Color.DIMGREY, true,300,260,40,320,100, Rarity.THREE_STAR);
+        Human h6 = new Human("Xiangling", Status.SIMPLETON, Color.DARKORANGE, true,280,190, 50,330,100, Rarity.THREE_STAR);
+        Human h7 = new Human("Furina", Status.RULER, Color.ROYALBLUE, true,290,190,40,300,99, Rarity.THREE_STAR);
+        Human h8 = new Human("Yangyang", Status.WARRIOR, Color.DARKBLUE, true,300,220,80,230,100, Rarity.THREE_STAR);
+        Human h9 = new Human("Tartaglia", Status.WARRIOR, Color.LIGHTSLATEGREY, true,280,240,30,290,-1, Rarity.THREE_STAR);
+
+        Human h10 = new Human("Yae Miko", Status.RULER, Color.HOTPINK, true,340,280,90,180,100, Rarity.FOUR_STAR);
+        Human h11 = new Human("Zhongli", Status.SIMPLETON, Color.BROWN, true,510,280,10,310,100, Rarity.FOUR_STAR);
+        Human h12 = new Human("Jiyan", Status.WARRIOR, Color.DARKSEAGREEN, true,410,280,30,290,100, Rarity.FOUR_STAR);
+        Human h13 = new Human("Jinshi", Status.RULER, Color.LIGHTCYAN, true,290,290,50,280,100, Rarity.FOUR_STAR);
+        Human h14 = new Human("Keqing", Status.WARRIOR, Color.MEDIUMPURPLE, true,280,210,80,340,100, Rarity.FOUR_STAR);
+
+        Human h15 = new Human("Yinlin", Status.WARRIOR, Color.PURPLE, true,300,300,80,200,100, Rarity.FIVE_STAR);
+        Human h16 = new Human("Neuvilette", Status.RULER, Color.DEEPSKYBLUE, true,400,300,30,330,100, Rarity.FIVE_STAR);
+        Human h17 = new Human("Bennett", Status.SIMPLETON, Color.LIGHTGRAY, true,360,190,-300,195,50, Rarity.FIVE_STAR);
 
         ArrayList<Human> lp = new ArrayList<>();
-        lp.add(h);
+        lp.add(h0);
         lp.add(h1);
         lp.add(h2);
-        StandardBanner st = new StandardBanner("cock banner", lp, RollReq.STANDARD);
+        lp.add(h3);
+        lp.add(h4);
+        lp.add(h5);
+        lp.add(h6);
+        lp.add(h7);
+        lp.add(h8);
+        lp.add(h9);
+        lp.add(h10);
+        lp.add(h11);
+        lp.add(h12);
+        lp.add(h13);
+        lp.add(h14);
+        lp.add(h15);
+        lp.add(h16);
+        lp.add(h17);
+        StandardBanner st = new StandardBanner("standard banner", lp, RollReq.STANDARD);
         re.setBanner(st);
-//                System.out.println(re.getBannerList().toString());
-//                System.out.println(re.getBannerList().get("one").toString());
         InteraciveServerConsole intServCons = new InteraciveServerConsole(cl,com);
         executorService.execute(intServCons);
 
