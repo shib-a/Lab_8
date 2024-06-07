@@ -39,7 +39,8 @@ public class InfoWindowController {
         private Human selectedCat;
         @FXML
         public void initialize() {
-                actionLabel.setText(actionText);
+//                actionLabel.setText(actionText);
+
         }
 
         public void populateFields(Human cat) {

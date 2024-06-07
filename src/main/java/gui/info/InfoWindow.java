@@ -20,11 +20,10 @@ public class InfoWindow {
                 stage = new Stage();
                 stage.setResizable(false);
                 URL fxmlLocation = InfoWindow.class.getResource("infoWindow.fxml");
-                logger.info(fxmlLocation.getPath().toString());
+//                logger.info(fxmlLocation.getPath().toString());
                 FXMLLoader loader = new FXMLLoader(fxmlLocation);
                 Parent root = loader.load();
                 controller = loader.getController();
-//                controller.setActionText(actionText);
 
                 scene = new Scene(root, 300, 500);
                 stage.setScene(scene);

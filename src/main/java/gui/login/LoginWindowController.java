@@ -23,7 +23,7 @@ import java.util.logging.Logger;
 
 public class LoginWindowController {
     private ResourceBundle currentBundle;
-    Logger logger = Logger.getLogger("lwc");
+//    Logger logger = Logger.getLogger("lwc");
 
     @FXML
     private TextField usernameField;
@@ -92,11 +92,11 @@ public class LoginWindowController {
         String username = usernameField.getText().trim();
         String password = passwordField.getText().trim();
         RuntimeEnv re = ClientMain.getRe();
-        logger.info(re.getUser().toString());
-        logger.info(username +" "+ password);
+//        logger.info(re.getUser().toString());
+//        logger.info(username +" "+ password);
         Feedbacker fb = re.executeCommand(new String[]{"login", username+" "+password});
         if(fb.getIsSuccessful()){
-            logger.info(re.getUser().toString());
+//            logger.info(re.getUser().toString());
             Stage stage = (Stage) signInButton.getScene().getWindow();
             stage.close();
             CollectionsWindow collectionsWindow = new CollectionsWindow(currentLocaleIndex);
@@ -109,7 +109,7 @@ public class LoginWindowController {
             usernameField.clear();
             passwordField.clear();
         }
-        logger.info(re.getUser().getName());
+//        logger.info(re.getUser().getName());
     }
 
     @FXML
