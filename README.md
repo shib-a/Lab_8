@@ -1,3 +1,2 @@
 # Labs
-Hi! My name is Danila, I am currently on my first year of studying in ITMO. 
-This is where I'll put all my horrendous programming lab works code, and maybe even more if I'm feeling cute
+Repository for programming laboratory work 8 of the first year (desktop application with GUI). 
