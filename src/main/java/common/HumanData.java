@@ -1,17 +1,16 @@
 package common;
 
 import java.io.Serializable;
-import java.util.Arrays;
 
 public class HumanData implements Serializable {
     String name;
-    ToolKinds ptt;
-    ResearcherType rt;
+    Status ptt;
+    Color rt;
     String stats;
     Boolean isAl;
     String dc;
     UserData userData;
-    public HumanData(String name, ToolKinds ptt, ResearcherType rt, String stats, Boolean isAl, String dc, UserData ud){
+    public HumanData(String name, Status ptt, Color rt, String stats, Boolean isAl, String dc, UserData ud){
         this.name=name;
         this.ptt=ptt;
         this.rt=rt;
@@ -20,7 +19,7 @@ public class HumanData implements Serializable {
         this.dc=dc;
         this.userData = ud;
     }
-    public HumanData(String name, ToolKinds ptt, ResearcherType rt, String stats, Boolean isAl, String dc){
+    public HumanData(String name, Status ptt, Color rt, String stats, Boolean isAl, String dc){
         this.name=name;
         this.ptt=ptt;
         this.rt=rt;
@@ -49,11 +48,11 @@ public class HumanData implements Serializable {
         return dc;
     }
 
-    public ResearcherType getRt() {
+    public Color getRt() {
         return rt;
     }
 
-    public ToolKinds getPtt() {
+    public Status getPtt() {
         return ptt;
     }
 

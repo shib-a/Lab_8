@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="gui.collections.CollectionWindowController"
+            prefHeight="800.0" prefWidth="1000.0"
+            style="-fx-background-color: #f9f6f3;">
+    <children>
+        <Text fx:id="usernameText" fill="#333333"  layoutX="400.0" styleClass="bold-text" text="Имя пользователя" textAlignment="CENTER" wrappingWidth="200" AnchorPane.topAnchor="40.0" />
+        <Line endX="300.0" layoutX="400.0" layoutY="60.0" startX="-100"/>
+        <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="450.0" prefWidth="800.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="113.0">
+            <content>
+                <TableView fx:id="table" prefHeight="450.0" prefWidth="700.0">
+                    <columns>
+                        <TableColumn fx:id="idColumn" text="id" />
+                        <TableColumn fx:id="nameColumn" text="имя" />
+                        <TableColumn fx:id="statusColumn" text="статус" />
+                        <TableColumn fx:id="colorColumn" text="цвет"/>
+                        <TableColumn fx:id="isAliveColumn" text="живость"/>
+                        <TableColumn fx:id="statsColumn" text="статы"/>
+                        <TableColumn fx:id="ownerColumn" text="владелец"/>
+                        <TableColumn fx:id="rarityColumn" text="редкость"/>
+                        <TableColumn fx:id="coordXColumn" text="коорд. X" />
+                        <TableColumn fx:id="coordYColumn" text="коорд. Y" />
+                    </columns>
+                </TableView>
+            </content>
+        </ScrollPane>
+        <Label fx:id="filterByLabel" layoutX="530.0" layoutY="80.0" prefHeight="25.0" prefWidth="130.0" styleClass="collections-text" stylesheets="@style.css" text="Фильтр по" textAlignment="RIGHT" />
+        <ComboBox fx:id="comboBox" layoutX="660.0" layoutY="80.0" prefHeight="25.0" prefWidth="120.0" />
+        <TextField fx:id="filterByText" layoutX="800.0" layoutY="80.0" prefHeight="25.0" prefWidth="100.0" />
+        <Line endX="100.0" endY="2" layoutX="800.0" layoutY="107.0" startX="-300" startY="2" />
+        <Line endX="100" endY="2" layoutX="200.0" layoutY="107.0" startX="-100.0" />
+        <Label fx:id="catsLabel" layoutX="100.0" layoutY="80.0" prefHeight="25.0" prefWidth="70.0" styleClass="collections-text" stylesheets="@style.css" text="Коты" textAlignment="CENTER" />
+        <Label fx:id="catNumberLabel" layoutX="180" layoutY="80" prefHeight="25.0" prefWidth="50.0" styleClass="collections-text" stylesheets="style.css" text="0" textAlignment="CENTER"/>
+        <GridPane layoutY="570.0" prefHeight="16.0" prefWidth="1000.0">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" prefWidth="100" />
+                <ColumnConstraints hgrow="SOMETIMES" prefWidth="150" />
+                <ColumnConstraints hgrow="SOMETIMES" prefWidth="150" />
+                <ColumnConstraints hgrow="SOMETIMES" prefWidth="25" />
+                <ColumnConstraints hgrow="SOMETIMES" prefWidth="150" />
+                <ColumnConstraints hgrow="SOMETIMES" prefWidth="25" />
+                <ColumnConstraints hgrow="SOMETIMES" prefWidth="150" />
+                <ColumnConstraints hgrow="SOMETIMES" prefWidth="150" />
+                <ColumnConstraints hgrow="SOMETIMES" prefWidth="100" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints />
+                <RowConstraints />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            </rowConstraints>
+            <children>
+                <Button onAction="#onCreateButtonClick" fx:id="createButton"  prefHeight="32.0" prefWidth="150.0" styleClass="button" stylesheets="@style.css" text="Добавить" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+                <Button onAction="#onClearButtonClick" fx:id="clearButton"  prefHeight="32.0" prefWidth="150.0" styleClass="button" stylesheets="@style.css" text="Удалить" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+
+                <Button onAction="#onRefreshButtonClick" fx:id="refreshButton" prefHeight="32.0" prefWidth="150.0" styleClass="button" stylesheets="@style.css" text="Обновить" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+
+                <Button fx:id="visualizeButton" onAction="#onVisualisationButtonClick" prefHeight="32.0" prefWidth="150.0" styleClass="button" stylesheets="@style.css" text="Визуализировать" GridPane.columnIndex="6" GridPane.rowIndex="2" />
+
+                <Button fx:id="commandsButton" onAction="#onCommandsButtonClick" prefHeight="32.0" prefWidth="150.0" styleClass="button" stylesheets="@style.css" text="Команды" GridPane.columnIndex="7" GridPane.rowIndex="2" />
+
+            </children>
+        </GridPane>
+        <ImageView fitHeight="100.0" onMouseClicked="#onGeoIconOneClick" fitWidth="100.0" layoutX="1.0" layoutY="1.0">
+            <image>
+                <Image url="@../images/language_cat.png" />
+            </image>
+        </ImageView>
+        <ImageView fitHeight="100.0" fitWidth="100.0" layoutX="900.0" layoutY="1.0">
+            <image>
+                <Image url="@../images/cat-five-Photoroom.png "/>
+            </image>
+        </ImageView>
+        <ImageView fitHeight="100.0" fitWidth="100.0" layoutX="900.0" layoutY="700.0">
+            <image>
+                <Image url="@../images/cat-fore-Photoroom.png"/>
+            </image>
+        </ImageView>
+        <ImageView fitHeight="100.0" fitWidth="100.0" layoutX="1.0" layoutY="700.0">
+            <image>
+                <Image url="@../images/six-Photoroom.png"/>
+            </image>
+        </ImageView>
+        <ToolBar fx:id="commandsToolBar" layoutX="100.0" layoutY="620.0" prefHeight="70.0" prefWidth="800.0" styleClass="borderPane-style" stylesheets="@style.css">
+            <items>
+                <Button onAction="#onUpdateButtonClick" fx:id="updateButton"  styleClass="button" stylesheets="@style.css" text="Обновить" />
+                <TextField fx:id="updateField" alignment="CENTER"  promptText="айди" prefWidth="50"/>
+
+                <Button onAction="#onRemoveButtonClick" fx:id="removeButton" styleClass="button" stylesheets="@style.css" text="Удалить" />
+                <TextField fx:id="removeField" alignment="CENTER"  promptText="айди" prefWidth="50" />
+
+                <Button onAction="#onRemoveLowerButtonClick" fx:id="removeLowerButton"  styleClass="button" stylesheets="@style.css" text="Удалить минимальный" />
+
+                <Button onAction="#onCountRarityButtonClick" fx:id="countRarityButton"  styleClass="button" stylesheets="@style.css" text="Кол-во по редкости" />
+                <ComboBox fx:id="rarityBox" prefWidth="100"/>
+            </items>
+        </ToolBar>
+    </children>
+</AnchorPane>

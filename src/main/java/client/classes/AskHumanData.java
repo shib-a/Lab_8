@@ -31,9 +31,9 @@ public class AskHumanData {
                 RuntimeEnv.addToLog(name);
                 if(!name.isEmpty()) break;
             }
-            ToolKinds ptt =
+            Status ptt =
             askPreferredTool(cl);
-            ResearcherType rt =
+            Color rt =
             askResType(cl);
             Double[] stats =
             askStats(cl);
@@ -56,16 +56,16 @@ public class AskHumanData {
      * @return preferredTool
      * @throws AskBreaker
      */
-    public static ToolKinds askPreferredTool(CommandLine cl) throws AskBreaker {
+    public static Status askPreferredTool(CommandLine cl) throws AskBreaker {
         try {
-            ToolKinds ptt;
+            Status ptt;
             while (true) {
-                cl.print("Enter favourite tool: (" + Arrays.toString(ToolKinds.values()).replace("[","").replace("]","") + ")");
+                cl.print("Enter favourite tool: (" + Arrays.toString(Status.values()).replace("[","").replace("]","") + ")");
                 String line = cl.readln().trim();
                 if (line.equals("exit")) throw new AskBreaker();
                 if (!line.isEmpty()) {
                     try {
-                        ptt = ToolKinds.valueOf(line);
+                        ptt = Status.valueOf(line);
                         RuntimeEnv.addToLog(line);
                         break;
                     } catch (IllegalArgumentException e) {
@@ -84,16 +84,16 @@ public class AskHumanData {
      * @return researcherType
      * @throws AskBreaker
      */
-    public static ResearcherType askResType(CommandLine cl) throws AskBreaker {
+    public static Color askResType(CommandLine cl) throws AskBreaker {
         try{
-            ResearcherType rt;
+            Color rt;
             while(true){
-                cl.print("Enter researcher type: (" + Arrays.toString(ResearcherType.values()).replace("[","").replace("]","") +")");
+                cl.print("Enter researcher type: (" + Arrays.toString(Color.values()).replace("[","").replace("]","") +")");
                 String line = cl.readln().trim();
                 if (line.equals("exit")) throw new AskBreaker();
                 if (!line.isEmpty() && !line.isBlank()){
                     try{
-                        rt = ResearcherType.valueOf(line);
+                        rt = Color.valueOf(line);
                         RuntimeEnv.addToLog(line);
                         break;
                     } catch (IllegalArgumentException e){System.out.println(">Wrong researcher type value. Try again or enter 'exit' to stop the process.");}

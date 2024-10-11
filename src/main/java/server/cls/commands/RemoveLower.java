@@ -1,12 +1,11 @@
 package server.cls.commands;
 
-import common.AbstractCommand;
-import common.Feedbacker;
-import common.Stat;
-import common.UserData;
+import common.*;
 import server.*;
+import server.managers.CollectionManager;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.stream.Collectors;
 
 /**
@@ -24,23 +23,26 @@ public class RemoveLower extends AbstractCommand {
      * Executes the "remove_lower" command
      *
      * @param arg
-     * @param userData
+     * @param user
      * @return Feedbacker
      */
     @Override
-    public Feedbacker execute(String arg, UserData userData) {
-        if(arg.isEmpty()) return new Feedbacker(false,">Wrong argument usage. See 'help' for reference.");
+    public Feedbacker execute(String arg, User user) {
+        if(arg.isEmpty()) return new Feedbacker(false,">Wrong argument usage. See 'help' for reference.", user);
         try{
             var val = Double.parseDouble(arg.trim());
-//            var idArr = new ArrayList<Integer>();
-            if (cm.getCollection().isEmpty()){return new Feedbacker(">Empty collection.");} else{
-//                for(Human el: cm.getCollection()){
-//                    if (el.getStat(Stat.DAMAGE)<val) idArr.add(el.getId());
-//                }
-//                for (Integer el: idArr){cm.removeById(el);}
-
-                cm.setCollection((ArrayList<Human>) cm.getCollection().stream().filter(el -> el.getStat(Stat.DAMAGE)>=val && el.getOwner() == userData.getName()).collect(Collectors.toList()));
-                return new Feedbacker(">Elements removed successfully.");}
-        } catch(NumberFormatException e){ return new Feedbacker(false,">Wrong argument.");}
+            if (cm.getCollection().isEmpty()){return new Feedbacker(">Empty collection.", user);} else{
+//                cm.setCollection((ArrayList<Human>) cm.getCollection().stream().filter(el -> el.getStat(Stat.HP)>=val && el.getOwner() == user.getName()).collect(Collectors.toList()));
+                Iterator<Human> iterator = cm.getCollection().iterator();
+                double min = 1000;
+                for(var el: cm.getCollection()){
+                    if (el.getOwner().equals(user.getName()) && el.getStat(Stat.HP)<min){min=el.getStat(Stat.HP);}
+                }
+                while (iterator.hasNext()){
+                    var temp = iterator.next();
+                    if (temp.getOwner().equals(user.getName()) && temp.getStat(Stat.HP)==min){iterator.remove();}
+                }
+                return new Feedbacker(">Elements removed successfully.", user);}
+        } catch(NumberFormatException e){ return new Feedbacker(false,">Wrong argument.", user);}
     }
 }

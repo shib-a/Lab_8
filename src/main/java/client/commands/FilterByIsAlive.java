@@ -1,7 +1,7 @@
 package client.commands;
 import common.AbstractCommand;
 import common.Feedbacker;
-import common.UserData;
+import common.User;
 
 /**
  * Class for the "filter_by_is_alive" command
@@ -14,11 +14,11 @@ public class FilterByIsAlive extends AbstractCommand{
      * Executes the "filter_by_is_alive" command
      *
      * @param arg
-     * @param userData
+     * @param user
      * @return Feedbacker
      */
     @Override
-    public Feedbacker execute(String arg, UserData userData) {
+    public Feedbacker execute(String arg, User user) {
 //        if(arg.isEmpty()) return new Feedbacker(false,">Wrong argument usage. See 'help' for reference.");
 //        try{
 //            var val = Boolean.parseBoolean(arg.trim());
@@ -28,6 +28,6 @@ public class FilterByIsAlive extends AbstractCommand{
 //            }
 //            return new Feedbacker(">Elements shown successfully.");}
 //        } catch(IllegalArgumentException e){ return new Feedbacker(false,">Wrong argument.");}
-        return new Feedbacker("");
+        return new Feedbacker("", user);
     }
 }

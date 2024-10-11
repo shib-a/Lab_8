@@ -26,7 +26,7 @@ public class CollectionLoaderSaver implements Serializable {
         try{
             int i = 0;
             for(Human h:col){
-                arr[i]=h.toCsvStr();
+//                arr[i]=h.toCsvStr();
                 i++;
             }
         } catch (IllegalArgumentException | ArrayIndexOutOfBoundsException e){}

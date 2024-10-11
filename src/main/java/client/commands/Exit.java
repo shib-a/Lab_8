@@ -1,7 +1,7 @@
 package client.commands;
 import common.AbstractCommand;
 import common.Feedbacker;
-import common.UserData;
+import common.User;
 
 /**
  * Class for the "exit" command
@@ -14,12 +14,12 @@ public class Exit extends AbstractCommand {
      * Executes the "exit" command
      *
      * @param arg
-     * @param userData
+     * @param user
      * @return Feedbacker
      */
     @Override
-    public Feedbacker execute(String arg, UserData userData) {
+    public Feedbacker execute(String arg, User user) {
 //        if(!arg.isEmpty()) return new Feedbacker(false,">Wrong argument usage. See 'help' for reference.");
-        return new Feedbacker("");
+        return new Feedbacker("",user);
     }
 }

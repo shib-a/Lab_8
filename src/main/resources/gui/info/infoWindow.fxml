@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="456.0" prefWidth="287.0" style="-fx-background-color: #f9f6f3;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.info.InfoWindowController">
+    <children>
+        <Label fx:id="actionLabel" layoutX="86.0" layoutY="14.0" prefHeight="30.0" prefWidth="115.0" text="Cat info">
+            <font>
+                <Font size="20.0" />
+            </font>
+        </Label>
+        <Label fx:id="idLabel" layoutX="126.0" layoutY="62.0" />
+        <Label fx:id="nameLabel" layoutX="126.0" layoutY="94.0" />
+        <Label fx:id="statusLabel" layoutX="127.0" layoutY="125.0" />
+        <Label fx:id="colorLabel" layoutX="127.0" layoutY="157.0" />
+        <Label fx:id="isAliveLabel" layoutX="127.0" layoutY="189.0" />
+        <Label fx:id="statsLabel" layoutX="127.0" layoutY="221.0" />
+        <Label fx:id="ownerLabel" layoutX="127.0" layoutY="265.0" prefWidth="150.0" />
+        <Label fx:id="rarityLabel" layoutX="127.0" layoutY="299.0" prefWidth="150.0" />
+        <Label fx:id="coordXLabel" layoutX="127.0" layoutY="332.0" prefWidth="150.0" />
+        <Label fx:id="coordYLabel" layoutX="127.0" layoutY="374.0" />
+        <Label layoutX="67.0" layoutY="62.0" prefHeight="25.0" prefWidth="57.0" text="id:">
+<!--            <font>-->
+<!--                <Font size="16.0" />-->
+<!--            </font>-->
+        </Label>
+        <Label layoutX="18.0" layoutY="94.0" prefHeight="25.0" prefWidth="109.0" text="name:">
+<!--            <font>-->
+<!--                <Font size="16.0" />-->
+<!--            </font>-->
+        </Label>
+        <Label layoutX="18.0" layoutY="125.0" prefHeight="25.0" prefWidth="109.0" text="status:">
+<!--            <font>-->
+<!--                <Font size="16.0" />-->
+<!--            </font>-->
+        </Label>
+        <Label layoutX="78.0" layoutY="157.0" text="color:">
+<!--            <font>-->
+<!--                <Font size="16.0" />-->
+<!--            </font>-->
+        </Label>
+        <Label layoutX="33.0" layoutY="189.0" text="isAlive?:">
+<!--            <font>-->
+<!--                <Font size="16.0" />-->
+<!--            </font>-->
+        </Label>
+        <Label layoutX="24.0" layoutY="221.0" prefHeight="25.0" prefWidth="97.0" text="stats:">
+<!--            <font>-->
+<!--                <Font size="16.0" />-->
+<!--            </font>-->
+        </Label>
+        <Label layoutX="57.0" layoutY="265.0" text="owner:">
+<!--            <font>-->
+<!--                <Font size="16.0" />-->
+<!--            </font>-->
+        </Label>
+        <Label layoutX="24.0" layoutY="299.0" prefHeight="25.0" prefWidth="97.0" text="rarity:">
+<!--            <font>-->
+<!--                <Font size="16.0" />-->
+<!--            </font>-->
+        </Label>
+        <Label layoutX="41.0" layoutY="332.0" prefHeight="25.0" prefWidth="89.0" text="coordX:">
+<!--            <font>-->
+<!--                <Font size="16.0" />-->
+<!--            </font>-->
+        </Label>
+        <Label layoutX="45.0" layoutY="374.0" prefHeight="25.0" prefWidth="81.0" text="coordY:">
+<!--            <font>-->
+<!--                <Font size="16.0" />-->
+<!--            </font>-->
+        </Label>
+<!--        <Button fx:id="createButton" layoutX="19.0" layoutY="417.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="89.0" text="Save" onAction="#onSaveButtonClick" />-->
+<!--        <Button fx:id="cancelButton" layoutX="183.0" layoutY="417.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="89.0" text="Cancel" onAction="#onCancelButtonClick" />-->
+    </children>
+</AnchorPane>

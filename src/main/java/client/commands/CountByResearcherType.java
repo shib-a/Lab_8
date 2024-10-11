@@ -3,15 +3,15 @@ package client.commands;
 import common.AbstractCommand;
 
 import common.Feedbacker;
-import common.UserData;
+import common.User;
 
 public class CountByResearcherType extends AbstractCommand{
     public CountByResearcherType() {
-        super("count_by_researcher_type (EXPEDITIONIST/FOLK_RESEARCHER)", "Shows amount of elements with entered RESEARCHER_TYPE value.");
+        super("count_by_rarity {THREE_STAR/FOUR_STAR/FIVE_STAR}", "Shows amount of elements with entered RESEARCHER_TYPE value.");
     }
 
     @Override
-    public Feedbacker execute(String arg, UserData userData) {
+    public Feedbacker execute(String arg, User user) {
 //        if(arg.isEmpty()) return new Feedbacker(false,">Wrong argument usage. see 'help' for reference.");
 //        try{
 //            var val = ResearcherType.valueOf(arg.trim());
@@ -23,6 +23,6 @@ public class CountByResearcherType extends AbstractCommand{
 //                cl.printLn(count);
 //                return new Feedbacker(">Elements counted successfully.");}
 //        } catch(IllegalArgumentException e){ return new Feedbacker(false,">Wrong argument.");}
-        return new Feedbacker("");
+        return new Feedbacker("", user);
     }
 }

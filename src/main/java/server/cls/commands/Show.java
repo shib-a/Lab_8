@@ -2,8 +2,10 @@ package server.cls.commands;
 
 import common.AbstractCommand;
 import common.Feedbacker;
-import common.UserData;
+import common.Human;
+import common.User;
 import server.*;
+import server.managers.CollectionManager;
 
 import java.util.Objects;
 
@@ -22,15 +24,15 @@ public class Show extends AbstractCommand {
      * Executes the "show" command
      *
      * @param arg
-     * @param userData
+     * @param user
      * @return Feedbacker
      */
     @Override
-    public Feedbacker execute(String arg, UserData userData) {
-        if (!arg.isEmpty()) return new Feedbacker(false, ">Wrong argument usage. See 'help' for reference.");
-        if (cm.getCollection().isEmpty()) return new Feedbacker(">Collection is empty.");
+    public Feedbacker execute(String arg, User user) {
+        if (!arg.isEmpty()) return new Feedbacker(false, ">Wrong argument usage. See 'help' for reference.", user);
+        if (cm.getCollection().isEmpty()) return new Feedbacker(">Collection is empty.", user);
         StringBuilder str = new StringBuilder();
-        str.append(cm.getCollection().stream().map(Objects::toString).reduce((a,b)-> a+"\n"+b).get());
-        return new Feedbacker(str.append(">Elements shown.").toString());
+        str.append(cm.getCollection().stream().map(Human::toCsvStr).reduce((a, b)-> a+"\n"+b).get());
+        return new Feedbacker(str.toString(), user);
     }
 }

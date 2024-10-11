@@ -2,8 +2,10 @@ package server.cls.commands;
 
 import common.AbstractCommand;
 import common.Feedbacker;
-import common.UserData;
+import common.Rarity;
+import common.User;
 import server.*;
+import server.managers.CollectionManager;
 
 import java.util.stream.Stream;
 
@@ -22,20 +24,20 @@ public class FilterLessDC extends AbstractCommand {
      * Executes the "filter_by_less_than_number_of_dug_counter" command
      *
      * @param arg
-     * @param userData
+     * @param user
      * @return Feedbacker
      */
     @Override
-    public Feedbacker execute(String arg, UserData userData) {
-        if(arg.isEmpty()) return new Feedbacker(false,">Wrong argument usage. see 'help' for reference.");
+    public Feedbacker execute(String arg, User user) {
+        if(arg.isEmpty()) return new Feedbacker(false,">Wrong argument usage. see 'help' for reference.", user);
         try{
-            var val = Integer.parseInt(arg.trim());
-            if (cm.getCollection().isEmpty()){return new Feedbacker(">Empty collection.");}else{
+            var val = Rarity.valueOf(arg);
+            if (cm.getCollection().isEmpty()){return new Feedbacker(">Empty collection.", user);}else{
                 StringBuilder str = new StringBuilder();
-                Stream st = cm.getCollection().stream().filter(el -> el.getDugCounter()<val);
-                if (st.count()==0) return new Feedbacker(">No elements with lower value.");
-                return new Feedbacker(str.append(st.map(el -> el.toString()).reduce((a,b)-> a+"\n"+b).get()).append(">Elements shown successfully.").toString());
+                Stream st = cm.getCollection().stream().filter(el -> el.getRarity()==val);
+                if (st.count()==0) return new Feedbacker(">No elements with lower value.", user);
+                return new Feedbacker(str.append(st.map(el -> el.toString()).reduce((a,b)-> a+"\n"+b).get()).append(">Elements shown successfully.").toString(), user);
             }
-        } catch(IllegalArgumentException e){return new Feedbacker(false,">Wrong argument.");}
+        } catch(IllegalArgumentException e){return new Feedbacker(false,">Wrong argument.", user);}
     }
 }

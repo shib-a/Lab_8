@@ -2,6 +2,7 @@ package server;
 
 import java.util.Comparator;
 
+import common.Human;
 import common.Stat;
 
 /**
